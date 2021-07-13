@@ -1,0 +1,22 @@
+{
+  "name": "animo-web",
+  "version": "1.0.0",
+  "description": "Animo fullstack app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startclient": "cd app && npm start",
+    "startserver": "cd server && npm start",
+    "start": "npm run startserver | npm run startclient"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yairdana/Animo-Web.git"
+  },
+  "author": "Alon&Shira&Shir&Yair",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yairdana/Animo-Web/issues"
+  },
+  "homepage": "https://github.com/yairdana/Animo-Web#readme"
+}
