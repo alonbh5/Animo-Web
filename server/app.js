@@ -18,7 +18,7 @@ mongoose.connect(MongoDBUri, {
 });
 
 mongoose.connection.on('connected',() => {
-    console.log("Alon, MongoDB is Connected!");
+    console.log("MongoDB is Connected!");
 });
 //==============================================================================
 
