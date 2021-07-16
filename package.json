@@ -1,19 +1,22 @@
 {
-  "name": "test1",
+  "name": "animo-web",
   "version": "1.0.0",
-  "description": "",
+  "description": "Animo fullstack app",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon my_server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startclient": "cd app && npm start",
+    "startserver": "cd server && npm start",
+    "start": "npm run startserver | npm run startclient"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yairdana/Animo-Web.git"
+  },
+  "author": "Alon&Shira&Shir&Yair",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "mongodb": "^3.6.8",
-    "mongoose": "^5.12.12",
-    "morgan": "^1.10.0",
-    "nodemon": "^2.0.7"
-  }
+  "bugs": {
+    "url": "https://github.com/yairdana/Animo-Web/issues"
+  },
+  "homepage": "https://github.com/yairdana/Animo-Web#readme"
 }
