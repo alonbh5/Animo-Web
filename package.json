@@ -8,8 +8,9 @@
     "startclient": "cd app && npm start",
     "startserver": "cd server && npm start",
     "start": "npm run startserver | npm run startclient",
-    "install": "cd server && npm install | cd app && run startclient"
-
+    "installclient": "cd app && npm install",
+    "installserver": "cd server && npm install",
+    "install": "npm run installclient && npm run installserver"
   },
   "repository": {
     "type": "git",
