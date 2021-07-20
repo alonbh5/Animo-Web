@@ -13,7 +13,7 @@ import SmoothScroll from 'smooth-scroll'
 import {SignIn} from "./components/SignIn"
 import {SignUp} from "./components/SignUp"
 
-import {  Router, Switch, Route, Link } from 'react-router-dom';
+import {  Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
@@ -32,11 +32,17 @@ const App = () => {
       
       {/* <Gallery /> */}
       {/* <Testimonials data={landingPageData.Testimonials} /> */}
-     
+      <Route
+                exact
+                path="/"
+                render={() => 
+                      <Redirect to="/welcome" />     
+                }
+              />
           <Route path='/welcome'>
           <Header data={landingPageData.Header} />
               <About data={landingPageData.About} />
-              <Team data={landingPageData.Team} />
+                            <Team data={landingPageData.Team} />
               <Contact data={landingPageData.Contact} />
           </Route>
           <Route path='/try'>
