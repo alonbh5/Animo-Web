@@ -11,7 +11,7 @@ export const Services = (props:any) => {
           </div>
           <div className='row'>
             {props.data
-              ? props.data.map((d, i) => (
+              ? props.data.map((d:any, i:any) => (
                   <div key={`${d.name}-${i}`} className='col-md-4'>
                     {' '}
                     <i className={d.icon}></i>

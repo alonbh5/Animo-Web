@@ -15,7 +15,7 @@ export const Contact = (props:any) => {
   }
   const clearState = () => setState({ ...initialState })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:  any) => {
     e.preventDefault()
     console.log(name, email, message)
     emailjs
@@ -45,7 +45,7 @@ export const Contact = (props:any) => {
                   get back to you as soon as possible.
                 </p>
               </div>
-              <form name='sentMessage' validate onSubmit={handleSubmit}>
+              <form name='sentMessage' onSubmit={handleSubmit}>
                 <div className='row'>
                   <div className='col-md-6'>
                     <div className='form-group'>
@@ -81,7 +81,7 @@ export const Contact = (props:any) => {
                     name='message'
                     id='message'
                     className='form-control'
-                    rows='4'
+//                    rows='4'
                     placeholder='Message'
                     required
                     onChange={handleChange}

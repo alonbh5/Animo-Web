@@ -7,7 +7,7 @@ export const Testimonials = (props:any) => {
         </div>
         <div className='row'>
           {props.data
-            ? props.data.map((d, i) => (
+            ? props.data.map((d:any, i:number) => (
                 <div key={`${d.name}-${i}`} className='col-md-4'>
                   <div className='testimonial'>
                     <div className='testimonial-image'>

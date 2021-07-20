@@ -16,7 +16,7 @@ export const About = (props:any) => {
                   <div className='col-lg-6 col-sm-6 col-xs-12'>
                     <ul>
                       {props.data
-                        ? props.data.Why.map((d, i) => (
+                        ? props.data.Why.map((d:any, i:number) => (
                             <li key={`${d}-${i}`}>{d}</li>
                           ))
                         : 'loading'}
@@ -25,7 +25,7 @@ export const About = (props:any) => {
                   <div className='col-lg-6 col-sm-6 col-xs-12'>
                     <ul>
                       {props.data
-                        ? props.data.Why2.map((d, i) => (
+                        ? props.data.Why2.map((d:any, i:number) => (
                             <li key={`${d}-${i}`}> {d}</li>
                           ))
                         : 'loading'}
