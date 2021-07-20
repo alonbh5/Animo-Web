@@ -52,8 +52,8 @@ export const Navigation = (props:any) => {
                 </a>
               </li>
               <li>
-                <a href='/welcome' className='page-scroll'>
-                  Login
+                <a href='/signin' className='page-scroll'>
+                  signin
                 </a>
               </li>
             </ul>
