@@ -1,3 +1,4 @@
+
 export const Navigation = (props:any) => {
     return (
       <nav id='menu' className='navbar navbar-default navbar-fixed-top'>
@@ -26,38 +27,33 @@ export const Navigation = (props:any) => {
           >
             <ul className='nav navbar-nav navbar-right'>
               <li>
-                <a href='#features' className='page-scroll'>
-                  Features
+                <a href='/welcome#services' className='page-scroll'>
+                  Analyze Amotional
                 </a>
               </li>
               <li>
-                <a href='#about' className='page-scroll'>
-                  About
+                <a href='/welcome#portfolio' className='page-scroll'>
+                  Tips & article
                 </a>
               </li>
               <li>
-                <a href='#services' className='page-scroll'>
-                  Services
+                <a href='/welcome#testimonials' className='page-scroll'>
+                  sos
                 </a>
               </li>
               <li>
-                <a href='#portfolio' className='page-scroll'>
-                  Gallery
-                </a>
-              </li>
-              <li>
-                <a href='#testimonials' className='page-scroll'>
-                  Testimonials
-                </a>
-              </li>
-              <li>
-                <a href='#about' className='page-scroll'>
+                <a href='/welcome#about' className='page-scroll'>
                   about
                 </a>
               </li>
               <li>
-                <a href='#contact' className='page-scroll'>
+                <a href='/welcome#contact' className='page-scroll'>
                   Contact
+                </a>
+              </li>
+              <li>
+                <a href='/welcome' className='page-scroll'>
+                  Login
                 </a>
               </li>
             </ul>
