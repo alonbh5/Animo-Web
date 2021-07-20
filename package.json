@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "startclient": "cd app && npm start",
     "startserver": "cd server && npm start",
-    "start": "npm run startserver | npm run startclient"
+    "start": "npm run startserver | npm run startclient",
+    "install": "cd server && npm install | cd app && run startclient"
+
   },
   "repository": {
     "type": "git",
@@ -18,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/yairdana/Animo-Web/issues"
   },
-  "homepage": "https://github.com/yairdana/Animo-Web#readme"
+  "homepage": "https://github.com/yairdana/Animo-Web#readme",
+  "dependencies": {}
 }
