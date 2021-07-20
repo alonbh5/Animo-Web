@@ -20,7 +20,7 @@ const App = () => {
   const [landingPageData, setLandingPageData] = useState(JsonData)
   useEffect(() => {
     setLandingPageData(JsonData)
-  }, [])
+  }, [])x
 
   return (
     <div>
