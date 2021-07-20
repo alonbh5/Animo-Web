@@ -107,10 +107,14 @@ export const Contact = (props:any) => {
             </div>
             <div className='contact-item'>
               <p>
-                <span>
+              <span>
                   <i className='fa fa-phone'></i> Phone
                 </span>{' '}
-                {props.data ? props.data.phone : 'loading'}
+              {props.data
+                        ? props.data.phones.map((phoneNumber:any, index:number) => (
+                            <div key={`${phoneNumber}-${index}`}>{phoneNumber}</div>
+                          ))
+                        : 'loading'}
               </p>
             </div>
             <div className='contact-item'>
