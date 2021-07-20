@@ -1,4 +1,3 @@
-
 export const Navigation = (props:any) => {
     return (
       <nav id='menu' className='navbar navbar-default navbar-fixed-top'>
@@ -16,11 +15,12 @@ export const Navigation = (props:any) => {
               <span className='icon-bar'></span>{' '}
               <span className='icon-bar'></span>{' '}
             </button>
+
             <a className='navbar-brand page-scroll' href='#page-top'>
               Animo
             </a>{' '}
           </div>
-  
+
           <div
             className='collapse navbar-collapse'
             id='bs-example-navbar-collapse-1'
