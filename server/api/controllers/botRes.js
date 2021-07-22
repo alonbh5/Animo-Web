@@ -1,12 +1,12 @@
-const Text = require('../models/texts');
+const BotRes = require('../models/botRes');
 const mongoose = require('mongoose');
 
 module.exports = {
-    getAllTexts:  (req , res)=>{
-        Text.find().then((allTextsRes)=>{
+    getAllBotRes:  (req , res)=>{
+        BotRes.find().then((allBotRes)=>{
 
             res.status(200).json({
-            allTextsRes
+            allBotRes
             })
         }).catch(error => {
             res.status(500).json({
@@ -17,19 +17,19 @@ module.exports = {
         
     },
 
-    createText : (req , res)=>{
-        const {title, descruotion, content } = req.body;
+    createBotRes : (req , res)=>{
+        const {response_type, content, response_to } = req.body;
 
-        const text = new Text({
+        const botRes = new BotRes({
             _id: new mongoose.Types.ObjectId(),
-            title,
-            descruotion,
-            content
+            response_type,            
+            content,
+            response_to
         });
 
-        text.save().then(()=>{
+        botRes.save().then(()=>{
             res.status(200).json({
-            message: `created a new text - ${title}`
+            message: `created a new Bot Res - ${content}`
              })
         }).catch(error => {
             res.status(500).json({
@@ -39,12 +39,12 @@ module.exports = {
                 
     },
 
-    getText : (req , res)=>{
-        const textId = req.params.textId;
+    getBotRes : (req , res)=>{
+        const botResId = req.params.botResId;
 
-        Text.findById(textId).then((TextRes)=>{
+        BotRes.findById(botResId).then((BotResRes)=>{
             res.status(200).json({
-                TextRes
+                BotResRes
             })
         }).catch(error => {
             res.status(500).json({
@@ -53,12 +53,12 @@ module.exports = {
         });   
     },
 
-    updateText : (req , res)=>{
-        const textId = req.params.textId;
+    updateBotRes : (req , res)=>{
+        const botResId = req.params.botResId;
 
-        Text.updateOne({_id: textId}, req.body).then(()=>{
+        BotRes.updateOne({_id: botResId}, req.body).then(()=>{
              res.status(200).json({
-            message: `update text - ${textId}`
+            message: `update bot res - ${botResId}`
             })
         }).catch(error => {
             res.status(500).json({
@@ -69,12 +69,12 @@ module.exports = {
        
     },
 
-    deleteText: (req , res)=>{
-        const textId = req.params.textId;    
+    deleteBotRes: (req , res)=>{
+        const botResId = req.params.botResId;    
         
-        Text.deleteOne({_id: textId}).then(()=>{
+        BotRes.deleteOne({_id: botResId}).then(()=>{
             res.status(200).json({
-            message: `delete text - ${textId}`
+            message: `delete text - ${botResId}`
             })
         }).catch(error => {
             res.status(500).json({

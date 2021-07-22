@@ -3,12 +3,12 @@ const app = express();
 const morgan  = require('morgan'); //for logger
 const mongoose = require('mongoose'); //for mongoDB
 
-//this is a new comment
+
 
 //===============================/// MongoDB /////===============================
 
 
-const MongoDBUri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@animo-mta.ss2ls.mongodb.net/Users?retryWrites=true&w=majority`;
+const MongoDBUri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@animo-mta.ss2ls.mongodb.net/Data?retryWrites=true&w=majority`;
 
 /*  NOTICE:
         - Make sure username+password is at nodemon.json (and that its on gitignore).
@@ -28,6 +28,8 @@ mongoose.connection.on('connected',() => {
 const categoriesRoute = require('./api/routes/categories');
 const textsRoute = require('./api/routes/texts');
 const usersRoute = require('./api/routes/users');
+const BotResRoute = require('./api/routes/botRes');
+const UsersRoute = require('./api/routes/users');
 //==============================================================================
 
 app.use(morgan("dev"));
@@ -60,6 +62,8 @@ app.use((req, res, next) => {
 app.use('/texts',textsRoute);
 app.use('/categories',categoriesRoute);
 app.use('/users',usersRoute);
+app.use('/botres',BotResRoute);
+app.use('/users',UsersRoute);
 //********************************************/// END /////*************************************************
 
 
