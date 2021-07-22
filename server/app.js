@@ -30,6 +30,7 @@ const textsRoute = require('./api/routes/texts');
 const usersRoute = require('./api/routes/users');
 const BotResRoute = require('./api/routes/botRes');
 const UsersRoute = require('./api/routes/users');
+const EmotionsRoute = require('./api/routes/emotions');
 //==============================================================================
 
 app.use(morgan("dev"));
@@ -64,6 +65,7 @@ app.use('/categories',categoriesRoute);
 app.use('/users',usersRoute);
 app.use('/botres',BotResRoute);
 app.use('/users',UsersRoute);
+app.use('/emotions',EmotionsRoute);
 //********************************************/// END /////*************************************************
 
 
