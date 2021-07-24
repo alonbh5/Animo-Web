@@ -1,12 +1,12 @@
-const Text = require('../models/texts');
+const Emotion = require('../models/emotions');
 const mongoose = require('mongoose');
 
 module.exports = {
-    getAllTexts:  (req , res)=>{
-        Text.find().then((allTextsRes)=>{
+    getAllEmotions:  (req , res)=>{
+        Emotion.find().then((allEmotions)=>{
 
             res.status(200).json({
-            allTextsRes
+            allEmotions
             })
         }).catch(error => {
             res.status(500).json({
@@ -17,19 +17,18 @@ module.exports = {
         
     },
 
-    createText : (req , res)=>{
-        const {title, descruotion, content } = req.body;
+    createEmotion : (req , res)=>{
+        const {key_name, name} = req.body;
 
-        const text = new Text({
+        const emotion = new Emotion({
             _id: new mongoose.Types.ObjectId(),
-            title,
-            descruotion,
-            content
+            key_name,            
+            name
         });
 
-        text.save().then(()=>{
+        emotion.save().then(()=>{
             res.status(200).json({
-            message: `created a new text - ${title}`
+            message: `created a new emotion - ${key_name}`
              })
         }).catch(error => {
             res.status(500).json({
@@ -39,12 +38,12 @@ module.exports = {
                 
     },
 
-    getText : (req , res)=>{
-        const textId = req.params.textId;
+    getEmotion : (req , res)=>{
+        const emotionId = req.params.emotionId;
 
-        Text.findById(textId).then((TextRes)=>{
+        Emotion.findById(emotionId).then((emotionRes)=>{
             res.status(200).json({
-                TextRes
+                emotionRes
             })
         }).catch(error => {
             res.status(500).json({
@@ -53,12 +52,12 @@ module.exports = {
         });   
     },
 
-    updateText : (req , res)=>{
-        const textId = req.params.textId;
+    updateEmotion : (req , res)=>{
+        const emotionId = req.params.emotionId;
 
-        Text.updateOne({_id: textId}, req.body).then(()=>{
+        Emotion.updateOne({_id: emotionId}, req.body).then(()=>{
              res.status(200).json({
-            message: `update text - ${textId}`
+            message: `update Emotion - ${emotionId}`
             })
         }).catch(error => {
             res.status(500).json({
@@ -69,12 +68,12 @@ module.exports = {
        
     },
 
-    deleteText: (req , res)=>{
-        const textId = req.params.textId;    
+    deleteEmotion: (req , res)=>{
+        const emotionId = req.params.emotionId;
         
-        Text.deleteOne({_id: textId}).then(()=>{
+        Emotion.deleteOne({_id: emotionId}).then(()=>{
             res.status(200).json({
-            message: `delete text - ${textId}`
+            message: `delete Emotion - ${emotionId}`
             })
         }).catch(error => {
             res.status(500).json({
