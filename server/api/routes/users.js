@@ -10,7 +10,7 @@ const {
 
 router.get('/' ,getAllUsers);
 router.post('/' , createUsers);
-router.get('/:userId' ,getUsers);
+router.get('/getuser' ,getUsers);
 router.patch('/:userId' , updateUsers);
 router.delete('/:userId' , deleteUsers);
 

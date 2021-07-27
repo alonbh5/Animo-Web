@@ -50,14 +50,13 @@ app.use(express.urlencoded({
 //********************************************/// END /////*************************************************
 
 app.use((req, res, next) => {
-    res.header("Accsess-Control-Allow-Origin","*");
-    res.header("Accsess-Control-Allow-Headers","Origin, X-Requsted-With, Content-Type, Accept, Authorization");
-    if (req.method === "OPTIONS") {
-        res.header("Accsess-Control-Allow-Methods","GET, POST, PATCH, DELETE, GET");
-        return res.status(200).json({});
-    }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
     next();
 });
+
+
 
 //*********************************************/// Router /////*********************************************
 app.use('/texts',textsRoute);

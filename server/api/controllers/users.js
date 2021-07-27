@@ -1,5 +1,6 @@
 const User = require('../models/users');
 const mongoose = require('mongoose');
+const { connect } = require('mongodb');
 
 module.exports = {
     getAllUsers:  (req , res)=>{
@@ -53,18 +54,22 @@ module.exports = {
                 
     },
 
-    getUsers : (req , res)=>{
-        const userId = req.params.userId;
+     getUsers: async (req , res) => {
+        const email = req.query.email;
+        const password = req.query.password;
 
-        User.findById(userId).then((UsersRes)=>{
-            res.status(200).json({
-                UsersRes
+        try {
+            const allUsers = await User.find();
+            const matchUser = allUsers.find((user) =>  user.password === password && user.email === email);
+            if (matchUser) {
+                res.status(200).json(matchUser)
+            }
+            res.status(404).json({
+                error: `user with email ${email} password: ${password} was not found!`
             })
-        }).catch(error => {
-            res.status(500).json({
-            error
-            })
-        });   
+        } catch(error) {
+            res.status(500).json({error})
+        }
     },
 
     updateUsers : (req , res)=>{
