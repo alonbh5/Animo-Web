@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 export type User = {
-    id: string;
+    id?: string;
     role_id: string;
     first_name: string;
     last_name: string;
@@ -9,5 +9,5 @@ export type User = {
     password: string;
     age: string;
     gender: string; 
-    permissions_to_app: string[];
+    permissions_to_app?: string[];
 }
