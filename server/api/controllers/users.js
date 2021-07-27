@@ -55,8 +55,9 @@ module.exports = {
     },
 
      getUsers: async (req , res) => {
-        const email = req.params.email;
-        const password = req.params.password;
+        const email = req.query.email;
+        const password = req.query.password;
+
         try {
             const allUsers = await User.find();
             const matchUser = allUsers.find((user) =>  user.password === password && user.email === email);
