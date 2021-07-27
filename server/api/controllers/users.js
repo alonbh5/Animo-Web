@@ -54,17 +54,27 @@ module.exports = {
     },
 
     getUsers : (req , res)=>{
-        const userId = req.params.userId;
+        const email = req.params.email;
+        const password = req.params.password;
 
-        User.findById(userId).then((UsersRes)=>{
-            res.status(200).json({
-                UsersRes
+        User.find().then((allUsers)=>{
+            const matchUser = allUsers.find((user) => {
+               return user.password === password && user.email === email
             })
+            if (matchUser) {
+                res.status(200).json({
+                    matchUser
+                })
+            }
+            res.status(404).json({
+                error: `user with email ${email} password: ${password} was not found!`
+            })
+      
         }).catch(error => {
             res.status(500).json({
             error
             })
-        });   
+        });
     },
 
     updateUsers : (req , res)=>{
