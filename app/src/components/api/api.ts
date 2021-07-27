@@ -6,6 +6,7 @@ init(userID);
 
 export type ApiClient = {
     getUser: (email: string, password: string) => Promise<User>;
+    createUser: (user:User) => Promise<User>;
     sendEmail: (agentName: string, clientName: string, clientEmail: string, message: string) => Promise<number>;
 }
 
@@ -25,6 +26,17 @@ export const createApiClient = (): ApiClient => {
                     handelError(err);
                     throw new(err);
                 });
+        },
+        createUser: (user:User)  => {
+            const request = {
+                ...user
+            };
+            return axios.post(`${APIRootPath}/users`, request)
+            .then((res) => res.data)
+            .catch(err => {
+                handelError(err);
+                throw new(err);
+            });
         },
         sendEmail: (agentName: string, clientName: string, clientEmail: string, message: string) => {
             const params = {

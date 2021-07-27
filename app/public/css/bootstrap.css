@@ -6458,6 +6458,12 @@ button.close {
     bottom: 20px;
   }
 }
+.error-msg {
+  color: red;
+  text-align: left;
+  font-size: small;
+
+}
 .clearfix:before,
 .clearfix:after,
 .dl-horizontal dd:before,
