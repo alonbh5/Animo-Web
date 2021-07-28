@@ -26,8 +26,7 @@ module.exports = {
              email,
              password,
              age,
-             gender,
-             permissions_to_app
+             gender,             
             } = req.body;
 
         const user = new User({
@@ -38,8 +37,7 @@ module.exports = {
              email,
              password,
              age,
-             gender,
-             permissions_to_app
+             gender,             
         });
 
         user.save().then(()=>{
@@ -56,7 +54,7 @@ module.exports = {
 
      getUsers: async (req , res) => {
         const email = req.query.email;
-        const password = req.query.password;
+        const password = req.query.password;        
 
         try {
             const allUsers = await User.find();
@@ -64,12 +62,16 @@ module.exports = {
             if (matchUser) {
                 res.status(200).json(matchUser)
             }
+            else
+            {
             res.status(404).json({
                 error: `user with email ${email} password: ${password} was not found!`
             })
+        }
         } catch(error) {
             res.status(500).json({error})
         }
+    
     },
 
     updateUsers : (req , res)=>{
