@@ -25,7 +25,6 @@ mongoose.connection.on('connected',() => {
 //==============================================================================
 
 //===============================/// Routes /////===============================
-const categoriesRoute = require('./api/routes/categories');
 const textsRoute = require('./api/routes/texts');
 const usersRoute = require('./api/routes/users');
 const BotResRoute = require('./api/routes/botRes');
@@ -60,7 +59,6 @@ app.use((req, res, next) => {
 
 //*********************************************/// Router /////*********************************************
 app.use('/texts',textsRoute);
-app.use('/categories',categoriesRoute);
 app.use('/users',usersRoute);
 app.use('/botres',BotResRoute);
 app.use('/users',UsersRoute);
