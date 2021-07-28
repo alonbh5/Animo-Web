@@ -42,9 +42,9 @@ module.exports = {
 
         user.save().then(()=>{
             res.status(200).json({
-            message: `created a new User - ${_id}`
+            message: `created a new User - email is ${email} `
              })
-        }).catch(error => {
+        }).catch(error => {            
             res.status(500).json({
             error
             })
