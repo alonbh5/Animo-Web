@@ -1,9 +1,9 @@
-const Text = require('../models/texts');
+const PhyData = require('../models/phyData');
 const mongoose = require('mongoose');
 
 module.exports = {
     getAllTexts:  (req , res)=>{
-        Text.find().then((allTextsRes)=>{
+        PhyData.find().then((allTextsRes)=>{
 
             res.status(200).json({
             allTextsRes
@@ -18,16 +18,28 @@ module.exports = {
     },
 
     createText : (req , res)=>{
-        const {title, descruotion, content } = req.body;
-
-        const text = new Text({
-            _id: new mongoose.Types.ObjectId(),
+        const {
+            data_type,
+            link,
+            author,
             title,
-            descruotion,
-            content
+            emotions,
+            created_by} = req.body;
+        
+        const confirm = false;
+
+        const phyData = new PhyData({
+            _id: new mongoose.Types.ObjectId(),
+            data_type,
+            link,
+            author,
+            title,
+            emotions,
+            created_by,
+            confirm
         });
 
-        text.save().then(()=>{
+        phyData.save().then(()=>{
             res.status(200).json({
             message: `created a new text - ${title}`
              })
@@ -42,7 +54,7 @@ module.exports = {
     getText : (req , res)=>{
         const textId = req.params.textId;
 
-        Text.findById(textId).then((TextRes)=>{
+        PhyData.findById(textId).then((TextRes)=>{
             res.status(200).json({
                 TextRes
             })
@@ -56,7 +68,7 @@ module.exports = {
     updateText : (req , res)=>{
         const textId = req.params.textId;
 
-        Text.updateOne({_id: textId}, req.body).then(()=>{
+        PhyData.updateOne({_id: textId}, req.body).then(()=>{
              res.status(200).json({
             message: `update text - ${textId}`
             })
@@ -72,7 +84,7 @@ module.exports = {
     deleteText: (req , res)=>{
         const textId = req.params.textId;    
         
-        Text.deleteOne({_id: textId}).then(()=>{
+        PhyData.deleteOne({_id: textId}).then(()=>{
             res.status(200).json({
             message: `delete text - ${textId}`
             })
