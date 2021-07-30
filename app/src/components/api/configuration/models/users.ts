@@ -7,7 +7,7 @@ export type User = {
     last_name: string;
     email: string;
     password: string;
-    age: string;
+    age: number;
     gender: string; 
     permissions_to_app?: string[];
 }
