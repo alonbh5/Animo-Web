@@ -2,19 +2,26 @@ import { useEffect, useState } from "react"
 import validator from 'validator';
 import { api } from "./api/api";
 import { User } from "./api/configuration/models/users";
-export const SignUp = (props: any) => {
+import { Role } from "./api/configuration/models/role";
 
+export const SignUp = (props: any) => {
+  const ageStep = 15;
+  const [roleOptions, setRoleOptions] = useState<Role[] | undefined>(undefined)
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const [age, setAge] = useState<string>("");
+  const [age, setAge] = useState<string>("25");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [gender, setGender] = useState<string>("");
-  const [role, setRole] = useState<string>();
+  const [role, setRole] = useState<string>("");
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [errorAge, setErrorAge] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>('')
   const [user, setUser] = useState<User | undefined>(undefined)
+
+  useEffect(() => {
+    api.getRoles().then(roles => setRoleOptions(roles));
+  }, []);
 
   const handleFirstNameChange = (event: any) => {
     setFirstName(event.target.value);
@@ -43,19 +50,26 @@ export const SignUp = (props: any) => {
   };
 
   const handleAgeChange = (event: any) => {
-    setAge(event.target.value);
-    const errorMsg = !validator.isNumeric(event.target.value) ? "Age must be a number" : "";
+    const newAge = event.target.value;
+    setAge(newAge);
+    let errorMsg = "";
+    if (!validator.isNumeric(newAge)) {
+      errorMsg = "Age must be a number";
+    } else if (Number(age) > 120 || Number(age) < 1) {
+      errorMsg = "Age must be higher then 1 and less then 120";
+    }
     setErrorAge(errorMsg)
   };
 
   const isFormValid = () => {
     return (
-      !validator.isEmpty(firstName)
-      && !validator.isEmpty(lastName) &&
+      !validator.isEmpty(firstName) &&
+      !validator.isEmpty(lastName) &&
       !validator.isEmpty(password) &&
       validator.isEmail(email) &&
-      !validator.isEmpty(gender)
-      && validator.isNumeric(age));
+      !validator.isEmpty(gender) &&
+      !validator.isEmpty(role) &&
+      validator.isNumeric(age));
   };
 
 
@@ -67,18 +81,15 @@ export const SignUp = (props: any) => {
       last_name: lastName,
       email,
       password,
-      age,
+      age: Number(age),
       gender
     }
-    try {
-      console.log(userToCreate);
-      const user = await api.createUser(userToCreate);
-      setUser(user);
-      setErrorMsg("SUCESS!!")
-      console.log(user);
-    } catch (err) {
+
+    api.createUser(userToCreate).then(user => {
+      setUser(user)
+    }).catch(error => {
       setErrorMsg("Sorry, something went wrong! please try later :)")
-    }
+    });
   };
 
   return (
@@ -124,13 +135,23 @@ export const SignUp = (props: any) => {
                 <label>Role</label>
                 <select value={role} onChange={handleRoleChange} className="form-control">
                   <option value="" disabled selected>Select Role</option>
-                  <option value="1">User</option>
-                  <option value="2">Professional</option>
+                  {roleOptions?.map((role) => {
+                    return <option value={`${role.role_id}`}>{role.role_type}</option>
+                  })}
                 </select>
               </div>
               <div className="form-group">
                 <label>Age</label>
                 <input type="age" className="form-control" placeholder="Enter age" value={age} onChange={handleAgeChange} />
+                <input
+                  onInput={handleAgeChange}
+                  type="range"
+                  min="1"
+                  value={age}
+                  max="120"
+                  step="1"
+                  list="tick-list"
+                />
                 <div className="error-msg">{errorAge}</div>
               </div>
               <button type="submit" disabled={!isFormValid()} className="btn btn-primary btn-block">Sign Up</button>
