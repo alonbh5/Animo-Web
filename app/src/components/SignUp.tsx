@@ -10,6 +10,7 @@ export const SignUp = (props: any) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [gender, setGender] = useState<string>("");
+  const [role, setRole] = useState<string>();
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [errorAge, setErrorAge] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>('')
@@ -37,6 +38,10 @@ export const SignUp = (props: any) => {
     setGender(event.target.value);
   };
 
+  const handleRoleChange = (event: any) => {
+    setRole(event.target.value);
+  };
+
   const handleAgeChange = (event: any) => {
     setAge(event.target.value);
     const errorMsg = !validator.isNumeric(event.target.value) ? "Age must be a number" : "";
@@ -57,7 +62,7 @@ export const SignUp = (props: any) => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const userToCreate: User = {
-      role_id: "1",
+      role_id: Number(role),
       first_name: firstName,
       last_name: lastName,
       email,
@@ -66,10 +71,11 @@ export const SignUp = (props: any) => {
       gender
     }
     try {
-     const user = await api.createUser(userToCreate);
-     setUser(user);
-     setErrorMsg("SUCESS!!")
-     console.log(user);
+      console.log(userToCreate);
+      const user = await api.createUser(userToCreate);
+      setUser(user);
+      setErrorMsg("SUCESS!!")
+      console.log(user);
     } catch (err) {
       setErrorMsg("Sorry, something went wrong! please try later :)")
     }
@@ -115,6 +121,14 @@ export const SignUp = (props: any) => {
                 </select>
               </div>
               <div className="form-group">
+                <label>Role</label>
+                <select value={role} onChange={handleRoleChange} className="form-control">
+                  <option value="" disabled selected>Select Role</option>
+                  <option value="1">User</option>
+                  <option value="2">Professional</option>
+                </select>
+              </div>
+              <div className="form-group">
                 <label>Age</label>
                 <input type="age" className="form-control" placeholder="Enter age" value={age} onChange={handleAgeChange} />
                 <div className="error-msg">{errorAge}</div>
@@ -127,7 +141,6 @@ export const SignUp = (props: any) => {
             </form>
           </div>
         </div>
-
       </div>
     </div>
   )
