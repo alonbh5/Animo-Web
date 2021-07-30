@@ -30,6 +30,7 @@ const usersRoute = require('./api/routes/users');
 const BotResRoute = require('./api/routes/botRes');
 const UsersRoute = require('./api/routes/users');
 const EmotionsRoute = require('./api/routes/emotions');
+const RolesRoute = require('./api/routes/roles');
 //==============================================================================
 
 app.use(morgan("dev"));
@@ -58,11 +59,12 @@ app.use((req, res, next) => {
 
 
 //*********************************************/// Router /////*********************************************
-app.use('/phydata',phyDataRoute);
-app.use('/users',usersRoute);
-app.use('/botres',BotResRoute);
-app.use('/users',UsersRoute);
-app.use('/emotions',EmotionsRoute);
+app.use('/phydata', phyDataRoute);
+app.use('/users', usersRoute);
+app.use('/botres', BotResRoute);
+app.use('/users', UsersRoute);
+app.use('/emotions', EmotionsRoute);
+app.use('/roles', RolesRoute);
 //********************************************/// END /////*************************************************
 
 
