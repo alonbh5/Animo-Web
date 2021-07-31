@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import validator from 'validator';
 import { api } from "./api/api";
 import { User } from "./api/configuration/models/users";
 import { Role } from "./api/configuration/models/role";
+import { AuthContext } from "../shared/context/auth-context";
+import { useHttpClient } from "../shared/hooks/http-hook";
+import { AxiosRequestConfig } from "axios";
+import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
 
 export const SignUp = (props: any) => {
+  const auth = useContext(AuthContext);
   const ageStep = 15;
   const [roleOptions, setRoleOptions] = useState<Role[] | undefined>(undefined)
   const [firstName, setFirstName] = useState<string>("");
@@ -18,6 +23,7 @@ export const SignUp = (props: any) => {
   const [errorAge, setErrorAge] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>('')
   const [user, setUser] = useState<User | undefined>(undefined)
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   useEffect(() => {
     api.getRoles().then(roles => setRoleOptions(roles));
@@ -85,11 +91,18 @@ export const SignUp = (props: any) => {
       gender
     }
 
-    api.createUser(userToCreate).then(user => {
-      setUser(user)
-    }).catch(error => {
-      setErrorMsg("Sorry, something went wrong! please try later :)")
-    });
+    const params: AxiosRequestConfig = {
+      method: 'POST',
+      url: '/users/createuser',
+      data: {
+       ...userToCreate
+      },
+      headers: {}
+    }
+    try {
+      const response = await sendRequest(params);
+      auth.login(response.data.userId, response.data.token);
+    } catch(err) {}
   };
 
   return (
@@ -103,6 +116,8 @@ export const SignUp = (props: any) => {
           <h5 style={{ color: "red" }}>{errorMsg}</h5>
           <div>
             <form onSubmit={handleSubmit}>
+            {isLoading && <LoadingSpinner asOverlay />}
+            {error && <h5 style={{ color: "red" }}>{error}</h5>}
               <div className="form-group">
                 <label>First name</label>
                 <input type="first-name" className="form-control" placeholder="First name" value={firstName} onChange={handleFirstNameChange} />

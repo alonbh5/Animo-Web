@@ -1,8 +1,12 @@
 // import React, { Component } from "react";
 import { createApiClient } from "./api/api";
-import { useState } from 'react'
+import {  useContext, useState } from 'react'
 import { User } from "./api/configuration/models/users";
 import validator from 'validator';
+import { AuthContext } from "../shared/context/auth-context";
+import { useHttpClient } from "../shared/hooks/http-hook";
+import { AxiosRequestConfig } from "axios";
+import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
 
 const api = createApiClient();
 
@@ -11,7 +15,8 @@ export const SignIn = (props: any) => {
   const [password, setPassword] = useState<string>('')
   const [errorMsg, setErrorMsg] = useState<string>('')
   const [user, setUser] = useState<User | undefined>(undefined)
-
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const auth = useContext(AuthContext);
   const handleEmailChanged = (event: any) => {
     setEmail(event.target.value)
   };
@@ -29,32 +34,25 @@ export const SignIn = (props: any) => {
     return validator.isEmail(email) && !validator.isEmpty(password);
   }
 
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    try {
-      const user: User = await api.getUser(email, password);
-      setUser(user);
-      cleanForm()
-    } catch {
-      setErrorMsg("Wrong email or password!");
+
+    const params: AxiosRequestConfig = {
+      method: 'GET',
+      url: '/users/login',
+      params: {
+        email,
+        password
+      }
     }
+    try {
+      const response = await sendRequest(params);
+      auth.login(response.data.userId, response.data.token);
+    } catch(err) {}
   }
 
-  if (user) {
-    return (
-      <div id='team' className='text-center'>
-        <div className='container'>
-          <div className='col-md-8 col-md-offset-2 section-title'>
-            <h2>Sign In</h2>
-            <p>{user.email}</p>
-            <p>{user.age}</p>
-            <p>{user.password}</p>
-            <p>{user.permissions_to_app}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+
   return (
     <div id='team' className='text-center'>
       <div className='container'>
@@ -64,7 +62,8 @@ export const SignIn = (props: any) => {
             For using our platform, you should first sign in
           </p>
           <div>
-            <h5 style={{ color: "red" }}>{errorMsg}</h5>
+          {isLoading && <LoadingSpinner asOverlay />}
+            {error && <h5 style={{ color: "red" }}>{error}</h5>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Email address</label>
@@ -89,7 +88,6 @@ export const SignIn = (props: any) => {
             </form>
           </div>
         </div>
-
       </div>
     </div>
   )

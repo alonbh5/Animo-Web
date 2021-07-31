@@ -1,12 +1,12 @@
-
-export const EmotionalAnalysis = (props: any) => {
+export const TipsAndArticals = (props: any) => {
   return (
     <div id='team' className='text-center'>
       <div className='container'>
         <div className='col-md-8 col-md-offset-2 section-title'>
-          <h2>Emotional Analysis</h2>
+          <h2>Tips And Articals</h2>
+          <div>
+          </div>
         </div>
-
       </div>
     </div>
   )

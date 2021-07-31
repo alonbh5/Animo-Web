@@ -1,16 +1,21 @@
 const router = require('express').Router();
+const checkAuth = require('../middleware/check-auth');
 const {
     getAllUsers,
     createUsers,
-    getUsers,
+    getUser,
     updateUsers,
-    deleteUsers
+    deleteUsers,
+    login,
 } = require('../controllers/users');
 
 
 router.get('/' ,getAllUsers);
+router.get('/login' , login);
 router.post('/createuser' , createUsers);
-router.get('/getuser' ,getUsers);
+
+router.use(checkAuth);
+router.get('/getuser/:userId' ,getUser);
 router.patch('/:userId' , updateUsers);
 router.delete('/:userId' , deleteUsers);
 
