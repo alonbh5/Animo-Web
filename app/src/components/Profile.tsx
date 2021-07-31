@@ -37,6 +37,11 @@ export const Profile = (props: any) => {
     }
     fetchUser();
   }, [])
+
+  const logoutHandler = () => {
+    auth.logout();
+  };
+
 //TODO: change from roleid to role
   return (
     <div id='team' className='text-center'>
@@ -50,6 +55,7 @@ export const Profile = (props: any) => {
           <p>Age: {age}</p>
           <p>Gender: {gender}</p>
           <p>Role ID: {role}</p> 
+          <button onClick={auth.logout}>LOGOUT</button>
         </div>
       </div>
     </div>
