@@ -27,7 +27,7 @@ export const Navigation = (props: any) => {
                 </Link>
               </li>}
             <li>
-              <Link to="/home-page#portfolio" className='page-scroll'>Tips & article
+              <Link to="/tips" className='page-scroll'>Tips & article
               </Link>
             </li>
             <li>

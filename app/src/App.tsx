@@ -12,7 +12,8 @@ import JsonData from './data/data.json'
 import SmoothScroll from 'smooth-scroll'
 import { SignIn } from "./components/SignIn"
 import { SignUp } from "./components/SignUp"
-import { EmotionalAnalysis } from './components/EmotionalAnalysis'
+import { EmotionalAnalysis } from './components/EmotionalAnalysis';
+import { TipsAndArticals } from './components/TipsAndArticals';
 import { Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { AuthContext } from './shared/context/auth-context'
 import { useAuth } from './shared/hooks/auth-hook';
@@ -40,6 +41,9 @@ const App = () => {
       <Route path='/analyze'>
         <EmotionalAnalysis data={landingPageData.About} />
       </Route>
+      <Route path='/tips'>
+        <TipsAndArticals/>
+      </Route>
       <Route path="/login">
         <SignIn />
       </Route>
@@ -53,6 +57,9 @@ const App = () => {
       {homepage}
       <Route path='/analyze'>
         <EmotionalAnalysis data={landingPageData.About} />
+      </Route>
+      <Route path='/tips'>
+        <TipsAndArticals/>
       </Route>
       <Route path="/profile">
         <Profile />
