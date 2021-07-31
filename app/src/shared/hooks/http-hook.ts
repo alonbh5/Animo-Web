@@ -9,7 +9,6 @@ export const staticsUrl = `${host}:${staticsPort}/`;
 
 export const useHttpClient = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [response, setResponse] = useState(undefined);
     const [error, setError] = useState(undefined);
     // const activeHttpRequests = useRef([]);
 
@@ -19,9 +18,10 @@ export const useHttpClient = () => {
 
         try {
             const result = await axios.request(params);
-            setResponse(result.data);
+            return result.data;
         } catch (error) {
             setError(error.message);
+            throw error;
         } finally {
             setIsLoading(false);
         }
@@ -37,5 +37,5 @@ export const useHttpClient = () => {
     //     };
     // }, [])
 
-    return { isLoading: isLoading, response, error, sendRequest, clearError };
+    return { isLoading: isLoading, error, sendRequest, clearError };
 }
