@@ -1,5 +1,6 @@
 import { useContext } from "react"
-import { Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
 import { AuthContext } from "../shared/context/auth-context"
 export const Navigation = (props: any) => {
@@ -12,7 +13,7 @@ export const Navigation = (props: any) => {
           <img src='img/icons/animo-icon.jpg' height="50px" alt='' />
           <a className='navbar-brand page-scroll' href='#page-top'>
             Animo
-          </a>{' '}
+          </a>
         </div>
 
         <div
@@ -26,17 +27,17 @@ export const Navigation = (props: any) => {
                 </Link>
               </li>}
             <li>
-              <Link to="/welcome#portfolio" className='page-scroll'>Tips & article
+              <Link to="/home-page#portfolio" className='page-scroll'>Tips & article
               </Link>
             </li>
             <li>
-              <Link to="/welcome#testimonials" className='page-scroll'>SOS</Link>
+              <HashLink to="/sos" className='page-scroll'>SOS</HashLink>
             </li>
             <li>
-              <Link to="/welcome#about" className='page-scroll'>About</Link>
+              <HashLink to="/home-page#about" className='page-scroll'>About</HashLink>
             </li>
             <li>
-              <Link to="/welcome#contact" className='page-scroll'>Contact</Link>
+              <HashLink to="/home-page#contact" className='page-scroll'>Contact</HashLink>
             </li>
             {!auth.isLoggedIn ? <li>
               <Link to="/login" className='page-scroll'>Login</Link>
