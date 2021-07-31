@@ -1,37 +1,41 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import axios, { AxiosRequestConfig } from 'axios';
+export const serverAPIPort = 3000;
+export const host = 'http://localhost'
+export const APIRootPath = `${host}:${serverAPIPort}`
+export const staticsPort = 3001;
+export const staticsUrl = `${host}:${staticsPort}/`;
+
+
 export const useHttpClient = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const activeHttpRequests = useRef([]);
+    const [response, setResponse] = useState(undefined);
+    const [error, setError] = useState(undefined);
+    // const activeHttpRequests = useRef([]);
 
-    const sendRequest = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
+    const sendRequest = useCallback(async (params: AxiosRequestConfig) => {
+        params.baseURL = `${APIRootPath}`;
+        setIsLoading(true);
 
-        const httpAbortCtrl = new AbortController();
-        activeHttpRequests.current.push(httpAbortCtrl)
         try {
-            setIsLoading(true);
-            const response = await fetch(url, { method, body, headers, signal: httpAbortCtrl.signal });
-
-            const responseData = await response.json();
-
-            if (!response.ok) {
-                throw new Error(responseData.message);
-            }
-            return responseData;
-        } catch (err) {
-            setError(err.message);
+            const result = await axios.request(params);
+            setResponse(result.data);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setIsLoading(false);
         }
-        setIsLoading(false);
     }, []);
 
     const clearError = () => {
-        setError(null);
+        setError(undefined);
     };
 
-    useEffect(()=> {
-        return () => {
-            activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
-        };
-    }, [])
-    return { isLoading: isLoading, error, sendRequest, clearError };
+    // useEffect(()=> {
+    //     return () => {
+    //         activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
+    //     };
+    // }, [])
+
+    return { isLoading: isLoading, response, error, sendRequest, clearError };
 }
