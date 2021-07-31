@@ -34,13 +34,13 @@ module.exports = {
         try {
             const isExisting = await User.findOne({ email: email });
             if (isExisting) {
-                res.status(400).send({ error: `User with email: ${email} already exists` })
+                res.status(400).send({ message: `User with email: ${email} already exists` })
             }
 
             try {
                 hashPassword = await bcrypt.hash(password, 12);
             } catch (err) {
-                res.status(500).send({ error: 'Could not create a user, please try again.' })
+                res.status(500).send({ message: 'Could not create a user, please try again.' })
             }
 
             const createUser = new User({
