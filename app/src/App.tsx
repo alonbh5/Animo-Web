@@ -26,7 +26,40 @@ const App = () => {
 
   const [landingPageData, setLandingPageData] = useState(JsonData)
   const { token, login, logout, userId } = useAuth();
+  const homepage = (<Route path='/home-page'>
+    <Header data={landingPageData.Header} />
+    <About data={landingPageData.About} />
+    <Team data={landingPageData.Team} />
+    <Contact data={landingPageData.Contact} />
+  </Route>);
 
+  let routes;
+  if (!token) {
+    routes = (<Switch>
+      {homepage}
+      <Route path='/analyze'>
+        <EmotionalAnalysis data={landingPageData.About} />
+      </Route>
+      <Route path="/login">
+        <SignIn />
+      </Route>
+      <Route path="/signup">
+        <SignUp />
+      </Route>
+      <Redirect to="/home-page" />
+    </Switch>);
+  } else {
+    routes = (<Switch>
+      {homepage}
+      <Route path='/analyze'>
+        <EmotionalAnalysis data={landingPageData.About} />
+      </Route>
+      <Route path="/profile">
+        <Profile />
+      </Route>
+      <Redirect to="/home-page" />
+    </Switch>);
+  }
 
   return (
     <AuthContext.Provider value={{
@@ -38,42 +71,9 @@ const App = () => {
     }}>
       <div>
         <Navigation />
-        <Switch>
-          <React.Fragment>
-            <Route path='/home-page'>
-              <Header data={landingPageData.Header} />
-              <About data={landingPageData.About} />
-              <Team data={landingPageData.Team} />
-              <Contact data={landingPageData.Contact} />
-            </Route>
-            <Route path='/analyze'>
-              <EmotionalAnalysis data={landingPageData.About} />
-            </Route>
-            {!token && <Route path="/login">
-              <SignIn />
-            </Route>}
-            {!token && <Route path="/login">
-              <SignIn />
-            </Route>}
-            {token && <Route exact path="/login" render={() =>
-              <Redirect to="/home-page" />
-            }
-            />}
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/signup">
-              <SignUp />
-            </Route>
-          </React.Fragment >
-        </Switch>
-        <Route exact path="/" render={() =>
-          <Redirect to="/home-page" />
-        }
-        />
+        {routes}
       </div>
     </AuthContext.Provider>
   )
 }
-
 export default App
