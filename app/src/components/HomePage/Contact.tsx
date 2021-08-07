@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import emailjs from 'emailjs-com'
 import { init } from 'emailjs-com';
-import { templateId, serviceId, userID, animoMail } from '../components/api/configuration/config'
+import { templateId, serviceId, userID, animoMail } from '../../components/api/configuration/config'
 import { useAlert } from 'react-alert'
 
 init(userID);

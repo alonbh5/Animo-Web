@@ -1,13 +1,13 @@
 import { useEffect, useState, useContext } from "react"
 import validator from 'validator';
-import { api } from "./api/api";
-import { User } from "./api/configuration/models/users";
-import { Role } from "./api/configuration/models/role";
-import { AuthContext } from "../shared/context/auth-context";
-import { useHttpClient } from "../shared/hooks/http-hook";
+import { api } from "../api/api";
+import { User } from "../api/configuration/models/users";
+import { Role } from "../api/configuration/models/role";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
-import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
-import Input from '../shared/FormElements/Input'
+import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
+import Input from '../../shared/FormElements/Input'
 
 const initialState = {
   firstName: '',

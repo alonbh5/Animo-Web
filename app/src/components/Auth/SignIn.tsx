@@ -1,10 +1,11 @@
 import { useContext, useState } from 'react'
 import validator from 'validator';
-import { AuthContext } from "../shared/context/auth-context";
-import { useHttpClient } from "../shared/hooks/http-hook";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
-import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
-import Input from "../shared/FormElements/Input";
+import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
+import Input from "../../shared/FormElements/Input";
+import { Link } from 'react-router-dom';
 
 const initialState = {
   email: '',
@@ -64,7 +65,10 @@ export const SignIn = (props: any) => {
               <button type="submit" disabled={!isFormValid()} className="btn btn-primary btn-block">Submit</button>
               <br></br>
               <p >
-                Forgot <a href="#">password?</a> \ <a href="/signup" >register</a>
+                <Link to="/forgotPassword" className='page-scroll'>Forgot password?
+                </Link>
+                \   <Link to="/signup" className='page-scroll'>Register
+                </Link>
               </p>
             </form>
           </div>

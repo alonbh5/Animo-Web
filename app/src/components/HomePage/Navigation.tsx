@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 
-import { AuthContext } from "../shared/context/auth-context"
+import { AuthContext } from "../../shared/context/auth-context"
 export const Navigation = (props: any) => {
   const auth = useContext(AuthContext);
 

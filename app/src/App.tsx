@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Navigation } from './components/Navigation'
-import { Header } from './components/Header'
-import { Features } from './components/Features'
-import { About } from './components/About'
-import { Profile } from './components/Profile'
-import { Gallery } from './components/Gallery'
-import { Testimonials } from './components/Testimonials'
-import { Team } from './components/Team'
-import { Contact } from './components/Contact'
+import { Navigation } from './components/HomePage/Navigation'
+import { Header } from './components/HomePage/Header'
+import { About } from './components/HomePage/About'
+import { Profile } from './components/Auth/Profile'
+import { Team } from './components/HomePage/Team'
+import { Contact } from './components/HomePage/Contact'
 import JsonData from './data/data.json'
+import {  ResetPassword } from "./components/Auth/ResetPassword"
+import {ForgotPassword} from './components/Auth/ForgotPassword'
 import SmoothScroll from 'smooth-scroll'
-import { SignIn } from "./components/SignIn"
-import { SignUp } from "./components/SignUp"
-import { EmotionalAnalysis } from './components/EmotionalAnalysis';
-import { TipsAndArticals } from './components/TipsAndArticals';
+import { SignIn } from "./components/Auth/SignIn"
+import { SignUp } from "./components/Auth/SignUp"
+import { EmotionalAnalysis } from './components/Pages/EmotionalAnalysis';
+import { TipsAndArticals } from './components/Pages/TipsAndArticals';
 import { Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { AuthContext } from './shared/context/auth-context'
 import { useAuth } from './shared/hooks/auth-hook';
@@ -49,6 +48,12 @@ const App = () => {
       </Route>
       <Route path="/signup">
         <SignUp />
+      </Route>
+      <Route path="/forgotPassword">
+        <ForgotPassword />
+      </Route>
+      <Route path="/resetPassword">
+        <ResetPassword />
       </Route>
       <Redirect to="/home-page" />
     </Switch>);
