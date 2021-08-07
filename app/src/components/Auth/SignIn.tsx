@@ -55,11 +55,11 @@ const SignIn = (props: any) => {
             {error && <h5 style={{ color: "red" }}>{error}</h5>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <Input type="email" name="email" label="Email Address" value={email}
+                <Input type="email" required={true} name="email" label="Email Address" value={email}
                   onChange={handleChange} className="form-control" placeholder="Enter email" />
               </div>
               <div className="form-group">
-                <Input type="password" label="Password" name="password" value={password}
+                <Input type="password" required={true} label="Password" name="password" value={password}
                   onChange={handleChange} className="form-control" placeholder="Enter password" />
               </div>
               <button type="submit" disabled={!isFormValid()} className="btn btn-primary btn-block">Submit</button>
@@ -67,7 +67,7 @@ const SignIn = (props: any) => {
               <p >
                 <Link to="/forgotPassword" className='page-scroll'>Forgot password?
                 </Link>
-                \   <Link to="/signup" className='page-scroll'>Register
+                {" "} \   <Link to="/signup" className='page-scroll'>Register
                 </Link>
               </p>
             </form>

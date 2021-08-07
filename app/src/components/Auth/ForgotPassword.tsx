@@ -49,7 +49,7 @@ const ForgotPassword = (props: any) => {
             {error && <h5 style={{ color: "red" }}>{error}</h5>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <Input type="email" label="Email Address" value={email}
+                <Input required={true} type="email" label="Email Address" value={email}
                   onChange={handleEmailChange} className="form-control" placeholder="Enter email" errorMessage={errorEmail} />
               </div>
               <button type="submit" disabled={!isFormValid()} className="btn btn-primary btn-block">Forgot Password</button>
