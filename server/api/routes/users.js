@@ -4,7 +4,9 @@ const {
     createUsers,
     getUsers,
     updateUsers,
-    deleteUsers
+    deleteUsers,
+    addQuiz,
+    createQuiz
 } = require('../controllers/users');
 
 
@@ -13,5 +15,7 @@ router.post('/createuser' , createUsers);
 router.get('/getuser' ,getUsers);
 router.patch('/:userId' , updateUsers);
 router.delete('/:userId' , deleteUsers);
+router.post('/addquiz/:userId',addQuiz);
+router.patch('/createquiz/:userId',createQuiz);
 
 module.exports  = router;

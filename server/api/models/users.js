@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     password: {type: String, require: true},   
     age: {type: String, require: true},
     gender: {type: String, require: true}, 
+    persQuiz: {type: Array, require: false,default: []},
 });
 
 module.exports = mongoose.model("Users",userSchema);

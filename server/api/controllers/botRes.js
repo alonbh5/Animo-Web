@@ -18,7 +18,7 @@ module.exports = {
     },
 
     createBotRes : (req , res)=>{
-        const {response_type, content, response_to } = req.body;
+        const {response_type, content, response_to } = req.body;        
 
         const botRes = new BotRes({
             _id: new mongoose.Types.ObjectId(),
