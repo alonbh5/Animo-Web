@@ -7,7 +7,7 @@ const {
     updateUsers,
     deleteUsers,
     addQuiz,
-    createQuiz
+    createQuiz,
     login,
 } = require('../controllers/users');
 
