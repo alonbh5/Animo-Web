@@ -8,64 +8,47 @@ import { useHttpClient } from "../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
 import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
 import Input from '../shared/FormElements/Input'
-export const SignUp = (props: any) => {
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  age: '25',
+  email: '',
+  password: '',
+  gender: '',
+  role: ''
+}
+
+export const SignUp = () => {
   const auth = useContext(AuthContext);
-  const ageStep = 15;
+  const [{ firstName, lastName, age, email, password, gender, role }, setState] = useState(initialState)
   const [roleOptions, setRoleOptions] = useState<Role[] | undefined>(undefined)
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [age, setAge] = useState<string>("25");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [gender, setGender] = useState<string>("");
-  const [role, setRole] = useState<string>("");
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [errorAge, setErrorAge] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>('')
-  const [user, setUser] = useState<User | undefined>(undefined)
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target
+    setState((prevState) => ({ ...prevState, [name]: value }))
+  }
 
   useEffect(() => {
     api.getRoles().then(roles => setRoleOptions(roles));
   }, []);
 
-  const handleFirstNameChange = (event: any) => {
-    setFirstName(event.target.value);
-  };
-
-  const handleLastNameChange = (event: any) => {
-    setLastName(event.target.value);
-  };
-
-  const handlePasswordChange = (event: any) => {
-    setPassword(event.target.value);
-  };
-
-  const handleEmailChange = (event: any) => {
-    setEmail(event.target.value);
-    const errorMsg = !validator.isEmail(event.target.value) ? "Please enter a valid email address" : "";
-    setErrorEmail(errorMsg);
-  };
-
-  const handleGenderChange = (event: any) => {
-    setGender(event.target.value);
-  };
-
-  const handleRoleChange = (event: any) => {
-    setRole(event.target.value);
-  };
-
-  const handleAgeChange = (event: any) => {
-    const newAge = event.target.value;
-    setAge(newAge);
-    let errorMsg = "";
-    if (!validator.isNumeric(newAge)) {
-      errorMsg = "Age must be a number";
+  useEffect(() => {
+    setErrorEmail(!validator.isEmail(email) ? "Please enter a valid email address" : "");
+    let ageError = "";
+    if (!validator.isNumeric(age)) {
+      ageError = "Age must be a number";
     } else if (Number(age) > 120 || Number(age) < 1) {
-      errorMsg = "Age must be higher then 1 and less then 120";
+      ageError = "Age must be higher then 1 and less then 120";
     }
-    setErrorAge(errorMsg)
-  };
+    setErrorAge(ageError)
+  }, [email, age]);
+
 
   const isFormValid = () => {
     return (
@@ -102,7 +85,9 @@ export const SignUp = (props: any) => {
     try {
       const response = await sendRequest(params);
       auth.login(response.data.userId, response.data.token);
-    } catch (err) { }
+    } catch (err) {
+      // setErrorMsg(err.message)
+     }
   };
 
   return (
@@ -119,24 +104,24 @@ export const SignUp = (props: any) => {
               {isLoading && <LoadingSpinner asOverlay />}
               {error && <h5 style={{ color: "red" }}>{error}</h5>}
               <div className="form-group">
-                <Input className="form-control" type="text" label="First Name" placeholder="Enter First name"
-                  value={firstName} onChange={handleFirstNameChange} />
+                <Input className="form-control" type="text" name="firstName" label="First Name" placeholder="Enter First name"
+                  value={firstName} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <Input className="form-control" type="text" label="Last name" placeholder="Enter Last name"
-                  value={lastName} onChange={handleLastNameChange} />
+                <Input className="form-control" type="text" name="lastName" label="Last name" placeholder="Enter Last name"
+                  value={lastName} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <Input className="form-control" type="email" label="Email address" placeholder="Enter Email"
-                  value={email} onChange={handleEmailChange} errorMessage={errorEmail} />
+                <Input className="form-control" type="email" name="email" label="Email address" placeholder="Enter Email"
+                  value={email} onChange={handleChange} errorMessage={errorEmail} />
               </div>
               <div className="form-group">
-                <Input className="form-control" type="password" label="Password" placeholder="Enter Password"
-                  value={password} onChange={handlePasswordChange} />
+                <Input className="form-control" type="password" name="password" label="Password" placeholder="Enter Password"
+                  value={password} onChange={handleChange} />
               </div>
               <div className="form-group">
                 <label>Gender</label>
-                <select value={gender} onChange={handleGenderChange} className="form-control">
+                <select value={gender} onChange={handleChange} name="gender" className="form-control">
                   <option value="" disabled selected>Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
@@ -144,7 +129,7 @@ export const SignUp = (props: any) => {
               </div>
               <div className="form-group">
                 <label>Role</label>
-                <select value={role} onChange={handleRoleChange} className="form-control">
+                <select value={role} onChange={handleChange} name="role" className="form-control">
                   <option value="" disabled selected>Select Role</option>
                   {roleOptions?.map((role) => {
                     return <option value={`${role.role_id}`}>{role.role_type}</option>
@@ -153,9 +138,10 @@ export const SignUp = (props: any) => {
               </div>
               <div className="form-group">
                 <label>Age</label>
-                <input type="age" className="form-control" placeholder="Enter age" value={age} onChange={handleAgeChange} />
+                <input type="age" className="form-control" placeholder="Enter age" name="age" value={age} onChange={handleChange} />
                 <input
-                  onInput={handleAgeChange}
+                  name="age"
+                  onInput={handleChange}
                   type="range"
                   min="1"
                   value={age}
