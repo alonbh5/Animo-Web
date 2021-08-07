@@ -1,12 +1,12 @@
-const BotRes = require('../models/botRes');
+const Token = require('../models/token');
 const mongoose = require('mongoose');
 
 module.exports = {
-    getAllBotRes:  (req , res)=>{
-        BotRes.find().then((allBotRes)=>{
+    getAllTokens:  (req , res)=>{
+        Token.find().then((allTokens)=>{
 
             res.status(200).json({
-            allBotRes
+                allTokens
             })
         }).catch(error => {
             res.status(500).json({
@@ -17,19 +17,19 @@ module.exports = {
         
     },
 
-    createBotRes : (req , res)=>{
-        const {response_type, content, response_to } = req.body;        
+    createTokens : (req , res)=>{
+        const {userId, token, createdAt } = req.body;        
 
-        const botRes = new BotRes({
+        const tokenElm = new Token({
             _id: new mongoose.Types.ObjectId(),
-            response_type,            
-            content,
-            response_to
+            userId,            
+            token,
+            createdAt
         });
 
-        botRes.save().then(()=>{
+        tokenElm.save().then(()=>{
             res.status(200).json({
-            message: `created a new Bot Res - ${content}`
+            message: `created a new token - ${token}`
              })
         }).catch(error => {
             res.status(500).json({
@@ -39,12 +39,12 @@ module.exports = {
                 
     },
 
-    getBotRes : (req , res)=>{
-        const botResId = req.params.botResId;
+    getToken : (req , res)=>{
+        const TokenId = req.params.tokenId;
 
-        BotRes.findById(botResId).then((BotResRes)=>{
+        Token.findById(TokenId).then((tokenRes)=>{
             res.status(200).json({
-                BotResRes
+                tokenRes
             })
         }).catch(error => {
             res.status(500).json({
@@ -53,12 +53,12 @@ module.exports = {
         });   
     },
 
-    updateBotRes : (req , res)=>{
-        const botResId = req.params.botResId;
+    updateToken : (req , res)=>{
+        const TokenId = req.params.tokenId;
 
-        BotRes.updateOne({_id: botResId}, req.body).then(()=>{
+        Token.updateOne({_id: TokenId}, req.body).then(()=>{
              res.status(200).json({
-            message: `update bot res - ${botResId}`
+            message: `update token - ${TokenId}`
             })
         }).catch(error => {
             res.status(500).json({
@@ -69,12 +69,13 @@ module.exports = {
        
     },
 
-    deleteBotRes: (req , res)=>{
-        const botResId = req.params.botResId;    
+    deleteToken: (req , res)=>{
+        const TokenId = req.params.tokenId;
+
         
-        BotRes.deleteOne({_id: botResId}).then(()=>{
+        Token.deleteOne({_id: TokenId}).then(()=>{
             res.status(200).json({
-            message: `delete text - ${botResId}`
+            message: `delete token - ${TokenId}`
             })
         }).catch(error => {
             res.status(500).json({
