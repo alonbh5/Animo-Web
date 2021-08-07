@@ -1,12 +1,21 @@
 import { useState } from 'react'
 import emailjs from 'emailjs-com'
+import { init } from 'emailjs-com';
+import { templateId, serviceId, userID, animoMail } from '../components/api/configuration/config'
+import { useAlert } from 'react-alert'
+
+init(userID);
+
 
 const initialState = {
   name: '',
   email: '',
   message: '',
 }
-export const Contact = (props:any) => {
+
+export const Contact = (props: any) => {
+  const alert = useAlert()
+
   const [{ name, email, message }, setState] = useState(initialState)
 
   const handleChange = (e: any) => {
@@ -15,23 +24,24 @@ export const Contact = (props:any) => {
   }
   const clearState = () => setState({ ...initialState })
 
-  const handleSubmit = (e:  any) => {
-    e.preventDefault()
-    console.log(name, email, message)
-    emailjs
-      .sendForm(
-        'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', e.target, 'YOUR_USER_ID'
-      )
-      .then(
-        (result) => {
-          console.log(result.text)
-          clearState()
-        },
-        (error) => {
-          console.log(error.text)
-        }
-      )
-  }
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+
+    const params = {
+      from_name: name,
+      reply_to: email,
+      message: message,
+      send_to: animoMail,
+    }
+    try {
+     const result= await emailjs.send(serviceId, templateId, params);
+     alert.success('Sent Your Email :)')
+     setState(initialState);
+    } catch (err) {
+      alert.error('Error, please try later')
+    }
+  };
+
   return (
     <div>
       <div id='contact'>
@@ -53,6 +63,7 @@ export const Contact = (props:any) => {
                         type='text'
                         id='name'
                         name='name'
+                        value={name}
                         className='form-control'
                         placeholder='Name'
                         required
@@ -67,6 +78,7 @@ export const Contact = (props:any) => {
                         type='email'
                         id='email'
                         name='email'
+                        value={email}
                         className='form-control'
                         placeholder='Email'
                         required
@@ -81,7 +93,7 @@ export const Contact = (props:any) => {
                     name='message'
                     id='message'
                     className='form-control'
-//                    rows='4'
+                    value={message}
                     placeholder='Message'
                     required
                     onChange={handleChange}
@@ -107,14 +119,14 @@ export const Contact = (props:any) => {
             </div>
             <div className='contact-item'>
               <p>
-              <span>
+                <span>
                   <i className='fa fa-phone'></i> Phone
                 </span>{' '}
-              {props.data
-                        ? props.data.phones.map((phoneNumber:any, index:number) => (
-                            <div key={`${phoneNumber}-${index}`}>{phoneNumber}</div>
-                          ))
-                        : 'loading'}
+                {props.data
+                  ? props.data.phones.map((phoneNumber: any, index: number) => (
+                    <div key={`${phoneNumber}-${index}`}>{phoneNumber}</div>
+                  ))
+                  : 'loading'}
               </p>
             </div>
             <div className='contact-item'>
