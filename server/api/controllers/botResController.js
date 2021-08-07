@@ -1,12 +1,12 @@
-const Emotion = require('../models/emotions');
+const BotRes = require('../models/botResSchema');
 const mongoose = require('mongoose');
 
 module.exports = {
-    getAllEmotions:  (req , res)=>{
-        Emotion.find().then((allEmotions)=>{
+    getAllBotRes:  (req , res)=>{
+        BotRes.find().then((allBotRes)=>{
 
             res.status(200).json({
-            allEmotions
+            allBotRes
             })
         }).catch(error => {
             res.status(500).json({
@@ -17,18 +17,19 @@ module.exports = {
         
     },
 
-    createEmotion : (req , res)=>{
-        const {key_name, name} = req.body;
+    createBotRes : (req , res)=>{
+        const {response_type, content, response_to } = req.body;
 
-        const emotion = new Emotion({
+        const botRes = new BotRes({
             _id: new mongoose.Types.ObjectId(),
-            key_name,            
-            name
+            response_type,            
+            content,
+            response_to
         });
 
-        emotion.save().then(()=>{
+        botRes.save().then(()=>{
             res.status(200).json({
-            message: `created a new emotion - ${key_name}`
+            message: `created a new Bot Res - ${content}`
              })
         }).catch(error => {
             res.status(500).json({
@@ -38,12 +39,12 @@ module.exports = {
                 
     },
 
-    getEmotion : (req , res)=>{
-        const emotionId = req.params.emotionId;
+    getBotRes : (req , res)=>{
+        const botResId = req.params.botResId;
 
-        Emotion.findById(emotionId).then((emotionRes)=>{
+        BotRes.findById(botResId).then((BotResRes)=>{
             res.status(200).json({
-                emotionRes
+                BotResRes
             })
         }).catch(error => {
             res.status(500).json({
@@ -52,12 +53,12 @@ module.exports = {
         });   
     },
 
-    updateEmotion : (req , res)=>{
-        const emotionId = req.params.emotionId;
+    updateBotRes : (req , res)=>{
+        const botResId = req.params.botResId;
 
-        Emotion.updateOne({_id: emotionId}, req.body).then(()=>{
+        BotRes.updateOne({_id: botResId}, req.body).then(()=>{
              res.status(200).json({
-            message: `update Emotion - ${emotionId}`
+            message: `update bot res - ${botResId}`
             })
         }).catch(error => {
             res.status(500).json({
@@ -68,12 +69,12 @@ module.exports = {
        
     },
 
-    deleteEmotion: (req , res)=>{
-        const emotionId = req.params.emotionId;
+    deleteBotRes: (req , res)=>{
+        const botResId = req.params.botResId;    
         
-        Emotion.deleteOne({_id: emotionId}).then(()=>{
+        BotRes.deleteOne({_id: botResId}).then(()=>{
             res.status(200).json({
-            message: `delete Emotion - ${emotionId}`
+            message: `delete text - ${botResId}`
             })
         }).catch(error => {
             res.status(500).json({

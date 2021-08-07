@@ -25,12 +25,12 @@ mongoose.connection.on('connected',() => {
 //==============================================================================
 
 //===============================/// Routes /////===============================
-const phyDataRoute = require('./api/routes/phyData');
-const usersRoute = require('./api/routes/users');
-const BotResRoute = require('./api/routes/botRes');
-const UsersRoute = require('./api/routes/users');
-const EmotionsRoute = require('./api/routes/emotions');
-const RolesRoute = require('./api/routes/roles');
+const phyDataRoute = require('./api/routes/phyDataRoute');
+const usersRoute = require('./api/routes/usersRoute');
+const BotResRoute = require('./api/routes/botResRoute');
+const UsersRoute = require('./api/routes/usersRoute');
+const EmotionsRoute = require('./api/routes/emotionsRoute');
+const RolesRoute = require('./api/routes/rolesRoute');
 //==============================================================================
 
 app.use(morgan("dev"));

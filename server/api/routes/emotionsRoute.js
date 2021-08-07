@@ -5,7 +5,7 @@ const {
     getEmotion,
     updateEmotion,
     deleteEmotion
-} = require('../controllers/emotions');
+} = require('../controllers/emotionsController');
 
 
 router.get('/' ,getAllEmotions);

@@ -5,7 +5,7 @@ const {
     getText,
     updateText,
     deleteText
-} = require('../controllers/phyData');
+} = require('../controllers/phyDataController');
 
 
 router.get('/' ,getAllTexts);
