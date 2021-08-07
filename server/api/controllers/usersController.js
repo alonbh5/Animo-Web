@@ -36,12 +36,14 @@ module.exports = {
             const isExisting = await User.findOne({ email: email });
             if (isExisting) {
                 res.status(400).send({ message: `User with email: ${email} already exists` })
+                return;
             }
 
             try {
                 hashPassword = await bcrypt.hash(password, 12);
             } catch (err) {
                 res.status(500).send({ message: 'Could not create a user, please try again.' })
+                return;
             }
 
             const createUser = new User({
@@ -136,7 +138,6 @@ module.exports = {
 
     },
     resetPassword: async (  req, res) => {
-        
         const userId= req.query.userId;
         const token = req.query.token;
         const password = req.query.password;
@@ -200,10 +201,6 @@ module.exports = {
         }
 
         let isValidPassword = false;
-        console.log('MyPassword:' + password);
-
-        console.log(existingUser);
-
         try {
             isValidPassword = await bcrypt.compare(password, existingUser.password);
         } catch (err) {
