@@ -25,12 +25,14 @@ mongoose.connection.on('connected',() => {
 //==============================================================================
 
 //===============================/// Routes /////===============================
-const phyDataRoute = require('./api/routes/phyDataRoute');
-const usersRoute = require('./api/routes/usersRoute');
-const BotResRoute = require('./api/routes/botResRoute');
-const UsersRoute = require('./api/routes/usersRoute');
-const EmotionsRoute = require('./api/routes/emotionsRoute');
-const RolesRoute = require('./api/routes/rolesRoute');
+const phyDataRoute = require('./api/routes/phyData');
+const usersRoute = require('./api/routes/users');
+const BotResRoute = require('./api/routes/botRes');
+const UsersRoute = require('./api/routes/users');
+const EmotionsRoute = require('./api/routes/emotions');
+const PersQuizRoute = require('./api/routes/persQuiz');
+const TokenRoute = require('./api/routes/token')
+const RolesRoute = require('./api/routes/roles');
 //==============================================================================
 
 app.use(morgan("dev"));
@@ -59,12 +61,12 @@ app.use((req, res, next) => {
 
 
 //*********************************************/// Router /////*********************************************
-app.use('/phydata', phyDataRoute);
-app.use('/users', usersRoute);
-app.use('/botres', BotResRoute);
-app.use('/users', UsersRoute);
-app.use('/emotions', EmotionsRoute);
-app.use('/roles', RolesRoute);
+app.use('/phydata',phyDataRoute);
+app.use('/users',usersRoute);
+app.use('/botres',BotResRoute);
+app.use('/emotions',EmotionsRoute);
+app.use('/persquiz',PersQuizRoute);
+app.use('/token',TokenRoute);
 //********************************************/// END /////*************************************************
 
 
