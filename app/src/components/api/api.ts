@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { APIRootPath, templateId, serviceId, userID } from './configuration/config';
 import emailjs, { init } from 'emailjs-com';
-import {User} from "./configuration/models/users"
+import {User} from "./configuration/models/users";
+import {Role} from "./configuration/models/role";
+
 init(userID);
 
 export type ApiClient = {
     getUser: (email: string, password: string) => Promise<User>;
     createUser: (user:User) => Promise<User>;
+    getRoles: () => Promise<Role[]>;
     sendEmail: (agentName: string, clientName: string, clientEmail: string, message: string) => Promise<number>;
 }
 
@@ -27,7 +30,7 @@ export const createApiClient = (): ApiClient => {
                     throw new(err);
                 });
         },
-        createUser: (user:User)  => {
+        createUser: (user :User)  => {
             const request = {
                 ...user
             };
@@ -38,6 +41,15 @@ export const createApiClient = (): ApiClient => {
                 throw new(err);
             });
         },
+        getRoles: async () => {
+
+            return axios.get(`${APIRootPath}/roles`)
+                .then((res) => res.data)
+                .catch(error => {
+                    return error; 
+                });
+        },
+
         sendEmail: (agentName: string, clientName: string, clientEmail: string, message: string) => {
             const params = {
                 to_name: clientName,

@@ -1,78 +1,93 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import validator from 'validator';
 import { api } from "./api/api";
 import { User } from "./api/configuration/models/users";
-export const SignUp = (props: any) => {
+import { Role } from "./api/configuration/models/role";
+import { AuthContext } from "../shared/context/auth-context";
+import { useHttpClient } from "../shared/hooks/http-hook";
+import { AxiosRequestConfig } from "axios";
+import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
+import Input from '../shared/FormElements/Input'
 
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [age, setAge] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [gender, setGender] = useState<string>("");
+const initialState = {
+  firstName: '',
+  lastName: '',
+  age: '25',
+  email: '',
+  password: '',
+  gender: '',
+  role: ''
+}
+
+export const SignUp = () => {
+  const auth = useContext(AuthContext);
+  const [{ firstName, lastName, age, email, password, gender, role }, setState] = useState(initialState)
+  const [roleOptions, setRoleOptions] = useState<Role[] | undefined>(undefined)
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [errorAge, setErrorAge] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>('')
-  const [user, setUser] = useState<User | undefined>(undefined)
 
-  const handleFirstNameChange = (event: any) => {
-    setFirstName(event.target.value);
-  };
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const handleLastNameChange = (event: any) => {
-    setLastName(event.target.value);
-  };
+  const handleChange = (e: any) => {
+    const { name, value } = e.target
+    setState((prevState) => ({ ...prevState, [name]: value }))
+  }
 
-  const handlePasswordChange = (event: any) => {
-    setPassword(event.target.value);
-  };
+  useEffect(() => {
+    api.getRoles().then(roles => setRoleOptions(roles));
+  }, []);
 
-  const handleEmailChange = (event: any) => {
-    setEmail(event.target.value);
-    const errorMsg = !validator.isEmail(event.target.value) ? "Please enter a valid email address" : "";
-    setErrorEmail(errorMsg);
-  };
+  useEffect(() => {
+    setErrorEmail(!validator.isEmail(email) ? "Please enter a valid email address" : "");
+    let ageError = "";
+    if (!validator.isNumeric(age)) {
+      ageError = "Age must be a number";
+    } else if (Number(age) > 120 || Number(age) < 1) {
+      ageError = "Age must be higher then 1 and less then 120";
+    }
+    setErrorAge(ageError)
+  }, [email, age]);
 
-  const handleGenderChange = (event: any) => {
-    setGender(event.target.value);
-  };
-
-  const handleAgeChange = (event: any) => {
-    setAge(event.target.value);
-    const errorMsg = !validator.isNumeric(event.target.value) ? "Age must be a number" : "";
-    setErrorAge(errorMsg)
-  };
 
   const isFormValid = () => {
     return (
-      !validator.isEmpty(firstName)
-      && !validator.isEmpty(lastName) &&
+      !validator.isEmpty(firstName) &&
+      !validator.isEmpty(lastName) &&
       !validator.isEmpty(password) &&
       validator.isEmail(email) &&
-      !validator.isEmpty(gender)
-      && validator.isNumeric(age));
+      !validator.isEmpty(gender) &&
+      !validator.isEmpty(role) &&
+      validator.isNumeric(age));
   };
 
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const userToCreate: User = {
-      role_id: "1",
+      role_id: Number(role),
       first_name: firstName,
       last_name: lastName,
       email,
       password,
-      age,
+      age: Number(age),
       gender
     }
-    try {
-     const user = await api.createUser(userToCreate);
-     setUser(user);
-     setErrorMsg("SUCESS!!")
-     console.log(user);
-    } catch (err) {
-      setErrorMsg("Sorry, something went wrong! please try later :)")
+
+    const params: AxiosRequestConfig = {
+      method: 'POST',
+      url: '/users/createuser',
+      data: {
+        ...userToCreate
+      },
+      headers: {}
     }
+    try {
+      const response = await sendRequest(params);
+      auth.login(response.data.userId, response.data.token);
+    } catch (err) {
+      // setErrorMsg(err.message)
+     }
   };
 
   return (
@@ -86,37 +101,54 @@ export const SignUp = (props: any) => {
           <h5 style={{ color: "red" }}>{errorMsg}</h5>
           <div>
             <form onSubmit={handleSubmit}>
+              {isLoading && <LoadingSpinner asOverlay />}
+              {error && <h5 style={{ color: "red" }}>{error}</h5>}
               <div className="form-group">
-                <label>First name</label>
-                <input type="first-name" className="form-control" placeholder="First name" value={firstName} onChange={handleFirstNameChange} />
+                <Input className="form-control" type="text" name="firstName" label="First Name" placeholder="Enter First name"
+                  value={firstName} onChange={handleChange} />
               </div>
-
               <div className="form-group">
-                <label>Last name</label>
-                <input type="last-name" className="form-control" placeholder="Last name" value={lastName} onChange={handleLastNameChange} />
+                <Input className="form-control" type="text" name="lastName" label="Last name" placeholder="Enter Last name"
+                  value={lastName} onChange={handleChange} />
               </div>
-
               <div className="form-group">
-                <label>Email address</label>
-                <input type="email" className="form-control" placeholder="Enter email" value={email} onChange={handleEmailChange} />
-                <div className="error-msg">{errorEmail}</div>
+                <Input className="form-control" type="email" name="email" label="Email address" placeholder="Enter Email"
+                  value={email} onChange={handleChange} errorMessage={errorEmail} />
               </div>
-
               <div className="form-group">
-                <label>Password</label>
-                <input type="password" className="form-control" placeholder="Enter password" value={password} onChange={handlePasswordChange} />
+                <Input className="form-control" type="password" name="password" label="Password" placeholder="Enter Password"
+                  value={password} onChange={handleChange} />
               </div>
               <div className="form-group">
                 <label>Gender</label>
-                <select value={gender} onChange={handleGenderChange} className="form-control">
+                <select value={gender} onChange={handleChange} name="gender" className="form-control">
                   <option value="" disabled selected>Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
               </div>
               <div className="form-group">
+                <label>Role</label>
+                <select value={role} onChange={handleChange} name="role" className="form-control">
+                  <option value="" disabled selected>Select Role</option>
+                  {roleOptions?.map((role) => {
+                    return <option value={`${role.role_id}`}>{role.role_type}</option>
+                  })}
+                </select>
+              </div>
+              <div className="form-group">
                 <label>Age</label>
-                <input type="age" className="form-control" placeholder="Enter age" value={age} onChange={handleAgeChange} />
+                <input type="age" className="form-control" placeholder="Enter age" name="age" value={age} onChange={handleChange} />
+                <input
+                  name="age"
+                  onInput={handleChange}
+                  type="range"
+                  min="1"
+                  value={age}
+                  max="120"
+                  step="1"
+                  list="tick-list"
+                />
                 <div className="error-msg">{errorAge}</div>
               </div>
               <button type="submit" disabled={!isFormValid()} className="btn btn-primary btn-block">Sign Up</button>
@@ -127,7 +159,6 @@ export const SignUp = (props: any) => {
             </form>
           </div>
         </div>
-
       </div>
     </div>
   )
