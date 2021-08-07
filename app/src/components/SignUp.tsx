@@ -7,7 +7,7 @@ import { AuthContext } from "../shared/context/auth-context";
 import { useHttpClient } from "../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
 import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
-
+import Input from '../shared/FormElements/Input'
 export const SignUp = (props: any) => {
   const auth = useContext(AuthContext);
   const ageStep = 15;
@@ -95,14 +95,14 @@ export const SignUp = (props: any) => {
       method: 'POST',
       url: '/users/createuser',
       data: {
-       ...userToCreate
+        ...userToCreate
       },
       headers: {}
     }
     try {
       const response = await sendRequest(params);
       auth.login(response.data.userId, response.data.token);
-    } catch(err) {}
+    } catch (err) { }
   };
 
   return (
@@ -116,27 +116,23 @@ export const SignUp = (props: any) => {
           <h5 style={{ color: "red" }}>{errorMsg}</h5>
           <div>
             <form onSubmit={handleSubmit}>
-            {isLoading && <LoadingSpinner asOverlay />}
-            {error && <h5 style={{ color: "red" }}>{error}</h5>}
+              {isLoading && <LoadingSpinner asOverlay />}
+              {error && <h5 style={{ color: "red" }}>{error}</h5>}
               <div className="form-group">
-                <label>First name</label>
-                <input type="first-name" className="form-control" placeholder="First name" value={firstName} onChange={handleFirstNameChange} />
+                <Input className="form-control" type="text" label="First Name" placeholder="Enter First name"
+                  value={firstName} onChange={handleFirstNameChange} />
               </div>
-
               <div className="form-group">
-                <label>Last name</label>
-                <input type="last-name" className="form-control" placeholder="Last name" value={lastName} onChange={handleLastNameChange} />
+                <Input className="form-control" type="text" label="Last name" placeholder="Enter Last name"
+                  value={lastName} onChange={handleLastNameChange} />
               </div>
-
               <div className="form-group">
-                <label>Email address</label>
-                <input type="email" className="form-control" placeholder="Enter email" value={email} onChange={handleEmailChange} />
-                <div className="error-msg">{errorEmail}</div>
+                <Input className="form-control" type="email" label="Email address" placeholder="Enter Email"
+                  value={email} onChange={handleEmailChange} errorMessage={errorEmail} />
               </div>
-
               <div className="form-group">
-                <label>Password</label>
-                <input type="password" className="form-control" placeholder="Enter password" value={password} onChange={handlePasswordChange} />
+                <Input className="form-control" type="password" label="Password" placeholder="Enter Password"
+                  value={password} onChange={handlePasswordChange} />
               </div>
               <div className="form-group">
                 <label>Gender</label>
