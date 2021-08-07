@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 //@ts-ignore
 import AlertTemplate from 'react-alert-template-basic'
-import {BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 // optional configuration
 const options = {
@@ -21,11 +21,10 @@ const options = {
 
 const Root = () => (
   <AlertProvider template={AlertTemplate} {...options}>
-      <React.StrictMode>
-
-  <BrowserRouter>
-    <App />
-    </BrowserRouter>
+    <React.StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </React.StrictMode>
   </AlertProvider>
 )

@@ -19,7 +19,7 @@ const initialState = {
   role: ''
 }
 
-export const SignUp = () => {
+const SignUp = () => {
   const auth = useContext(AuthContext);
   const [{ firstName, lastName, age, email, password, gender, role }, setState] = useState(initialState)
   const [roleOptions, setRoleOptions] = useState<Role[] | undefined>(undefined)
@@ -39,7 +39,7 @@ export const SignUp = () => {
   }, []);
 
   useEffect(() => {
-    setErrorEmail(!validator.isEmail(email) ? "Please enter a valid email address" : "");
+    setErrorEmail(!validator.isEmail(email) && !validator.isEmpty(email)  ? "Please enter a valid email address" : "");
     let ageError = "";
     if (!validator.isNumeric(age)) {
       ageError = "Age must be a number";
@@ -163,3 +163,4 @@ export const SignUp = () => {
     </div>
   )
 }
+export default SignUp;

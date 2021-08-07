@@ -11,7 +11,7 @@ const initialState = {
   ConfirmPassword: '',
 }
 
-export const ResetPassword = (props: any) => {
+const ResetPassword = (props: any) => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [{ Password, ConfirmPassword }, setState] = useState(initialState)
@@ -68,3 +68,4 @@ export const ResetPassword = (props: any) => {
     </div>
   )
 }
+export default ResetPassword;

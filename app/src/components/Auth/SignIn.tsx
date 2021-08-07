@@ -12,7 +12,7 @@ const initialState = {
   password: '',
 }
 
-export const SignIn = (props: any) => {
+const SignIn = (props: any) => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [{ email, password }, setState] = useState(initialState)
@@ -77,3 +77,5 @@ export const SignIn = (props: any) => {
     </div>
   )
 }
+
+export default SignIn;

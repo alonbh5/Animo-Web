@@ -6,7 +6,7 @@ import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
 import {RoleEnum} from "../api/configuration/models/role";
 
 
-export const Profile = (props: any) => {
+const Profile = (props: any) => {
   const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [first_name, setFirstName] = useState<string>("");
@@ -61,3 +61,5 @@ export const Profile = (props: any) => {
     </div>
   );
 }
+
+export default Profile;

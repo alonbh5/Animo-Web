@@ -7,7 +7,7 @@ import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
 import Input from "../../shared/FormElements/Input";
 
 
-export const ForgotPassword = (props: any) => {
+const ForgotPassword = (props: any) => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [email, setEmail] = useState("");
@@ -60,3 +60,4 @@ export const ForgotPassword = (props: any) => {
     </div>
   )
 }
+export default ForgotPassword;

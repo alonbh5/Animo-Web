@@ -21,7 +21,7 @@ export const Navigation = (props: any) => {
           id='bs-example-navbar-collapse-1'
         >
           <ul className='nav navbar-nav navbar-right'>
-            {auth.isLoggedIn &&
+            {!auth.isLoggedIn &&
               <li>
                 <Link to="/analyze" className='page-scroll'>Emotional Analysis
                 </Link>
