@@ -1,4 +1,4 @@
-const Roles = require('../models/role');
+const Roles = require('../models/roleSchema');
 const mongoose = require('mongoose');
 
 module.exports = {

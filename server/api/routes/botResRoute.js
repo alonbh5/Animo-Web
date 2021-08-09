@@ -5,7 +5,7 @@ const {
     getBotRes,
     updateBotRes,
     deleteBotRes
-} = require('../controllers/botRes');
+} = require('../controllers/botResController');
 
 
 router.get('/' ,getAllBotRes);
