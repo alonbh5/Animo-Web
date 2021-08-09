@@ -5,6 +5,7 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
 import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
 import Input from "../../shared/FormElements/Input";
+import queryString from 'query-string';
 
 const initialState = {
   Password: '',
@@ -13,7 +14,7 @@ const initialState = {
 
 const ResetPassword = (props: any) => {
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
   const [{ Password, ConfirmPassword }, setState] = useState(initialState)
   const [isPasswordMatch, setIsPasswordMatch] = useState(false);
 
@@ -28,23 +29,28 @@ const ResetPassword = (props: any) => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    // const params: AxiosRequestConfig = {
-    //   method: 'PATCH',
-    //   url: '/users/login',
-    //   params: {
-    //     email,
-    //   }
-    // }
-    // try {
-    //   const response = await sendRequest(params);
-    // } catch (err) { }
+    clearMessages();
+    const parsedQuery = queryString.parse(window.location.search);
+    const params: AxiosRequestConfig = {
+      method: 'PATCH',
+      url: '/users/resetPassword',
+      params: {
+        token: parsedQuery.token,
+        userId: parsedQuery.userId,
+        password: Password,
+      }
+    }
+    try {
+      const response = await sendRequest(params);
+      auth.login(response.data.userId, response.data.token);
+    } catch (err) { }
   }
 
   return (
     <div id='team' className='text-center'>
       <div className='container'>
         <div className='col-md-8 col-md-offset-2 section-title'>
-          <h2>Forgot Password</h2>
+          <h2>Reset Password</h2>
           <p>
             For reset your password, please type your email address
           </p>

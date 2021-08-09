@@ -1,4 +1,6 @@
 const User = require('../models/userSchema');
+const Token = require('../models/token');
+const clientURL = 'http://localhost:3001'
 const mongoose = require('mongoose');
 const { connect } = require('mongodb');
 const bcrypt = require('bcryptjs');
@@ -84,8 +86,8 @@ module.exports = {
 
     getUser: async (req, res) => {
         const userId = req.params.userId;
-        if(userId !== req.userData.userId) {
-            res.status(401).send({message: 'You are not allowed to get this user'})
+        if (userId !== req.userData.userId) {
+            res.status(401).send({ message: 'You are not allowed to get this user' })
         }
 
         try {
@@ -108,7 +110,7 @@ module.exports = {
     },
 
     forgotPassword: async (req, res) => {
-        const email = req.params.email;
+        const {email } = req.body;
 
         try {
             const matchUser = await User.findOne({ email: email });
@@ -120,47 +122,48 @@ module.exports = {
             if (token) await token.deleteOne();
 
             let resetToken = crypto.randomBytes(32).toString("hex");
-            const hashToken = await bcrypt.hash(resetToken, Number(bcryptSalt));
+            const hashToken = await bcrypt.hash(resetToken,12);
 
-            await new Token({
-                userId: matchUser._id,
-                token: hash,
+            const newResetToken = new Token({
+                _id: new mongoose.Types.ObjectId(),
+                userId: String(matchUser._id),
+                token: hashToken,
                 createdAt: Date.now(),
-              }).save();
-            
-              const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
-              sendEmail(user.email,"Password Reset Request",{name: user.name,link: link,},"./template/requestResetPassword.handlebars");
-              res.status(200).send({message: 'Please check your mailbox'});
+            });
+            await newResetToken.save();
 
+            const resetLink = `${clientURL}/resetPassword?token=${resetToken}&userId=${matchUser._id}`;
+            res.status(200).send({ message: 'We`ve sent password reset instructions to your mailbox', resetLink: resetLink  });
+            return;
         } catch (error) {
             res.status(500).send({ message: 'Something went wrong! please try later' });
         }
 
     },
-    resetPassword: async (  req, res) => {
-        const userId= req.query.userId;
+    resetPassword: async (req, res) => {
+        const userId = req.query.userId;
         const token = req.query.token;
         const password = req.query.password;
 
         let passwordResetToken = await Token.findOne({ userId });
 
         if (!passwordResetToken) {
-          res.status(400).send({message:"Invalid or expired password reset token"});
+            res.status(400).send({ message: "Invalid or expired password reset token" });
         }
 
         const isValid = await bcrypt.compare(token, passwordResetToken.token);
         if (!isValid) {
-            res.status(500).send("Invalid or expired password reset token");
+            res.status(500).send({ message: "Invalid or expired password reset token"});
         }
 
-        const hash = await bcrypt.hash(password,12);
+        const hash = await bcrypt.hash(password, 12);
         await User.updateOne(
-          { _id: userId },
-          { $set: { password: hash } },
+            { _id: userId },
+            { $set: { password: hash } },
         );
 
         const existingUser = await User.findById({ _id: userId });
-        
+
         let tokenLogin;
         try {
             tokenLogin = jwt.sign(
@@ -180,7 +183,7 @@ module.exports = {
                 token: tokenLogin
             }
         });
-      },
+    },
 
 
     login: async (req, res) => {
@@ -233,88 +236,88 @@ module.exports = {
     updateUsers: (req, res) => {
         const userId = req.params.userId;
 
-        
-        User.findById(userId).then((theUser)=>{
-            if(!theUser) {
+
+        User.findById(userId).then((theUser) => {
+            if (!theUser) {
                 return res.status(404).json({
                     message: "User Was not Found, check _ID"
                 })
             }
-            else {               
-                User.updateOne({_id: userId}, req.body).then(()=>{
-                   res.status(200).json({
-                   message: `update user - ${userId}`
-                   })                   
-            })
-        }
+            else {
+                User.updateOne({ _id: userId }, req.body).then(() => {
+                    res.status(200).json({
+                        message: `update user - ${userId}`
+                    })
+                })
+            }
         }).catch(error => {
             res.status(500).json({
                 message: "Could not find user, check _ID"
             })
         });
-               
+
     },
 
-    addQuiz : (req , res)=>{
+    addQuiz: (req, res) => {
         const userId = req.params.userId;
-        
+
         console.log(userId);
 
         console.log(req.body.persQuiz);
-        
+
         res.status(200).json({
             message: `update user - ${userId}`
-            })     
-               
+        })
+
     },
 
-    createQuiz : (req , res)=>{
-        const userId = req.params.userId;
-            
-        User.findById(userId).then((theUser)=>{
-            
-            if(theUser.persQuiz.length == 0) {
+    createQuiz: (req, res) => {
+
+
+        User.findById(userId).then((theUser) => {
+
+            if (theUser.persQuiz.length == 0) {
 
                 const PersQuiz = require('../models/persQuiz');
-                PersQuiz.find().then((allPersQuiz)=>{
-                    
+                PersQuiz.find().then((allPersQuiz) => {
+
                     const len = allPersQuiz.length;
                     const newArr = [];
                     console.log(len)
-                   for (var i = 0; i < len;i++){
+                    for (var i = 0; i < len; i++) {
 
-                       var newElm = {
-                        question: '',
-                        relateTo: '',
-                        opposite: '',
-                        answer: ''
-                       }
+                        var newElm = {
+                            question: '',
+                            relateTo: '',
+                            opposite: '',
+                            answer: ''
+                        }
 
-                       newElm.question = allPersQuiz[i].question;
-                       newElm.relateTo = allPersQuiz[i].relateTo;
-                       newElm.opposite = allPersQuiz[i].opposite;
-                       newArr.push(newElm);
-                   } 
-                   
-                    User.updateOne({_id: userId},{})
-                                
+                        newElm.question = allPersQuiz[i].question;
+                        newElm.relateTo = allPersQuiz[i].relateTo;
+                        newElm.opposite = allPersQuiz[i].opposite;
+                        newArr.push(newElm);
+                    }
+
+                    User.updateOne({ _id: userId }, {})
+
 
                 });
             }
             else {
-                console.log("no")            
-        }
-        res.status(200).json({
-            message: `nothing`
-            })   
+                console.log("no")
+            }
+            res.status(200).json({
+                message: `nothing`
+            })
         }).catch(error => {
             return res.status(500).json({
                 message: "Could not find user, check _ID"
             })
-        });       
-        
-          
-               
+        });
+
+
+
     },
 
     deleteUsers: (req, res) => {

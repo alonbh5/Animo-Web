@@ -16,9 +16,9 @@ const {
 
 router.get('/' ,getAllUsers);
 router.get('/login' , login);
+router.patch('/resetPassword', resetPassword)
+router.post('/forgotPassword', forgotPassword)
 router.post('/createuser' , createUsers);
-router.post('/forgotPassword/:email', forgotPassword)
-router.get('/resetPassword', resetPassword)
 
 router.use(checkAuth);
 router.get('/getuser/:userId' ,getUser);

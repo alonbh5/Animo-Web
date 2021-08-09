@@ -8,7 +8,7 @@ import {RoleEnum} from "../api/configuration/models/role";
 
 const Profile = (props: any) => {
   const auth = useContext(AuthContext)
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
   const [first_name, setFirstName] = useState<string>("");
   const [last_name, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");

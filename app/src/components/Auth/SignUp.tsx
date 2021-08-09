@@ -27,7 +27,7 @@ const SignUp = () => {
   const [errorAge, setErrorAge] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>('')
 
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
@@ -64,6 +64,7 @@ const SignUp = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    clearMessages();
     const userToCreate: User = {
       role_id: Number(role),
       first_name: firstName,

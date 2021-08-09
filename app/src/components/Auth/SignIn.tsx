@@ -14,7 +14,7 @@ const initialState = {
 
 const SignIn = (props: any) => {
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
   const [{ email, password }, setState] = useState(initialState)
 
   const handleChange = (e: any) => {
@@ -28,6 +28,7 @@ const SignIn = (props: any) => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    clearMessages();
     const params: AxiosRequestConfig = {
       method: 'GET',
       url: '/users/login',
