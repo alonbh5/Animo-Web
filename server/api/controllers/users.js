@@ -156,6 +156,7 @@ module.exports = {
 
     updateUsers: (req, res) => {
         const userId = req.params.userId;
+        
 
         
         User.findById(userId).then((theUser)=>{
@@ -179,17 +180,45 @@ module.exports = {
                
     },
 
-    addQuiz : (req , res)=>{
+    addQuizAns : (req , res)=>{
+        
         const userId = req.params.userId;
-        
-        console.log(userId);
 
-        console.log(req.body.persQuiz);
+        const questionID = req.query.question;
+        var answer = req.query.answer;       
         
-        res.status(200).json({
-            message: `update user - ${userId}`
-            })     
-               
+
+        User.findOne({ '_id': userId}, {}, {sort: { date: -1 }}, function(err, record){
+            if (err) {
+               //don't just ignore this, log or bubble forward via callbacks
+               return;
+            }
+            if (!record) {
+                //Record not found, log or send 404 or whatever
+                return;
+            }
+            
+
+            record.persQuiz.forEach(function (item) {                  
+                
+                if (item.question_id == questionID) 
+                    item.answer = answer ;                    
+                
+            });
+            //Now, mongoose can't automatically detect that you've changed the contents of 
+            //record.array, so tell it
+            //see http://mongoosejs.com/docs/api.html#document_Document-markModified
+            record.markModified('persQuiz');
+            record.save().then(()=>{
+                res.status(200).json({
+                    message: `Added new Answer to User`
+                    })
+                }).catch((err)=>{
+                        return res.status(401).json({
+                            message: error
+                        })
+                    });         
+         });
     },
 
     createQuiz : (req , res)=>{
@@ -197,6 +226,7 @@ module.exports = {
             
         User.findById(userId).then((theUser)=>{
             
+                        
             if(theUser.persQuiz.length == 0) {
 
                 const PersQuiz = require('../models/persQuiz');
@@ -208,29 +238,41 @@ module.exports = {
                    for (var i = 0; i < len;i++){
 
                        var newElm = {
+                        question_id:'',   
                         question: '',
                         relateTo: '',
                         opposite: '',
                         answer: ''
                        }
 
-                       newElm.question = allPersQuiz[i].question;
-                       newElm.relateTo = allPersQuiz[i].relateTo;
-                       newElm.opposite = allPersQuiz[i].opposite;
+                       newElm.question_id = allPersQuiz[i]._id;
+                       newElm.question = allPersQuiz[i].question.trim();
+                       newElm.relateTo = allPersQuiz[i].relateTo.trim();
+                       newElm.opposite = allPersQuiz[i].opposite.trim();
                        newArr.push(newElm);
-                   } 
+                   }                    
                    
-                    User.updateOne({_id: userId},{})
+                   //console.log(newArr);
+
+                    User.updateOne({_id: userId},{persQuiz: newArr}).then(()=>{
+                        res.status(200).json({
+                            message: `Added new Quiz to User`
+                            }).catch((err)=>{
+                                res.status(401).json({
+                                    message: error
+                                })
+                            });   
+                    })
                                 
 
                 });
             }
             else {
-                console.log("no")            
+                res.status(208).json({
+                    message: `User already has Quiz`
+                    })              
         }
-        res.status(200).json({
-            message: `nothing`
-            })   
+        
         }).catch(error => {
             return res.status(500).json({
                 message: "Could not find user, check _ID"
@@ -239,6 +281,104 @@ module.exports = {
         
           
                
+    }, 
+    
+    persCalc : (req , res)=>{
+        
+        const userId = req.params.userId;              
+
+        User.findOne({ '_id': userId}, {}, {sort: { date: -1 }}, function(err, record){
+            if (err) {
+               //don't just ignore this, log or bubble forward via callbacks
+               return;
+            }
+            if (!record) {
+                //Record not found, log or send 404 or whatever
+                return;
+            }
+
+            var I = 0;
+            var E = 0;
+            
+            var J = 0;
+            var P = 0; 
+
+            var N = 0;
+            var S = 0;
+
+            var T = 0;
+            var F = 0;
+
+            
+
+            record.persQuiz.forEach(function (item) {  
+                
+                switch (item.relateTo) {
+                    case "Thinking":
+                        T += parseInt(item.answer);
+                        break;
+                    case "Feeling":
+                        F += parseInt(item.answer);
+                        break;
+                    case "Extraversion":
+                        E += parseInt(item.answer);
+                        break;
+                    case "Introversion":
+                        I += parseInt(item.answer);
+                        break;                        
+                    case "Judging":
+                        J += parseInt(item.answer);
+                        break;
+                    case "Perceiving":
+                        P += parseInt(item.answer);
+                        break;
+                    case "Sensing":
+                        S += parseInt(item.answer);
+                        break;
+                    case "Intuition":
+                        N += parseInt(item.answer);
+                        break;  
+                    default:
+                        break;
+                }                 
+                
+            });
+
+            var persRes = "";
+
+            if (I > E)
+                persRes = "I";
+            else
+                persRes = "E";
+
+            if (N > S)
+                persRes += "N";
+            else
+                persRes += "S";
+
+            if (F > T)
+                persRes += "F";
+            else
+                persRes += "T";
+
+            if (J > P)
+                persRes += "J";
+             else
+                persRes += "P";
+            
+            //console.log(persRes);
+            record.personality = persRes;
+            record.markModified('personality');
+            record.save().then(()=>{
+                res.status(200).json({
+                    message: `Added new personlity to User - ${persRes}`
+                    })
+                }).catch((err)=>{
+                        return res.status(401).json({
+                            message: error
+                        })
+                    });   
+         });
     },
 
     deleteUsers: (req, res) => {

@@ -28,7 +28,6 @@ mongoose.connection.on('connected',() => {
 const phyDataRoute = require('./api/routes/phyData');
 const usersRoute = require('./api/routes/users');
 const BotResRoute = require('./api/routes/botRes');
-const UsersRoute = require('./api/routes/users');
 const EmotionsRoute = require('./api/routes/emotions');
 const PersQuizRoute = require('./api/routes/persQuiz');
 const TokenRoute = require('./api/routes/token')
@@ -67,6 +66,7 @@ app.use('/botres',BotResRoute);
 app.use('/emotions',EmotionsRoute);
 app.use('/persquiz',PersQuizRoute);
 app.use('/token',TokenRoute);
+app.use('/roles',RolesRoute);
 //********************************************/// END /////*************************************************
 
 
