@@ -1,13 +1,13 @@
 import { useEffect, useState, useContext } from "react"
-import validator from 'validator';
-import { api } from "./api/api";
-import { User } from "./api/configuration/models/users";
-import { Role } from "./api/configuration/models/role";
-import { AuthContext } from "../shared/context/auth-context";
-import { useHttpClient } from "../shared/hooks/http-hook";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
-import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
-import Input from '../shared/FormElements/Input'
+import { api } from "../api/api";
+import { User } from "../api/configuration/models/users";
+import { Role } from "../api/configuration/models/role";
+import validator from 'validator';
+import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
+import Input from '../../shared/FormElements/Input'
 
 const initialState = {
   firstName: '',
@@ -19,7 +19,7 @@ const initialState = {
   role: ''
 }
 
-export const SignUp = () => {
+const SignUp = () => {
   const auth = useContext(AuthContext);
   const [{ firstName, lastName, age, email, password, gender, role }, setState] = useState(initialState)
   const [roleOptions, setRoleOptions] = useState<Role[] | undefined>(undefined)
@@ -27,7 +27,7 @@ export const SignUp = () => {
   const [errorAge, setErrorAge] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>('')
 
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
@@ -39,7 +39,7 @@ export const SignUp = () => {
   }, []);
 
   useEffect(() => {
-    setErrorEmail(!validator.isEmail(email) ? "Please enter a valid email address" : "");
+    setErrorEmail(!validator.isEmail(email) && !validator.isEmpty(email) ? "Please enter a valid email address" : "");
     let ageError = "";
     if (!validator.isNumeric(age)) {
       ageError = "Age must be a number";
@@ -64,6 +64,7 @@ export const SignUp = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    clearMessages();
     const userToCreate: User = {
       role_id: Number(role),
       first_name: firstName,
@@ -87,7 +88,7 @@ export const SignUp = () => {
       auth.login(response.data.userId, response.data.token);
     } catch (err) {
       // setErrorMsg(err.message)
-     }
+    }
   };
 
   return (
@@ -104,23 +105,23 @@ export const SignUp = () => {
               {isLoading && <LoadingSpinner asOverlay />}
               {error && <h5 style={{ color: "red" }}>{error}</h5>}
               <div className="form-group">
-                <Input className="form-control" type="text" name="firstName" label="First Name" placeholder="Enter First name"
+                <Input className="form-control" required={true} type="text" name="firstName" label="First Name" placeholder="Enter First name"
                   value={firstName} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <Input className="form-control" type="text" name="lastName" label="Last name" placeholder="Enter Last name"
+                <Input className="form-control" required={true} type="text" name="lastName" label="Last name" placeholder="Enter Last name"
                   value={lastName} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <Input className="form-control" type="email" name="email" label="Email address" placeholder="Enter Email"
+                <Input className="form-control" required={true} type="email" name="email" label="Email address" placeholder="Enter Email"
                   value={email} onChange={handleChange} errorMessage={errorEmail} />
               </div>
               <div className="form-group">
-                <Input className="form-control" type="password" name="password" label="Password" placeholder="Enter Password"
+                <Input className="form-control" required={true} type="password" name="password" label="Password" placeholder="Enter Password"
                   value={password} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Gender</label>
+                <label className="required">Gender</label>
                 <select value={gender} onChange={handleChange} name="gender" className="form-control">
                   <option value="" disabled selected>Select Gender</option>
                   <option value="male">Male</option>
@@ -128,7 +129,7 @@ export const SignUp = () => {
                 </select>
               </div>
               <div className="form-group">
-                <label>Role</label>
+                <label className="required">Role</label>
                 <select value={role} onChange={handleChange} name="role" className="form-control">
                   <option value="" disabled selected>Select Role</option>
                   {roleOptions?.map((role) => {
@@ -137,7 +138,7 @@ export const SignUp = () => {
                 </select>
               </div>
               <div className="form-group">
-                <label>Age</label>
+                <label className="required">Age</label>
                 <input type="age" className="form-control" placeholder="Enter age" name="age" value={age} onChange={handleChange} />
                 <input
                   name="age"
@@ -163,3 +164,4 @@ export const SignUp = () => {
     </div>
   )
 }
+export default SignUp;

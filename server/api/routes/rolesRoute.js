@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {
     getAllRoles,
     getRoleById
-} = require('../controllers/roles');
+} = require('../controllers/rolesController');
 
 
 router.get('/', getAllRoles);

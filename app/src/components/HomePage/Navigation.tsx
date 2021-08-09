@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 
-import { AuthContext } from "../shared/context/auth-context"
+import { AuthContext } from "../../shared/context/auth-context"
 export const Navigation = (props: any) => {
   const auth = useContext(AuthContext);
 
@@ -21,7 +21,7 @@ export const Navigation = (props: any) => {
           id='bs-example-navbar-collapse-1'
         >
           <ul className='nav navbar-nav navbar-right'>
-            {auth.isLoggedIn &&
+            {!auth.isLoggedIn &&
               <li>
                 <Link to="/analyze" className='page-scroll'>Emotional Analysis
                 </Link>

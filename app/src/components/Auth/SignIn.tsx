@@ -1,19 +1,20 @@
 import { useContext, useState } from 'react'
 import validator from 'validator';
-import { AuthContext } from "../shared/context/auth-context";
-import { useHttpClient } from "../shared/hooks/http-hook";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
-import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
-import Input from "../shared/FormElements/Input";
+import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
+import Input from "../../shared/FormElements/Input";
+import { Link } from 'react-router-dom';
 
 const initialState = {
   email: '',
   password: '',
 }
 
-export const SignIn = (props: any) => {
+const SignIn = (props: any) => {
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
   const [{ email, password }, setState] = useState(initialState)
 
   const handleChange = (e: any) => {
@@ -27,6 +28,7 @@ export const SignIn = (props: any) => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    clearMessages();
     const params: AxiosRequestConfig = {
       method: 'GET',
       url: '/users/login',
@@ -54,17 +56,20 @@ export const SignIn = (props: any) => {
             {error && <h5 style={{ color: "red" }}>{error}</h5>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <Input type="email" name="email" label="Email Address" value={email}
+                <Input type="email" required={true} name="email" label="Email Address" value={email}
                   onChange={handleChange} className="form-control" placeholder="Enter email" />
               </div>
               <div className="form-group">
-                <Input type="password" label="Password" name="password" value={password}
+                <Input type="password" required={true} label="Password" name="password" value={password}
                   onChange={handleChange} className="form-control" placeholder="Enter password" />
               </div>
               <button type="submit" disabled={!isFormValid()} className="btn btn-primary btn-block">Submit</button>
               <br></br>
               <p >
-                Forgot <a href="#">password?</a> \ <a href="/signup" >register</a>
+                <Link to="/forgotPassword" className='page-scroll'>Forgot password?
+                </Link>
+                {" "} \   <Link to="/signup" className='page-scroll'>Register
+                </Link>
               </p>
             </form>
           </div>
@@ -73,3 +78,5 @@ export const SignIn = (props: any) => {
     </div>
   )
 }
+
+export default SignIn;

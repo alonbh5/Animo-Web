@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { AxiosRequestConfig } from 'axios';
-import { AuthContext } from "../shared/context/auth-context"
-import { useHttpClient } from "../shared/hooks/http-hook";
-import LoadingSpinner from '../shared/UIElements/LoadingSpinner';
-import {RoleEnum} from "./api/configuration/models/role";
+import { AuthContext } from "../../shared/context/auth-context"
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
+import {RoleEnum} from "../api/configuration/models/role";
 
 
-export const Profile = (props: any) => {
+const Profile = (props: any) => {
   const auth = useContext(AuthContext)
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
   const [first_name, setFirstName] = useState<string>("");
   const [last_name, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -61,3 +61,5 @@ export const Profile = (props: any) => {
     </div>
   );
 }
+
+export default Profile;

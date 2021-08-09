@@ -6464,6 +6464,11 @@ button.close {
   font-size: small;
 
 }
+
+.required:after {
+  content:" *";
+  color: red;
+}
 .clearfix:before,
 .clearfix:after,
 .dl-horizontal dd:before,
