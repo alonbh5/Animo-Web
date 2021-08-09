@@ -22,5 +22,7 @@
     "url": "https://github.com/yairdana/Animo-Web/issues"
   },
   "homepage": "https://github.com/yairdana/Animo-Web#readme",
-  "dependencies": {}
+  "dependencies": {
+    "deepcopy": "^2.1.0"
+  }
 }
