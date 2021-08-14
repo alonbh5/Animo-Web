@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import axios, { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import { useHttpClient } from "./http-hook";
 
 export const serverAPIPort = 3000;
@@ -10,7 +10,7 @@ export const staticsUrl = `${host}:${staticsPort}/`;
 
 
 export const useRoles = () => {
-    const { sendRequest, clearMessages } = useHttpClient();
+    const { sendRequest } = useHttpClient();
     const [rolesOptions, setRolesOptions] = useState([]);
     const [error, setError] = useState("")
 
@@ -22,9 +22,8 @@ export const useRoles = () => {
             }
             try {
                 const response = await sendRequest(params);
-                console.log(response);
                 setRolesOptions(response.data.allRoles)
-            } catch(err) {
+            } catch (err) {
                 setRolesOptions([])
                 setError('Could not fetch roles');
             }

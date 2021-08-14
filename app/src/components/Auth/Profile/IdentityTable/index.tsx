@@ -4,9 +4,7 @@ import { User } from '../../../api/configuration/models/users';
 import { TableDisplayMode } from "./TableDisplayMode"
 import { TableEditMode } from "./TableEditMode"
 import { AxiosRequestConfig } from "axios";
-import queryString from 'query-string';
 import { useHttpClient } from "../../../../shared/hooks/http-hook";
-import { useUser } from "../../../../shared/hooks/user-hook";
 import LoadingSpinner from '../../../../shared/UIElements/LoadingSpinner';
 import { useAlert } from 'react-alert';
 

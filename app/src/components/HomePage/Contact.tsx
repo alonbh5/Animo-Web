@@ -22,7 +22,6 @@ export const Contact = (props: any) => {
     const { name, value } = e.target
     setState((prevState) => ({ ...prevState, [name]: value }))
   }
-  const clearState = () => setState({ ...initialState })
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -34,7 +33,7 @@ export const Contact = (props: any) => {
       send_to: animoMail,
     }
     try {
-     const result= await emailjs.send(serviceId, templateId, params);
+     await emailjs.send(serviceId, templateId, params);
      alert.success('Sent Your Email :)')
      setState(initialState);
     } catch (err) {
