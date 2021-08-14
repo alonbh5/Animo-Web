@@ -67,6 +67,7 @@ app.use('/emotions',EmotionsRoute);
 app.use('/persquiz',PersQuizRoute);
 app.use('/roles',RolesRoute);
 app.use('/token',TokenRoute);
+app.use('/roles',RolesRoute);
 //********************************************/// END /////*************************************************
 
 
