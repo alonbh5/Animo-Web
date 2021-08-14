@@ -125,6 +125,50 @@ module.exports = {
                 })
         }
         
+    },
+
+    StartPersQuiz: async (req,res)=>{
+
+        const userController = await require('../controllers/usersController');
+        const User = await require('../models/userSchema');
+        const userId = await req.params.userId;
+        
+        //console.log("before ans");
+        let ans = await userController.createQuiz(req); 
+        //console.log(`after ans is ${ans}`);        
+        
+        if (ans === true){   
+
+            //console.log(`now im in (ans === true)`);
+            await User.findOne({ '_id': userId}, {}, {sort: { date: -1 }},async function(err, record){
+                  
+                //console.log(`now im in after i findONE (going to send resulte)`);
+                               
+                const botRes = await new BotRes({
+                    _id: new mongoose.Types.ObjectId(),
+                    response_type: "First Personality Test Question",            
+                    content: record.persQuiz,
+                    response_to: "StartPersQuiz"
+                });
+
+                res.status(200).json({
+                    botRes
+                    });
+
+            }).catch(error => {
+                res.status(404).json({
+                massage: "user is not in DB"
+                })
+            });
+            
+        }        
+        else
+        {
+            res.status(500).json({
+                massage: "User was not found"
+                })
+        }
+        
            
             
     },
