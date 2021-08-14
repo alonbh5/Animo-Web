@@ -1,11 +1,11 @@
 import { useContext } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { AuthContext } from "../../shared/context/auth-context"
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import Profile from './Profile';
-import ForgotPassword from './ForgotPassword';
-import ResetPassword from './ResetPassword';
+import SignIn from './Login/SignIn';
+import SignUp from './Login/SignUp';
+import Profile from './Profile/Profile';
+import ForgotPassword from './ResetPassword/ForgotPassword';
+import ResetPassword from './ResetPassword/ResetPassword';
 
 const AuthrizationRouters = () => {
     const auth = useContext(AuthContext);
