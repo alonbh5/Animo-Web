@@ -413,6 +413,14 @@ header .intro-text {
 	font-weight: 600;
 	color: #666;
 }
+.edit-icon {
+	text-align: right;
+	margin-right: 15px;
+}
+i {
+	cursor: pointer;
+}
+
 /* Team Section */
 #team {
 	padding: 100px 0;

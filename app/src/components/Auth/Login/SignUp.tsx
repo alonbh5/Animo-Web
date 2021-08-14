@@ -1,13 +1,14 @@
 import { useEffect, useState, useContext } from "react"
-import { AuthContext } from "../../shared/context/auth-context";
-import { useHttpClient } from "../../shared/hooks/http-hook";
+import { AuthContext } from "../../../shared/context/auth-context";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
-import { api } from "../api/api";
-import { User } from "../api/configuration/models/users";
-import { Role } from "../api/configuration/models/role";
+import { api } from "../../api/api";
+import { User } from "../../api/configuration/models/users";
+import { Role } from "../../api/configuration/models/role";
 import validator from 'validator';
-import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
-import Input from '../../shared/FormElements/Input'
+import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
+import Input from '../../../shared/FormElements/Input'
+import { Link } from 'react-router-dom';
 
 const initialState = {
   firstName: '',
@@ -155,7 +156,8 @@ const SignUp = () => {
               <button type="submit" disabled={!isFormValid()} className="btn btn-primary btn-block">Sign Up</button>
               <br></br>
               <p>
-                Already registered <a href="/signin">sign in?</a>
+                Already registered {" "}
+                <Link to="/login">sign in?</Link>
               </p>
             </form>
           </div>

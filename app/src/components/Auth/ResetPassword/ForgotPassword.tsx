@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react'
 import validator from 'validator';
-import { AuthContext } from "../../shared/context/auth-context";
-import { useHttpClient } from "../../shared/hooks/http-hook";
+import { AuthContext } from "../../../shared/context/auth-context";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
-import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
-import Input from "../../shared/FormElements/Input";
+import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
+import Input from "../../../shared/FormElements/Input";
 import emailjs from 'emailjs-com'
 import { useAlert } from 'react-alert';
 const serviceId = 'service_03oxvhn';

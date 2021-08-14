@@ -111,7 +111,7 @@ module.exports = {
     },
 
     forgotPassword: async (req, res) => {
-        const {email } = req.body;
+        const { email } = req.body;
 
         try {
             const matchUser = await User.findOne({ email: email });
@@ -123,7 +123,7 @@ module.exports = {
             if (token) await token.deleteOne();
 
             let resetToken = crypto.randomBytes(32).toString("hex");
-            const hashToken = await bcrypt.hash(resetToken,12);
+            const hashToken = await bcrypt.hash(resetToken, 12);
 
             const newResetToken = new Token({
                 _id: new mongoose.Types.ObjectId(),
@@ -134,7 +134,7 @@ module.exports = {
             await newResetToken.save();
 
             const resetLink = `${clientURL}/resetPassword?token=${resetToken}&userId=${matchUser._id}`;
-            res.status(200).send({ message: 'We`ve sent password reset instructions to your mailbox', resetLink: resetLink  });
+            res.status(200).send({ message: 'We`ve sent password reset instructions to your mailbox', resetLink: resetLink });
             return;
         } catch (error) {
             res.status(500).send({ message: 'Something went wrong! please try later' });
@@ -154,7 +154,7 @@ module.exports = {
 
         const isValid = await bcrypt.compare(token, passwordResetToken.token);
         if (!isValid) {
-            res.status(500).send({ message: "Invalid or expired password reset token"});
+            res.status(500).send({ message: "Invalid or expired password reset token" });
         }
 
         const hash = await bcrypt.hash(password, 12);
@@ -195,13 +195,13 @@ module.exports = {
         try {
             existingUser = await User.findOne({ email: email });
         } catch (err) {
-            res.status(401).send({ message: 'Loggin failed, please try later' })
+            res.status(500).send({ message: 'Loggin failed, please try later' });
             // const error = new HttpError('Loggin failed, please try later', 500);
             // return next(error)
         }
 
         if (!existingUser) {
-            res.status(401).send({ message: 'Invalid credentials, could not log you in.' })
+            res.status(401).send({ message: 'Invalid Email, could not log you in.' });
         }
 
         let isValidPassword = false;
@@ -212,7 +212,7 @@ module.exports = {
         }
 
         if (!isValidPassword) {
-            res.status(401).send({ message: 'Invalid credentials, could not log you in.' })
+            res.status(401).send({ message: 'Invalid Password, could not log you in.' })
         }
 
         let token;
@@ -234,30 +234,71 @@ module.exports = {
         });
     },
 
-    updateUsers: (req, res) => {
+    updateUser: async (req, res) => {
         const userId = req.params.userId;
         
 
+        if (userId !== req.userData.userId) {
+            res.status(401).send({ message: 'You are not allowed to update this user' })
+        }
+        
+        const { role_id,
+            first_name,
+            last_name,
+            email,
+            password,
+            age,
+            gender
+        } = req.body;
 
-        User.findById(userId).then((theUser) => {
-            if (!theUser) {
-                return res.status(404).json({
-                    message: "User Was not Found, check _ID"
-                })
+        try {
+            const matchUser = await User.findById(userId);
+            if (matchUser.email !== email) {
+                const isExisting = await User.findOne({ email: email });
+                if (isExisting) {
+                    res.status(400).send({ message: `User with email: ${email} already exists` })
+                    return;
+                }
             }
-            else {
-                User.updateOne({ _id: userId }, req.body).then(() => {
-                    res.status(200).json({
-                        message: `update user - ${userId}`
-                    })
-                })
-            }
-        }).catch(error => {
-            res.status(500).json({
-                message: "Could not find user, check _ID"
-            })
-        });
 
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        first_name: first_name || matchUser.first_name,
+                        last_name: last_name || matchUser.last_name,
+                        email: email || matchUser.email,
+                        age: age || matchUser.age,
+                        gender: gender || matchUser.gender,
+                        role_id: role_id || matchUser.role_id,
+                    }
+                },
+            );
+
+            if (matchUser.password !== password && password) {
+                const hash = await bcrypt.hash(password, 12);
+                await User.updateOne(
+                    { _id: userId },
+                    { $set: { password: hash } },
+                );
+            }
+
+            let tokenLogin;
+            tokenLogin = jwt.sign(
+                { userId: userId, email: email, roleId: matchUser.roleId }, 'supersecret', { expiresIn: '1h' }
+            )
+
+            res.status(200).send({
+                message: `Update User successfuly!`,
+                data: {
+                    userId: userId,
+                    email: email,
+                    token: tokenLogin
+                }
+            });
+        } catch {
+            res.status(500).send({ message: 'Something went wrong! please try later' });
+        }
     },
 
     createQuiz : async (req)=>{
