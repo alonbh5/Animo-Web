@@ -1,6 +1,6 @@
 const express = require('express');
-const app = express(); 
-const morgan  = require('morgan'); //for logger
+const app = express();
+const morgan = require('morgan'); //for logger
 const mongoose = require('mongoose'); //for mongoDB
 
 
@@ -19,7 +19,7 @@ mongoose.connect(MongoDBUri, {
     useUnifiedTopology: true,
 });
 
-mongoose.connection.on('connected',() => {
+mongoose.connection.on('connected', () => {
     console.log("MongoDB is Connected!");
 });
 //==============================================================================
@@ -30,8 +30,8 @@ const usersRoute = require('./api/routes/usersRoute');
 const BotResRoute = require('./api/routes/botResRoute');
 const EmotionsRoute = require('./api/routes/emotionsRoute');
 const PersQuizRoute = require('./api/routes/persQuizRoute');
-const TokenRoute = require('./api/routes/tokenRoute')
 const RolesRoute = require('./api/routes/rolesRoute');
+const HttpError = require('./api/models/http-error');
 //==============================================================================
 
 app.use(morgan("dev"));
@@ -60,29 +60,29 @@ app.use((req, res, next) => {
 
 
 //*********************************************/// Router /////*********************************************
-app.use('/phydata',phyDataRoute);
-app.use('/users',usersRoute);
-app.use('/botres',BotResRoute);
-app.use('/emotions',EmotionsRoute);
-app.use('/persquiz',PersQuizRoute);
-app.use('/roles',RolesRoute);
-app.use('/token',TokenRoute);
-app.use('/roles',RolesRoute);
+app.use('/phydata', phyDataRoute);
+app.use('/users', usersRoute);
+app.use('/botres', BotResRoute);
+app.use('/emotions', EmotionsRoute);
+app.use('/persquiz', PersQuizRoute);
+app.use('/roles', RolesRoute);
 //********************************************/// END /////*************************************************
 
 
-app.use((req, res, next)  => {
-    const error = new Error("Not Found!")
-    error.status = 404;
-    next(error);
+app.use((req, res, next) => {
+   throw new HttpError("Could not find this route!", 404)
+    // throw error;
+    // error.status = 404;
+    // next(error);
 })
 
-app.use((error, req, res, next)  => {
-    res.status(error.status || 500);
+app.use((error, req, res, next) => {
+    if (res.headerSent) {
+        return next(error)
+    }
+    res.status(error.code || 500);
     res.json({
-        error: {
-            message: error.message
-        }
+        message: error.message || "An Unkownd error occurred!"
     })
 })
 

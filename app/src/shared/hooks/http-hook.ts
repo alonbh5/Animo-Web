@@ -11,12 +11,11 @@ export const useHttpClient = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
     const [success, setSuccess]=useState(undefined)
-    // const activeHttpRequests = useRef([]);
 
     const sendRequest = useCallback(async (params: AxiosRequestConfig) => {
         params.baseURL = `${APIRootPath}`;
         setIsLoading(true);
-
+        clearMessages();
         try {
             const result = await axios.request(params);
             setSuccess(result.data.message);
@@ -34,28 +33,5 @@ export const useHttpClient = () => {
         setSuccess(undefined);
     };
 
-    // useEffect(()=> {
-    //     return () => {
-    //         activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
-    //     };
-    // }, [])
-
-    return { isLoading: isLoading, error, success,sendRequest, clearMessages };
-}
-
-
-function handelError(error: any) {
-    if (error.response) {
-        // Request made and server responded
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-    } else if (error.request) {
-        // The request was made but no response was received
-        console.log(error.request);
-    } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-    }
-    console.log(error.config);
+    return { isLoading: isLoading, error, success, sendRequest, clearMessages };
 }

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import validator from 'validator';
 import Input from '../../../../shared/FormElements/Input'
 import { User } from '../../../api/configuration/models/users';
+import { AuthContext } from '../../../../shared/context/auth-context';
 
 type TableEditMode = {
-    user: User;
     onUpdate: (user: User) => void;
     onErrorEmail: (err: string) => void;
     onErrorAge: (err: string) => void;
@@ -12,7 +12,9 @@ type TableEditMode = {
 }
 
 export const TableEditMode = (props: TableEditMode) => {
-    const { user, onUpdate } = props;
+    const auth = useContext(AuthContext);
+    const user = auth.user as User;
+
     const [isChange,  setIsChange] = useState(false);
     const [{ firstName, lastName, age, email, password, confirmPassword }, setState] = useState({
         firstName: user.first_name,

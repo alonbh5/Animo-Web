@@ -1,32 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
-import { RoleEnum } from "../../api/configuration/models/role";
+import { useContext, useState } from "react";
 import IdentityTable from './IdentityTable'
-import { userID } from "../../api/configuration/config";
 import { AuthContext } from "../../../shared/context/auth-context";
-import { User } from '../../api/configuration/models/users';
+
 
 const Profile = (props: any) => {
   const [isEditMode, setIsEditMode] = useState(false);
-
   const auth = useContext(AuthContext)
-  const user = auth.user as User;
 
-  const getRole = (roleid?: number) => {
-    if (roleid === 1) {
-      return 'Admin';
-    } else if (roleid === 2) {
-      return 'Psycholigist';
-    } else {
-      return "General"
-    }
-  }
 
   const logoutHandler = () => {
     auth.logout();
   };
 
-  //TODO: change from roleid to role
   return (
     <div id='team' className='text-center'>
       <div className='container'>

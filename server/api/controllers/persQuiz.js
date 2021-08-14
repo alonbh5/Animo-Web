@@ -1,4 +1,4 @@
-const PersQuiz = require('../models/persQuiz');
+const PersQuiz = require('../schemes/persQuiz');
 const mongoose = require('mongoose');
 
 module.exports = {

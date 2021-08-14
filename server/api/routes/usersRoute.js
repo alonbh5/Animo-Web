@@ -6,9 +6,8 @@ const {
     getUser,
     updateUser,
     deleteUsers,
-    addQuizAns,
+    addQuiz,
     createQuiz,
-    persCalc,
     login,
     forgotPassword,
     resetPassword,
@@ -16,14 +15,17 @@ const {
 
 
 router.get('/' ,getAllUsers);
-router.get('/perscalc/:userId' ,persCalc);
 router.get('/login' , login);
 router.patch('/resetPassword', resetPassword)
 router.post('/forgotPassword', forgotPassword)
 router.post('/createuser' , createUsers);
+router.post('/addquiz/:userId',addQuiz);
+router.patch('/createquiz/:userId',createQuiz);
+
+router.use(checkAuth);
 router.get('/getuser/:userId' ,getUser);
 router.patch('/updateUser/:userId' , updateUser);
 router.delete('/:userId' , deleteUsers);
-router.use(checkAuth);
+
 
 module.exports  = router;
