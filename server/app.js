@@ -30,8 +30,8 @@ const usersRoute = require('./api/routes/usersRoute');
 const BotResRoute = require('./api/routes/botResRoute');
 const EmotionsRoute = require('./api/routes/emotionsRoute');
 const PersQuizRoute = require('./api/routes/persQuizRoute');
-const TokenRoute = require('./api/routes/tokenRoute')
 const RolesRoute = require('./api/routes/rolesRoute');
+const HttpError = require('./api/models/http-error');
 //==============================================================================
 
 app.use(morgan("dev"));
@@ -66,14 +66,14 @@ app.use('/botres', BotResRoute);
 app.use('/emotions', EmotionsRoute);
 app.use('/persquiz', PersQuizRoute);
 app.use('/roles', RolesRoute);
-app.use('/token', TokenRoute);
 //********************************************/// END /////*************************************************
 
 
 app.use((req, res, next) => {
-    const error = new Error("Not Found!")
-    error.status = 404;
-    next(error);
+   throw new HttpError("Could not find this route!", 404)
+    // throw error;
+    // error.status = 404;
+    // next(error);
 })
 
 app.use((error, req, res, next) => {

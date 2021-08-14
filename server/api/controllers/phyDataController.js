@@ -14,11 +14,11 @@ module.exports = {
         });
     },
 
-    getTips: async (req, res) => {
+    getTips: async (req, res, next) => {
         try {
             const allTips = await PhyData.find({ data_type: "Tips" })
             if (allTips.length === 0) {
-                res.status(204).send({ message: `Found no Tips` });
+                return next(new HttpError( `Found no Tips`, 204));
             }
             const length = allTips.length;
             res.status(200).send({
@@ -26,16 +26,16 @@ module.exports = {
                 data: allTips
             });
         } catch (err) {
-            res.status(500).send('Unknown Error, please try later.');
+            return next(new HttpError( 'Unknown Error, please try later.', 500));
         }
     },
 
 
-    getArticals: async (req, res) => {
+    getArticals: async (req, res, next) => {
         try {
             const allArticals = await PhyData.find({ data_type: "Article1" })
             if (allArticals.length === 0) {
-                res.status(204).send({ message: `Found no Articals` });
+                return next(new HttpError( `Found no Articals`, 204));
             }
             const length = allArticals.length;
             res.status(200).send({
@@ -43,7 +43,7 @@ module.exports = {
                 data: allArticals
             });
         } catch (err) {
-            res.status(500).send('Unknown Error, please try later.');
+            return next(new HttpError( 'Unknown Error, please try later.', 500));
         }
     },
 
