@@ -45,6 +45,7 @@ const ForgotPassword = (props: any) => {
       },
     }
     try {
+      setSubmitDisabled(true);
       const response = await sendRequest(params);
       const emailParams = {
         reply_to: animoMail,
@@ -54,8 +55,8 @@ const ForgotPassword = (props: any) => {
       await emailjs.send(serviceId, templateId, emailParams, userID)
       alert.success('Please Check Your Mailbox :)')
       setinputDisabled(true);
-      setSubmitDisabled(true);
     } catch (err) {
+      setSubmitDisabled(false);
       alert.error('Error, please try later')
     }
   }
