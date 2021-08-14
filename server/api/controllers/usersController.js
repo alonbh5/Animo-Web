@@ -194,13 +194,13 @@ module.exports = {
         try {
             existingUser = await User.findOne({ email: email });
         } catch (err) {
-            res.status(401).send({ message: 'Loggin failed, please try later' })
+            res.status(500).send({ message: 'Loggin failed, please try later' });
             // const error = new HttpError('Loggin failed, please try later', 500);
             // return next(error)
         }
 
         if (!existingUser) {
-            res.status(401).send({ message: 'Invalid credentials, could not log you in.' })
+            res.status(401).send({ message: 'Invalid Email, could not log you in.' });
         }
 
         let isValidPassword = false;
@@ -211,7 +211,7 @@ module.exports = {
         }
 
         if (!isValidPassword) {
-            res.status(401).send({ message: 'Invalid credentials, could not log you in.' })
+            res.status(401).send({ message: 'Invalid Password, could not log you in.' })
         }
 
         let token;
