@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect} from 'react'
 import validator from 'validator';
-import { AuthContext } from "../../shared/context/auth-context";
-import { useHttpClient } from "../../shared/hooks/http-hook";
+import { AuthContext } from "../../../shared/context/auth-context";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
 import { AxiosRequestConfig } from "axios";
-import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
-import Input from "../../shared/FormElements/Input";
+import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
+import Input from "../../../shared/FormElements/Input";
 import queryString from 'query-string';
 
 const initialState = {
