@@ -6,8 +6,8 @@ const phyDataSchema = mongoose.Schema({
     link: {type: String, require: true},
     author: {type: String, require: true},
     title: {type: String, require: true},
-    emotions: {type: String, require: false, default: "Empty"},
-    created_by: {type: String, require: false, default: "-"},
+    emotions: {type: String, require: true},
+    created_by: {type: String, require: true},
     confirm: {type: Boolean, require: false, default: false},
 });
 
