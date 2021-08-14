@@ -1,22 +1,35 @@
 import { useState, useCallback, useEffect } from 'react';
 import { User } from '../../components/api/configuration/models/users';
+import { Role } from '../../components/api/configuration/models/role';
 import { AxiosRequestConfig } from 'axios';
 import { useHttpClient } from "./http-hook";
 
 let logoutTimer: NodeJS.Timeout;
 
+const initalUser = {
+  id: undefined,
+  role_id: undefined,
+  first_name: undefined,
+  last_name: undefined,
+  email: undefined,
+  password: undefined,
+  age: undefined,
+  gender: undefined,
+}
+
+const initRole = {
+  role_id: undefined,
+  Permissions: undefined,
+  role_type: undefined,
+}
+
 export const useAuth = () => {
   const [token, setToken] = useState(undefined);
-  const [tokenExpirationDate, setTokenExpirationDate] = useState<Date|undefined>(undefined);
+  const [tokenExpirationDate, setTokenExpirationDate] = useState<Date | undefined>(undefined);
   const [userId, setUserId] = useState(undefined);
-  const [user, setUser] = useState<User>({          id: "",
-    role_id: undefined,
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    age: undefined,
-    gender: "",})
+  const [user, setUser] = useState<User>(initalUser);
+  const [userRoleType, setUserRoleType] = useState<Role>(initRole);
+
   const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
 
   const login = useCallback((uid, token, expirationDate) => {
@@ -52,9 +65,10 @@ export const useAuth = () => {
             Authorization: 'Bearer ' + token
           }
         }
-      
-        const response = await sendRequest(params);
-        const data = response.data;
+
+        const responseUser = await sendRequest(params);
+        const data = responseUser.data;
+
         setUser({
           id: data._id,
           role_id: data.role_id,
@@ -65,6 +79,13 @@ export const useAuth = () => {
           age: data.age,
           gender: data.gender,
         });
+
+        const paramsRole: AxiosRequestConfig = {
+          method: 'GET',
+          url: `/roles/${data.role_id}`,
+        }
+        const responseRole = await sendRequest(paramsRole);
+        setUserRoleType(responseRole.data.role);
       } catch (err) { }
     }
 
@@ -75,18 +96,20 @@ export const useAuth = () => {
   }, [userId]);
 
 
+
   useEffect(() => {
     if (token && tokenExpirationDate) {
       const remainingTime = tokenExpirationDate.getTime() - new Date().getTime();
-      logoutTimer  = setTimeout(logout, remainingTime);
+      logoutTimer = setTimeout(logout, remainingTime);
     } else {
       clearTimeout(logoutTimer);
     }
-    setUser({})
+    setUser(initalUser);
+    setUserRoleType(initRole);
   }, [token, logout, tokenExpirationDate]);
 
   useEffect(() => {
-  
+
     //@ts-ignore
     const storedData = JSON.parse(localStorage.getItem('userData'));
     if (
@@ -99,5 +122,5 @@ export const useAuth = () => {
     }
   }, [login]);
 
-  return { token, login, logout, userId, user };
+  return { token, login, logout, userId, user, userRole: userRoleType };
 };

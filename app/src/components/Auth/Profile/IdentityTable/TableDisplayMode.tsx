@@ -1,17 +1,14 @@
 
+import {  useContext } from 'react';
 import { User } from '../../../api/configuration/models/users';
+import { Role } from '../../../api/configuration/models/role';
+import { AuthContext } from '../../../../shared/context/auth-context';
 
-export const TableDisplayMode = (props: { user: User }) => {
-    const { user } = props;
-    const getRole = (roleid?: number) => {
-        if (roleid === 1) {
-            return 'Admin';
-        } else if (roleid === 2) {
-            return 'Psycholigist';
-        } else {
-            return "General"
-        }
-    }
+export const TableDisplayMode = () => {
+    const auth = useContext(AuthContext);
+    const user = auth.user as User;
+    const role = auth.userRole as Role;
+
     return (
         <tbody>
             <tr>
@@ -36,7 +33,7 @@ export const TableDisplayMode = (props: { user: User }) => {
             </tr>
             <tr>
                 <td>Role</td>
-                <td>{getRole(user.role_id)}</td>
+                <td>{role.role_type}</td>
             </tr>
         </tbody>
     )

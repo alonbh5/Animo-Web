@@ -5,12 +5,11 @@ import IdentityTable from './IdentityTable'
 import { userID } from "../../api/configuration/config";
 import { AuthContext } from "../../../shared/context/auth-context";
 import { User } from '../../api/configuration/models/users';
-
+import { useUser } from "../../../shared/hooks/user-hook";
 const Profile = (props: any) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const auth = useContext(AuthContext)
-  const user = auth.user as User;
 
   const getRole = (roleid?: number) => {
     if (roleid === 1) {

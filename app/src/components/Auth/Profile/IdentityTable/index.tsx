@@ -6,6 +6,7 @@ import { TableEditMode } from "./TableEditMode"
 import { AxiosRequestConfig } from "axios";
 import queryString from 'query-string';
 import { useHttpClient } from "../../../../shared/hooks/http-hook";
+import { useUser } from "../../../../shared/hooks/user-hook";
 import LoadingSpinner from '../../../../shared/UIElements/LoadingSpinner';
 import { useAlert } from 'react-alert';
 
@@ -18,7 +19,6 @@ const IdentityTable = (props: IdentityTableProps) => {
     const auth = useContext(AuthContext)
     const alert = useAlert()
 
-    const user = auth.user as User;
     const { isEditMode } = props;
     const [errorAge, setErrorMessageAge] = useState("")
     const [errorEmail, setErrorMessageEmail] = useState("")
@@ -29,6 +29,7 @@ const IdentityTable = (props: IdentityTableProps) => {
         setErrorMessageAge("");
         setErrorMessageEmail("");
         setErrorMessagePassword("");
+        clearMessages();
     }, [isEditMode]);
 
     const onUpdateUser = async (user: User) => {
@@ -63,8 +64,8 @@ const IdentityTable = (props: IdentityTableProps) => {
         </div>
         <table>
             {!isEditMode ?
-                <TableDisplayMode user={user} /> :
-                <TableEditMode user={user}
+                <TableDisplayMode /> :
+                <TableEditMode
                     onErrorEmail={setErrorMessageEmail}
                     onErrorAge={setErrorMessageAge}
                     onErrorPassword={setErrorMessagePassword}

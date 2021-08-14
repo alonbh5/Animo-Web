@@ -1,14 +1,14 @@
 import { useEffect, useState, useContext } from "react"
 import { AuthContext } from "../../../shared/context/auth-context";
 import { useHttpClient } from "../../../shared/hooks/http-hook";
+import { useRoles } from "../../../shared/hooks/roles-hook";
 import { AxiosRequestConfig } from "axios";
-import { api } from "../../api/api";
 import { User } from "../../api/configuration/models/users";
-import { Role } from "../../api/configuration/models/role";
 import validator from 'validator';
 import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
 import Input from '../../../shared/FormElements/Input'
 import { Link } from 'react-router-dom';
+import { Role } from "../../api/configuration/models/role";
 
 const initialState = {
   firstName: '',
@@ -23,21 +23,16 @@ const initialState = {
 const SignUp = () => {
   const auth = useContext(AuthContext);
   const [{ firstName, lastName, age, email, password, gender, role }, setState] = useState(initialState)
-  const [roleOptions, setRoleOptions] = useState<Role[] | undefined>(undefined)
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [errorAge, setErrorAge] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>('')
-
   const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
+  const { rolesOptions } = useRoles();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
     setState((prevState) => ({ ...prevState, [name]: value }))
   }
-
-  useEffect(() => {
-    api.getRoles().then(roles => setRoleOptions(roles));
-  }, []);
 
   useEffect(() => {
     setErrorEmail(!validator.isEmail(email) && !validator.isEmpty(email) ? "Please enter a valid email address" : "");
@@ -133,7 +128,7 @@ const SignUp = () => {
                 <label className="required">Role</label>
                 <select value={role} onChange={handleChange} name="role" className="form-control">
                   <option value="" disabled selected>Select Role</option>
-                  {roleOptions?.map((role) => {
+                  {rolesOptions?.map((role: Role) => {
                     return <option value={`${role.role_id}`}>{role.role_type}</option>
                   })}
                 </select>
