@@ -4,7 +4,7 @@ const {
     getAllUsers,
     createUsers,
     getUser,
-    updateUsers,
+    updateUser,
     deleteUsers,
     addQuiz,
     createQuiz,
@@ -22,7 +22,7 @@ router.post('/createuser' , createUsers);
 
 router.use(checkAuth);
 router.get('/getuser/:userId' ,getUser);
-router.patch('/:userId' , updateUsers);
+router.patch('/updateUser/:userId' , updateUser);
 router.delete('/:userId' , deleteUsers);
 router.post('/addquiz/:userId',addQuiz);
 router.patch('/createquiz/:userId',createQuiz);
