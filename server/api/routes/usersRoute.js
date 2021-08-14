@@ -24,8 +24,6 @@ router.post('/createuser' , createUsers);
 router.get('/getuser/:userId' ,getUser);
 router.patch('/:userId' , updateUsers);
 router.delete('/:userId' , deleteUsers);
-router.patch('/addquizans/:userId',addQuizAns);
-router.patch('/createquiz/:userId',createQuiz);
 router.use(checkAuth);
 
 module.exports  = router;
