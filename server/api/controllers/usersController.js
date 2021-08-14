@@ -1,5 +1,5 @@
-const User = require('../models/userSchema');
-const Token = require('../models/token');
+const User = require('../schemes/userSchema');
+const Token = require('../schemes/token');
 const clientURL = 'http://localhost:3001'
 const mongoose = require('mongoose');
 const { connect } = require('mongodb');
@@ -319,7 +319,7 @@ module.exports = {
 
             if (theUser.persQuiz.length == 0) {
 
-                const PersQuiz = require('../models/persQuiz');
+                const PersQuiz = require('../schemes/persQuiz');
                 PersQuiz.find().then((allPersQuiz) => {
 
                     const len = allPersQuiz.length;

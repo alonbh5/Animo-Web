@@ -1,4 +1,4 @@
-const BotRes = require('../models/botResSchema');
+const BotRes = require('../schemes/botResSchema');
 const mongoose = require('mongoose');
 
 module.exports = {

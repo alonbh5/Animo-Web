@@ -1,4 +1,4 @@
-const Token = require('../models/token');
+const Token = require('../schemes/token');
 const mongoose = require('mongoose');
 
 module.exports = {

@@ -1,4 +1,4 @@
-const Emotion = require('../models/emotionsSchema');
+const Emotion = require('../schemes/emotionsSchema');
 const mongoose = require('mongoose');
 
 module.exports = {

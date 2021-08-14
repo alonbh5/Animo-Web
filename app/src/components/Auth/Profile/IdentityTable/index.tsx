@@ -62,7 +62,6 @@ const IdentityTable = (props: IdentityTableProps) => {
             {error && <h5 style={{ color: "red" }}>{error}</h5>}
         </div>
         <table>
-
             {!isEditMode ?
                 <TableDisplayMode user={user} /> :
                 <TableEditMode user={user}

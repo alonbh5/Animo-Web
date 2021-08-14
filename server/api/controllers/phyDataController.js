@@ -1,4 +1,4 @@
-const PhyData = require('../models/phyDataSchema');
+const PhyData = require('../schemes/phyDataSchema');
 const mongoose = require('mongoose');
 
 module.exports = {
