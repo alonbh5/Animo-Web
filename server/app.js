@@ -32,6 +32,7 @@ const EmotionsRoute = require('./api/routes/emotionsRoute');
 const PersQuizRoute = require('./api/routes/persQuizRoute');
 const RolesRoute = require('./api/routes/rolesRoute');
 const HttpError = require('./api/models/http-error');
+const PersDataRoute = require('./api/routes/persDataRoute');
 //==============================================================================
 
 app.use(morgan("dev"));
@@ -66,6 +67,7 @@ app.use('/botres', BotResRoute);
 app.use('/emotions', EmotionsRoute);
 app.use('/persquiz', PersQuizRoute);
 app.use('/roles', RolesRoute);
+app.use('/persdata',PersDataRoute);
 //********************************************/// END /////*************************************************
 
 
