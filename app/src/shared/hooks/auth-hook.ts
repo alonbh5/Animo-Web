@@ -78,6 +78,7 @@ export const useAuth = () => {
           password: data.password,
           age: data.age,
           gender: data.gender,
+          persQuiz: data.persQuiz
         });
 
         const paramsRole: AxiosRequestConfig = {

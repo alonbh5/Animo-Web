@@ -22,27 +22,35 @@ export const Navigation = (props: any) => {
         >
           <ul className='nav navbar-nav navbar-right'>
             {auth.isLoggedIn &&
-              <li>
-                <Link to="/analyze" className='page-scroll'>Emotional Analysis
-                </Link>
-              </li>}
+              <>
+                <li  >
+                  <Link to="/personalquiz"  style={{ color: "blue" }}>Personal Quiz
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/analyze">Emotional Analysis
+                  </Link>
+                </li>
+
+              </>
+            }
             <li>
-              <Link to="/tips" className='page-scroll'>Tips & article
+              <Link to="/tips">Tips & article
               </Link>
             </li>
             <li>
-              <HashLink to="/sos" className='page-scroll'>SOS</HashLink>
+              <HashLink to="/sos">SOS</HashLink>
             </li>
             <li>
-              <HashLink to="/home-page#about" className='page-scroll'>About</HashLink>
+              <HashLink to="/home-page#about">About</HashLink>
             </li>
             <li>
-              <HashLink to="/home-page#contact" className='page-scroll'>Contact</HashLink>
+              <HashLink to="/home-page#contact">Contact</HashLink>
             </li>
             {!auth.isLoggedIn ? <li>
-              <Link to="/login" className='page-scroll'>Login</Link>
-             </li> : <li>
-              <Link to="/profile" className='page-scroll'>Profile</Link>
+              <Link to="/login">Login</Link>
+            </li> : <li>
+              <Link to="/profile">Profile</Link>
             </li>}
           </ul>
         </div>
