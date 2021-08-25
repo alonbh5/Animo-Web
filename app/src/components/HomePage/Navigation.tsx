@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { AuthContext } from '../../shared/context/auth-context';
@@ -26,7 +26,10 @@ export const Navigation = (props: any) => {
               <>
                 {(!user.personality || user.personality === '') &&
                   <li>
-                    <Link to="/personalquiz" style={{ color: 'blue' }}>Personal Quiz
+                    <Link
+                      to="/personalquiz"
+                      style={{ color: 'blue' }}>
+                       Personal Quiz
                     </Link>
                   </li>}
                 <li>

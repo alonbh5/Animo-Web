@@ -9,5 +9,5 @@ export const TipsAndArticals = (props: any) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

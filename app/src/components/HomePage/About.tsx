@@ -1,3 +1,4 @@
+import React from 'react';
 
 export const About = (props: any) => {
   return (
@@ -6,13 +7,6 @@ export const About = (props: any) => {
         <div className='row'>
           <div className='col-xs-12 col-md-6'>
             {' '}
-
-
-
-
-
-
-            
             <img src='img/about.jpg' className='img-responsive' alt='' />{' '}
           </div>
           <div className='col-xs-12 col-md-6'>

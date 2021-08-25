@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../../shared/context/auth-context';
 import { useHttpClient } from '../../../shared/hooks/http-hook';
 import { useRoles } from '../../../shared/hooks/roles-hook';
@@ -22,7 +22,15 @@ const initialState = {
 
 const SignUp = () => {
   const auth = useContext(AuthContext);
-  const [{ firstName, lastName, age, email, password, gender, role }, setState] = useState(initialState);
+  const [{
+    firstName,
+    lastName,
+    age,
+    email,
+    password,
+    gender,
+    role
+  }, setState] = useState(initialState);
   const [errorEmail, setErrorEmail] = useState<string>('');
   const [errorAge, setErrorAge] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -35,7 +43,9 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    setErrorEmail(!validator.isEmail(email) && !validator.isEmpty(email) ? 'Please enter a valid email address' : '');
+    setErrorEmail(!validator.isEmpty(email)
+      ? 'Please enter a valid email address'
+      : '');
     let ageError = '';
     if (!validator.isNumeric(age)) {
       ageError = 'Age must be a number';
@@ -81,7 +91,7 @@ const SignUp = () => {
       const response = await sendRequest(params);
       auth.login(response.data.userId, response.data.token);
     } catch (err) {
-      // setErrorMsg(err.message)
+      setErrorMsg(err.message);
     }
   };
 
@@ -168,7 +178,7 @@ const SignUp = () => {
                   className="form-control">
 
                   <option value="" disabled selected>Select Role</option>
-                  {rolesOptions?.map((role: Role, index:) =>
+                  {rolesOptions?.map((role: Role, index:number) =>
                     <option key={role.role_id} value={`${role.role_id}`}>
                       {role.role_type}
                     </option>
@@ -178,13 +188,13 @@ const SignUp = () => {
               <div className="form-group">
                 <label className="required">Age</label>
                 <input
-                 type="age" 
-                className="form-control"
-                 placeholder="Enter age"
+                  type="age"
+                  className="form-control"
+                  placeholder="Enter age"
                   name="age"
-                   value={age}
-                    onChange={handleChange} 
-                    />
+                  value={age}
+                  onChange={handleChange}
+                />
                 <input
                   name="age"
                   onInput={handleChange}
@@ -197,7 +207,12 @@ const SignUp = () => {
                 />
                 <div className="error-msg">{errorAge}</div>
               </div>
-              <button type="submit" disabled={!isFormValid()} className="btn btn-primary btn-block">Sign Up</button>
+              <button
+                type="submit"
+                disabled={!isFormValid()}
+                className="btn btn-primary btn-block">
+                  Sign Up
+              </button>
               <br></br>
               <p>
                 Already registered {' '}
