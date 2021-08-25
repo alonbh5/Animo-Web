@@ -1,11 +1,12 @@
 import { useContext } from "react"
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-
 import { AuthContext } from "../../shared/context/auth-context"
+import { User } from "../api/configuration/models/users";
+
 export const Navigation = (props: any) => {
   const auth = useContext(AuthContext);
-
+  const user = auth.user as User;
   return (
     <nav id='menu' className='navbar navbar-default navbar-fixed-top'>
       <div className='container'>
@@ -23,10 +24,11 @@ export const Navigation = (props: any) => {
           <ul className='nav navbar-nav navbar-right'>
             {auth.isLoggedIn &&
               <>
-                <li  >
+              {user.personality && user.personality === '' &&
+                <li>
                   <Link to="/personalquiz"  style={{ color: "blue" }}>Personal Quiz
                   </Link>
-                </li>
+                </li>}
                 <li>
                   <Link to="/analyze">Emotional Analysis
                   </Link>

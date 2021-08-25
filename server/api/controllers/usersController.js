@@ -485,7 +485,7 @@ module.exports = {
                 persRes += "P";
 
             //console.log("==1==");
-            record.personality = await persRes;
+            record.personality = persRes;
             //console.log("==2==");
 
             await record.markModified('personality');
