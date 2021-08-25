@@ -18,6 +18,8 @@ const PersonalQuiz = (props: any) => {
   const user = auth.user as User;
   let presonalityInfo = undefined;
   let startQuizButton = undefined;
+  let aboutQuiz = undefined;
+
   let pesonalityQuiz = undefined;
   let title = "Personality Quiz";
   useEffect(() => {
@@ -72,7 +74,11 @@ const PersonalQuiz = (props: any) => {
   if (!isQuizStarted) {
     if (personalityData) {
       presonalityInfo = <PesonalityInfo personality={personalityData} />
-      title= "My Personality Info"
+      title = "My Personality Info"
+    } else {
+      aboutQuiz = <div><h3>{`Dear ${user.first_name},`}</h3><p>{`In order to know you well, we will ask you to complete the follwoing questionnaire. 
+      This questionnaire will determine your personality, 
+      allow us to customize your experiense, and give you a better advices based on your personality`}</p></div>
     }
     startQuizButton =
       <button
@@ -86,6 +92,8 @@ const PersonalQuiz = (props: any) => {
     }
   }
 
+
+
   return (
     <div id='team' className='text-center'>
       <div className='container'>
@@ -94,6 +102,7 @@ const PersonalQuiz = (props: any) => {
           {error && <h5 style={{ color: "red" }}>{error}</h5>}
           {isLoading && <LoadingSpinner asOverlay />}
           {presonalityInfo}
+          {aboutQuiz}
           {startQuizButton}
           {pesonalityQuiz}
         </div>

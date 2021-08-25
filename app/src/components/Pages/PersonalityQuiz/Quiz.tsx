@@ -1,19 +1,17 @@
 import { useState } from 'react'
 import { personalQuiz } from '../../api/configuration/models/personalQuiz';
-import { Personality } from '../../api/configuration/models/personality';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
 export const Quiz = (props: { quiz: personalQuiz[]; onSubmit: (quiz: personalQuiz[]) => void }) => {
     const quizQuestions = [...props.quiz]
     const totalQuestions = props.quiz?.length || 0;
     const [questionNumber, setQuestionNumber] = useState(1);
-    const [currChoise, setCurrChoise] = useState("3")
+    const [currChoise, setCurrChoise] = useState("0")
 
     const handelNext = (event: any) => {
         event.preventDefault();
         quizQuestions[questionNumber - 1].answer = currChoise;
         setQuestionNumber(prevState => prevState + 1)
-        setCurrChoise("3")
     }
 
     const handelBack = (event: any) => {
@@ -25,6 +23,7 @@ export const Quiz = (props: { quiz: personalQuiz[]; onSubmit: (quiz: personalQui
         event.preventDefault();
         quizQuestions[questionNumber - 1].answer = currChoise;
         props.onSubmit(quizQuestions)
+        quizQuestions.forEach((quiz,index) => console.log(index + quiz.answer))
     }
 
     const handleChange = (e: any) => {

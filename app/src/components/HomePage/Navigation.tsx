@@ -24,11 +24,11 @@ export const Navigation = (props: any) => {
           <ul className='nav navbar-nav navbar-right'>
             {auth.isLoggedIn &&
               <>
-              {user.personality && user.personality === '' &&
-                <li>
-                  <Link to="/personalquiz"  style={{ color: "blue" }}>Personal Quiz
-                  </Link>
-                </li>}
+                {(!user.personality || user.personality === '' )&&
+                  <li>
+                    <Link to="/personalquiz" style={{ color: "blue" }}>Personal Quiz
+                    </Link>
+                  </li>}
                 <li>
                   <Link to="/analyze">Emotional Analysis
                   </Link>

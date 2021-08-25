@@ -360,7 +360,7 @@ module.exports = {
                 //Record not found, log or send 404 or whatever
                 res = false
             }
-
+                
             for (let index = 0; index < record.persQuiz.length; index++) {
                 record.persQuiz[index].answer = AnsweredQuestions[index].answer;
             }
