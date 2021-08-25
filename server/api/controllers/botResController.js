@@ -128,9 +128,6 @@ module.exports = {
         */
 
         const userId = req.params.userId;
-        console.log("QUESTIONS");
-
-        console.log(req.body);
 
         let ans = await userController.addQuizAns(req);
         if (!ans) {
