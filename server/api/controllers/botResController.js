@@ -129,13 +129,13 @@ module.exports = {
 
         const userId = req.params.userId;
 
-        let ans = await userController.addQuizAns(req);
-        if (!ans) {
-            return next(new HttpError("Somthing went worng, are you sure answers is in range [-1,3]?", 504));
+        let result = await userController.addQuizAns(req);
+        if (!result.res) {
+            return next(new HttpError(result.message, 500));
         }
-        ans = await userController.persCalc(req);
-        if (!ans) {
-            return next(new HttpError("Somthing went worng, are you sure answers is in range [-1,3]?", 504));
+        result = await userController.persCalc(req);
+        if (!result.res) {
+            return next(new HttpError(result.message, 500));
         }
 
         try {
@@ -148,5 +148,70 @@ module.exports = {
         } catch (err) {
             return next(new HttpError('Unknown Error, please try later.', 404));
         }
+    },
+
+    talkToBot: async (req, res) => {
+
+        console.log("sdadad");
+        const userId = req.body.userId;
+        const textFromUser = req.body.textFromUser;
+        const talkType = req.body.talkType;
+
+
+
+        const matchUser = await User.findById(userId);
+
+        if (matchUser) {
+            switch (talkType) {
+                case "GetToKnow": //if you want to get to know you
+
+                    switch (matchUser.getToKnowState) {
+                        case "uninitialized": // start a new session with him
+
+                            matchUser.getToKnowState = "In Progress";
+                            const ans = new Ans({
+                                _id: new mongoose.Types.ObjectId(),
+                                userId: String(matchUser._id),
+                                questionindex: 0,
+                                answers: []
+                            });
+
+                            ans.save().then(() => {
+                                res.status(200).json({
+                                    response_type: "GetToKnow",
+                                    content: "Lets Get To Know You! Im Going To Ask You A Few Question :)",
+                                    response_to: textFromUser
+                                })
+                            });
+
+                            break;
+                        case "In Progress": // contine asking him questions
+                            // code block
+                            break;
+                        case "Done": // start a new session with him
+                            res.status(204).json({
+                                massage: `You already Know The User ${matchUser.first_name}`
+                            })
+                            break;
+                        default:
+                    }
+
+                    break;
+                case y:
+                    // code block
+                    break;
+                default:
+                    res.status(405).json({
+                        massage: "Bad talkType"
+                    })
+            }
+        }
+        else {
+            res.status(404).json({
+                massage: "User is not in DB"
+            });
+        }
+
+
     }
 }
