@@ -43,9 +43,12 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    setErrorEmail(!validator.isEmpty(email)
-      ? 'Please enter a valid email address'
-      : '');
+    console.log(email);
+    if (validator.isEmail(email) || validator.isEmpty(email)) {
+      setErrorEmail('');
+    } else {
+      setErrorEmail('Please enter a valid email address');
+    }
     let ageError = '';
     if (!validator.isNumeric(age)) {
       ageError = 'Age must be a number';
@@ -142,7 +145,8 @@ const SignUp = () => {
                   placeholder="Enter Email"
                   value={email}
                   onChange={handleChange}
-                  errorMessage={errorEmail} />
+                  errorMessage={errorEmail}
+                />
               </div>
               <div className="form-group">
                 <Input
