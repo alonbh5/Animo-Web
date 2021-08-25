@@ -8,7 +8,101 @@ const { connect } = require('mongodb');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require("crypto");
-const HttpError = require('../models/http-error')
+const HttpError = require('../models/http-error');
+
+const CalculatePersType = (personalQuiz) => {
+    let I = 0;
+    let E = 0;
+
+    let J = 0;
+    let P = 0;
+
+    let N = 0;
+    let S = 0;
+
+    let T = 0;
+    let F = 0;
+
+
+    personalQuiz.forEach((item) => {
+
+        let num = parseInt(item.answer);
+
+
+
+        if (isNaN(num)) {
+            console.log("idiot");
+            throw new Error();
+        }
+
+        let WhoToLook;
+
+        if (num >= 0) //case postive ==> relateTo
+        {
+            WhoToLook = item.relateTo;
+        }
+        else { //case negtive ==> opsite
+            num *= -1;
+            WhoToLook = item.opposite;
+        }
+
+        switch (WhoToLook) {
+            case "Thinking":
+                T += num;
+                break;
+            case "Feeling":
+                F += num;
+                break;
+            case "Extraversion":
+                E += num;
+                break;
+            case "Introversion":
+                I += num;
+                break;
+            case "Judging":
+                J += num;
+                break;
+            case "Perceiving":
+                P += num;
+                break;
+            case "Sensing":
+                S += num;
+                break;
+            case "Intuition":
+                N += num;
+                break;
+            default:
+                break;
+        }
+
+
+    });
+
+
+    let persRes = "";
+
+    if (I > E)
+        persRes = "I";
+    else
+        persRes = "E";
+
+    if (N > S)
+        persRes += "N";
+    else
+        persRes += "S";
+
+    if (F > T)
+        persRes += "F";
+    else
+        persRes += "T";
+
+    if (J > P)
+        persRes += "J";
+    else
+        persRes += "P";
+
+    return persRes;
+}
 
 module.exports = {
     getAllUsers: async (req, res, next) => {
@@ -274,7 +368,7 @@ module.exports = {
             tokenLogin = jwt.sign(
                 { userId: userId, email: email, roleId: matchUser.roleId }, 'supersecret', { expiresIn: '1h' }
             )
-             
+
             res.status(200).send({
                 message: `Update User successfuly!`,
                 data: {
@@ -291,9 +385,9 @@ module.exports = {
     addQuiz: (req, res) => {
         const userId = req.params.userId;
 
-        console.log(userId);
+        //console.log(userId);
 
-        console.log(req.body.persQuiz);
+        //console.log(req.body.persQuiz);
 
         res.status(200).json({
             message: `update user - ${userId}`
@@ -337,174 +431,93 @@ module.exports = {
 
     addQuizAns: async (req) => {
 
-        var res = true;
+        const userId = req.params.userId;
 
-        const userId = await req.params.userId;
+        const AnsweredQuestions = req.body;
 
-        const AnsweredQuestions = await req.body;
-        /*
-        Of type array, inside is 
-        "question_id":
-                "question":
-                "relateTo": 
-                "opposite": 
-                "answer": ""
-        */
 
-        await User.findOne({ '_id': userId }, {}, { sort: { date: -1 } }, async function (err, record) {
-            if (err) {
-                //don't just ignore this, log or bubble forward via callbacks
-                res = false;
-            }
-            if (!record) {
-                //Record not found, log or send 404 or whatever
-                res = false
-            }
-                
-            for (let index = 0; index < record.persQuiz.length; index++) {
-                record.persQuiz[index].answer = AnsweredQuestions[index].answer;
+        let matchingUser;
+
+        try {
+            matchingUser = await User.findOne({ '_id': userId });
+
+            if (!matchingUser) {
+                return {
+                    res: false,
+                    message: "User Was Not Found, Please Try Agian Later.."
+                };
             }
 
 
-            await record.markModified('persQuiz');
-            await record.save().then(async () => {
-                res = true;
-            }).catch((err) => {
-                res = false;
-            });
-        });
+            for (let index = 0; index < matchingUser.persQuiz.length; index++) {
+                matchingUser.persQuiz[index].answer = AnsweredQuestions[index].answer;
+            }
 
-        return res;
+            await matchingUser.markModified('persQuiz');
+            await matchingUser.save();
+            return {
+                res: true,
+                message: ""
+            };
+
+        } catch (err) {
+            return {
+                res: false,
+                message: "Something Went Wrong, Please Try Agian Later.."
+            };
+        }
+
+
     },
 
     persCalc: async (req) => {
 
         const userId = await req.params.userId;
-        var res = false;
+        let matchingUser;
+        let persRes;
 
-        //console.log("im in persCalc ");
+        try {
 
-        await User.findOne({ '_id': userId }, {}, { sort: { date: -1 } }, async function (err, record) {
+            matchingUser = await User.findOne({ '_id': userId });
 
-
-            if (err) {
-                //don't just ignore this, log or bubble forward via callbacks
-                console.log("err");
-            }
-            if (!record) {
-                //Record not found, log or send 404 or whatever
-                console.log("!record");
-
+            if (!matchingUser) {
+                return {
+                    res: false,
+                    message: "User Did Not Found!"
+                };
             }
 
-            //console.log("im in persCalc after findOne");
+        } catch (err) {
+            return {
+                res: false,
+                message: "Somthing Went Wrong, Please Try Later.."
+            };
+        }
 
-            var I = 0;
-            var E = 0;
+        try {
+            persRes = CalculatePersType(matchingUser.persQuiz);
+        } catch (err) {
+            return {
+                res: false,
+                message: "Answer Should Be a Number From [-3,3]"
+            };
+        }
 
-            var J = 0;
-            var P = 0;
+        matchingUser.personality = persRes;
 
-            var N = 0;
-            var S = 0;
-
-            var T = 0;
-            var F = 0;
-
-
-            //console.log("----befor foreach");
-
-            await record.persQuiz.forEach(async function (item) {
-
-                var num = await parseInt(item.answer);
-                var WhoToLook;
-
-                if (num >= 0) //case postive ==> relateTo
-                {
-                    WhoToLook = await item.relateTo;
-                }
-                else { //case negtive ==> opsite
-                    num *= await -1;
-                    WhoToLook = await item.opposite;
-                }
-
-                switch (await WhoToLook) {
-                    case "Thinking":
-                        T += num;
-                        break;
-                    case "Feeling":
-                        F += num;
-                        break;
-                    case "Extraversion":
-                        E += num;
-                        break;
-                    case "Introversion":
-                        I += num;
-                        break;
-                    case "Judging":
-                        J += num;
-                        break;
-                    case "Perceiving":
-                        P += num;
-                        break;
-                    case "Sensing":
-                        S += num;
-                        break;
-                    case "Intuition":
-                        N += num;
-                        break;
-                    default:
-                        break;
-                }
-
-            });
-
-            //console.log("----after foreach");
-
-
-            var persRes = "";
-
-            if (I > E)
-                persRes = "I";
-            else
-                persRes = "E";
-
-            if (N > S)
-                persRes += "N";
-            else
-                persRes += "S";
-
-            if (F > T)
-                persRes += "F";
-            else
-                persRes += "T";
-
-            if (J > P)
-                persRes += "J";
-            else
-                persRes += "P";
-
-            //console.log("==1==");
-            record.personality = persRes;
-            //console.log("==2==");
-
-            await record.markModified('personality');
-            //console.log("==3==");
-
-            res = true;
-            await record.save().then(async () => {
-                //console.log("im sending the only true");
-                res = await true;
-            }).catch(async (err) => {
-                //console.log("sending false could not save?");
-                res = false;
-            });
-            //console.log("==4==");
-
-        });
-
-        //console.log(`return res => ${res}`);
-        return res;
+        try {
+            await matchingUser.markModified('personality');
+            await matchingUser.save();
+            return {
+                res: true,
+                message: ""
+            };
+        } catch (err) {
+            return {
+                res: false,
+                message: "Could Not Update User Personality, Please Try Agian Later.."
+            };
+        }
     },
 
     deleteUsers: (req, res) => {

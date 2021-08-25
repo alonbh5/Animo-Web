@@ -44,9 +44,9 @@ const PersonalQuiz = (props: any) => {
     const params: AxiosRequestConfig = {
       method: 'PATCH',
       url: `/botres/addquizans/${user.id}`,
-      data: {
+      data:
         quizAnswers
-      },
+      ,
     }
     try {
       const response = await sendRequest(params);
