@@ -1596,11 +1596,17 @@ pre code {
   max-height: 340px;
   overflow-y: scroll;
 }
+.radiosquiz{
+  margin-left: 30px;
+}
 .container {
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+.progressBar{
+margin-top: 20px;
 }
 @media (min-width: 768px) {
   .container {

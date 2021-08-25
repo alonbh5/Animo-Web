@@ -55,44 +55,44 @@ export const useAuth = () => {
     localStorage.removeItem('userData');
   }, []);
 
+  const fetchUser = async () => {
+    try {
+      const params: AxiosRequestConfig = {
+        method: 'GET',
+        url: `/users/getuser/${userId}`,
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      }
+
+      const responseUser = await sendRequest(params);
+      const data = responseUser.data;
+
+      setUser({
+        id: data._id,
+        role_id: data.role_id,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        password: data.password,
+        age: data.age,
+        gender: data.gender,
+        persQuiz: data.persQuiz,
+        personality: data.personality
+      });
+
+      const paramsRole: AxiosRequestConfig = {
+        method: 'GET',
+        url: `/roles/${data.role_id}`,
+      }
+      const responseRole = await sendRequest(paramsRole);
+      setUserRoleType(responseRole.data.role);
+    } catch (err) { }
+  }
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const params: AxiosRequestConfig = {
-          method: 'GET',
-          url: `/users/getuser/${userId}`,
-          headers: {
-            Authorization: 'Bearer ' + token
-          }
-        }
-
-        const responseUser = await sendRequest(params);
-        const data = responseUser.data;
-
-        setUser({
-          id: data._id,
-          role_id: data.role_id,
-          first_name: data.first_name,
-          last_name: data.last_name,
-          email: data.email,
-          password: data.password,
-          age: data.age,
-          gender: data.gender,
-        });
-
-        const paramsRole: AxiosRequestConfig = {
-          method: 'GET',
-          url: `/roles/${data.role_id}`,
-        }
-        const responseRole = await sendRequest(paramsRole);
-        setUserRoleType(responseRole.data.role);
-      } catch (err) { }
-    }
-
     if (userId) {
       fetchUser();
     } 
-
   }, [userId]);
 
 
@@ -122,5 +122,5 @@ export const useAuth = () => {
     }
   }, [login]);
 
-  return { token, login, logout, userId, user, userRole: userRoleType };
+  return { token, login, logout, userId, user, userRole: userRoleType, fetchUser };
 };

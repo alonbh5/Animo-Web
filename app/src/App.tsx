@@ -11,6 +11,7 @@ import { TipsAndArticals } from './components/Pages/TipsAndArticals';
 import { Switch, Route } from 'react-router-dom';
 import { AuthContext } from './shared/context/auth-context'
 import { useAuth } from './shared/hooks/auth-hook';
+import PersonalQuiz  from './components/Pages/PersonalityQuiz';
 import AuthrizationRouters from './components/Auth'
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
@@ -20,7 +21,7 @@ export const scroll = new SmoothScroll('a[href*="#"]', {
 
 const App = () => {
   const [landingPageData] = useState(JsonData)
-  const { token, login, logout, userId, user, userRole } = useAuth();
+  const { token, login, logout, userId, user, userRole , fetchUser} = useAuth();
   return (
     <AuthContext.Provider value={{
       isLoggedIn: !!token,
@@ -30,23 +31,27 @@ const App = () => {
       logout: logout,
       user: user,
       userRole: userRole,
+      fetchUser: fetchUser
     }}>
-        <Navigation />
-        <Switch>
-          <Route path='/home-page'>
-            <Header data={landingPageData.Header} />
-            <About data={landingPageData.About} />
-            <Team data={landingPageData.Team} />
-            <Contact data={landingPageData.Contact} />
-          </Route>
-          <Route path='/analyze'>
-            <EmotionalAnalysis data={landingPageData.About} />
-          </Route>
-          <Route path='/tips'>
-            <TipsAndArticals />
-          </Route>
-          <AuthrizationRouters />
-        </Switch>
+      <Navigation />
+      <Switch>
+        <Route path='/home-page'>
+          <Header data={landingPageData.Header} />
+          <About data={landingPageData.About} />
+          <Team data={landingPageData.Team} />
+          <Contact data={landingPageData.Contact} />
+        </Route>
+        <Route path='/personalquiz'>
+          <PersonalQuiz />
+        </Route>
+        <Route path='/analyze'>
+          <EmotionalAnalysis data={landingPageData.About} />
+        </Route>
+        <Route path='/tips'>
+          <TipsAndArticals />
+        </Route>
+        <AuthrizationRouters />
+      </Switch>
     </AuthContext.Provider>
   )
 }

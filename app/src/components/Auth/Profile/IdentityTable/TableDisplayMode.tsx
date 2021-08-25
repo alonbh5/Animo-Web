@@ -1,8 +1,9 @@
 
-import {  useContext } from 'react';
+import { useContext } from 'react';
 import { User } from '../../../api/configuration/models/users';
 import { Role } from '../../../api/configuration/models/role';
 import { AuthContext } from '../../../../shared/context/auth-context';
+import { Link } from 'react-router-dom';
 
 export const TableDisplayMode = () => {
     const auth = useContext(AuthContext);
@@ -35,6 +36,15 @@ export const TableDisplayMode = () => {
                 <td>Role</td>
                 <td>{role.role_type}</td>
             </tr>
+            {user.personality && user.personality !== '' &&
+                <tr>
+                    <td>Personality Type</td>
+                    <td>       
+                        <Link to="/personalquiz" style={{ color: "blue" }}>{user.personality}
+                    </Link>
+                    </td>
+                </tr>
+            }
         </tbody>
     )
 }
