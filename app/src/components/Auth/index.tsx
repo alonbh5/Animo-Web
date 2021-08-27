@@ -35,7 +35,6 @@ const AuthrizationRouters = () => {
                 <Profile />
               </Route>
               <Redirect to="/home-page" />
-
             </Switch>;
   }
   return (

@@ -1,4 +1,5 @@
 
+/*eslint-disable*/
 export type Role = {
     role_id?: number;
     Permissions?: string[];
