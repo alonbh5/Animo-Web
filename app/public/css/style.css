@@ -586,3 +586,29 @@ color: #777;
 	margin: 50px 0;
 }
 }
+
+.flex-container{
+	grid-column-gap: 50px;
+	display: flex;
+	margin: 10px;
+	grid-template-columns: auto auto;
+	padding: 20px;
+	font-family:inherit;
+	justify-content: space-evenly;
+	 
+}
+.grid-item {
+	padding: 20px;
+	text-decoration: blue;
+	height: 100px;
+	
+}
+
+a#link {
+color: black;	
+font-family: inherit;
+font-weight:bold;
+font-size: 15px;
+margin-top: 30;
+
+}
