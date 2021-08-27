@@ -1,0 +1,35 @@
+.nice-bot-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.react-chatbot-kit-chat-container {
+  width: 500px;
+  margin: auto;
+  display: block;
+  /* border-style: solid; */
+  box-shadow: 0px 10px 10px gray;
+}
+
+.react-chatbot-kit-chat-header {
+  font-size: 1.2rem;
+}
+
+.react-chatbot-kit-chat-bot-message {
+  margin-left: 10px;
+  font-size: 1.5rem;
+}
+
+.react-chatbot-kit-user-chat-message {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+.react-chatbot-kit-chat-input {
+  font-size: 1.5rem;
+}
