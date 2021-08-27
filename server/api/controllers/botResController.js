@@ -2,7 +2,77 @@ const BotRes = require('../schemes/botResSchema');
 const mongoose = require('mongoose');
 const userController = require('../controllers/usersController');
 const User = require('../schemes/userSchema');
-const HttpError = require('../models/http-error')
+const HttpError = require('../models/http-error');
+const AnswersFromUsers = require('../schemes/answersSchema');
+const BotPresonalQuestions = require('../schemes/presonalQuestionSchema');
+
+const InitGetToKnow = async (matchUser, textFromUser, res) => {
+    //save new log of system user in table DB (object from mongoose is AnswersFromUsers)
+    //send a new Answer from bot - start conversion
+
+    let allQuestion = await BotPresonalQuestions.find();
+
+    console.log(allQuestion);
+    const ans = new AnswersFromUsers({
+        _id: new mongoose.Types.ObjectId(),
+        userId: String(matchUser._id),
+        questionindex: 0,
+        answers: allQuestion
+    });
+
+    matchUser.getToKnowState = "In Progress";
+    await matchUser.markModified('getToKnowState');
+    await matchUser.save();
+
+    ans.save().then(() => {
+        res.status(200).json({
+            response_type: "GetToKnow-InProgress", //mean for UI to keep sending answer from user from now on
+            content: "Lets Get To Know You a bit! Im Going To Ask You A Few Questions :) Ok?",
+            response_to: textFromUser
+        })
+    });
+}
+
+const KeepGetToKnow = async (AnswersObjFromUser, matchUser, textFromUser, res) => {
+
+    let currentUserIndex = AnswersObjFromUser.questionindex;
+    let questionsArray = AnswersObjFromUser.answers;
+    let arrayLength = AnswersObjFromUser.answers.length; //this does not work
+
+    if (currentUserIndex >= arrayLength) {
+        matchUser.getToKnowState = "Done"
+        await matchUser.markModified('getToKnowState');
+        await matchUser.save();
+        res.status(200).json({
+            response_type: "GetToKnow-Done", //mean for UI to STOP sending answers from user from now on
+            content: "Ok! That All I Wanted To know :)",
+            response_to: textFromUser
+        });
+
+    }
+    else {
+        if (currentUserIndex != 0) {            
+            AnswersObjFromUser.answers[currentUserIndex].useranswer = textFromUser; //save answer           
+            await AnswersObjFromUser.markModified("answers");
+
+        }
+        let BotText = questionsArray[currentUserIndex].question;
+        
+        AnswersObjFromUser.questionindex = parseInt(currentUserIndex) + 1;
+        
+        await AnswersObjFromUser.markModified("questionindex");
+        await AnswersObjFromUser.save();
+
+        res.status(200).json({
+            response_type: "GetToKnow-InProgress", //mean for UI to Keep sending answers from user from now on
+            content: BotText,
+            response_to: textFromUser
+        });
+    }
+
+
+}
+//--------------------------------------------------------------------------
 
 module.exports = {
     getAllBotRes: (req, res) => {
@@ -152,41 +222,41 @@ module.exports = {
 
     talkToBot: async (req, res) => {
 
-        console.log("sdadad");
-        const userId = req.body.userId;
-        const textFromUser = req.body.textFromUser;
-        const talkType = req.body.talkType;
+        const {
+            userId,
+            textFromUser,
+            talkType
+        } = req.body;
 
+        let matchUser;
 
+        try {
+            matchUser = await User.findById(userId);
+        } catch (err) {
+            res.status(404).json({ message: "Could Not Find User" })
+        }
 
-        const matchUser = await User.findById(userId);
 
         if (matchUser) {
             switch (talkType) {
-                case "GetToKnow": //if you want to get to know you
+                case "GetToKnow": //if you want to get to know you                    
 
                     switch (matchUser.getToKnowState) {
                         case "uninitialized": // start a new session with him
 
-                            matchUser.getToKnowState = "In Progress";
-                            const ans = new Ans({
-                                _id: new mongoose.Types.ObjectId(),
-                                userId: String(matchUser._id),
-                                questionindex: 0,
-                                answers: []
-                            });
-
-                            ans.save().then(() => {
-                                res.status(200).json({
-                                    response_type: "GetToKnow",
-                                    content: "Lets Get To Know You! Im Going To Ask You A Few Question :)",
-                                    response_to: textFromUser
-                                })
-                            });
+                            InitGetToKnow(matchUser, textFromUser, res);
 
                             break;
                         case "In Progress": // contine asking him questions
-                            // code block
+
+                            try {
+                                let ansObj = await AnswersFromUsers.findOne({ userId: matchUser._id });
+                                KeepGetToKnow(ansObj, matchUser, textFromUser, res);
+                            } catch (err) {
+                                res.status(404).json({ message: "Could Not Find Answers From This User - try agian" })
+                            }
+
+
                             break;
                         case "Done": // start a new session with him
                             res.status(204).json({
@@ -197,7 +267,7 @@ module.exports = {
                     }
 
                     break;
-                case y:
+                case "dsa":
                     // code block
                     break;
                 default:
