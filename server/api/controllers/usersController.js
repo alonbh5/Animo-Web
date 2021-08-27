@@ -1,12 +1,109 @@
 const User = require('../schemes/userSchema');
 const Token = require('../schemes/token');
+const PersQuiz = require('../schemes/persQuiz');
+
 const clientURL = 'http://localhost:3001'
 const mongoose = require('mongoose');
 const { connect } = require('mongodb');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require("crypto");
-const HttpError = require('../models/http-error')
+const HttpError = require('../models/http-error');
+
+const CalculatePersType = (personalQuiz) => {
+    let I = 0;
+    let E = 0;
+
+    let J = 0;
+    let P = 0;
+
+    let N = 0;
+    let S = 0;
+
+    let T = 0;
+    let F = 0;
+
+
+    personalQuiz.forEach((item) => {
+
+        let num = parseInt(item.answer);
+
+
+
+        if (isNaN(num)) {
+            console.log("idiot");
+            throw new Error();
+        }
+
+        let WhoToLook;
+
+        if (num >= 0) //case postive ==> relateTo
+        {
+            WhoToLook = item.relateTo;
+        }
+        else { //case negtive ==> opsite
+            num *= -1;
+            WhoToLook = item.opposite;
+        }
+
+        switch (WhoToLook) {
+            case "Thinking":
+                T += num;
+                break;
+            case "Feeling":
+                F += num;
+                break;
+            case "Extraversion":
+                E += num;
+                break;
+            case "Introversion":
+                I += num;
+                break;
+            case "Judging":
+                J += num;
+                break;
+            case "Perceiving":
+                P += num;
+                break;
+            case "Sensing":
+                S += num;
+                break;
+            case "Intuition":
+                N += num;
+                break;
+            default:
+                break;
+        }
+
+
+    });
+
+
+    let persRes = "";
+
+    if (I > E)
+        persRes = "I";
+    else
+        persRes = "E";
+
+    if (N > S)
+        persRes += "N";
+    else
+        persRes += "S";
+
+    if (F > T)
+        persRes += "F";
+    else
+        persRes += "T";
+
+    if (J > P)
+        persRes += "J";
+    else
+        persRes += "P";
+
+    return persRes;
+}
+
 module.exports = {
     getAllUsers: async (req, res, next) => {
         try {
@@ -288,9 +385,9 @@ module.exports = {
     addQuiz: (req, res) => {
         const userId = req.params.userId;
 
-        console.log(userId);
+        //console.log(userId);
 
-        console.log(req.body.persQuiz);
+        //console.log(req.body.persQuiz);
 
         res.status(200).json({
             message: `update user - ${userId}`
@@ -298,53 +395,129 @@ module.exports = {
 
     },
 
-    createQuiz: (req, res) => {
+    createQuiz: async (req) => {
+        const userId = await req.params.userId;
 
+        try {
+            const user = await User.findById(userId);
 
-        User.findById(userId).then((theUser) => {
+            if (user.persQuiz.length === 0) {
+                const allPersonalQuiz = await PersQuiz.find();
+                const len = allPersonalQuiz.length;
+                const newArr = [];
 
-            if (theUser.persQuiz.length == 0) {
-
-                const PersQuiz = require('../schemes/persQuiz');
-                PersQuiz.find().then((allPersQuiz) => {
-
-                    const len = allPersQuiz.length;
-                    const newArr = [];
-                    console.log(len)
-                    for (var i = 0; i < len; i++) {
-
-                        var newElm = {
-                            question: '',
-                            relateTo: '',
-                            opposite: '',
-                            answer: ''
-                        }
-
-                        newElm.question = allPersQuiz[i].question;
-                        newElm.relateTo = allPersQuiz[i].relateTo;
-                        newElm.opposite = allPersQuiz[i].opposite;
-                        newArr.push(newElm);
+                for (var i = 0; i < len; i++) {
+                    var newElm = {
+                        question_id: '',
+                        question: '',
+                        relateTo: '',
+                        opposite: '',
+                        answer: ''
                     }
 
-                    User.updateOne({ _id: userId }, {})
-
-
-                });
+                    newElm.question_id = allPersonalQuiz[i]._id;
+                    newElm.question = allPersonalQuiz[i].question.trim();
+                    newElm.relateTo = allPersonalQuiz[i].relateTo.trim();
+                    newElm.opposite = allPersonalQuiz[i].opposite.trim();
+                    newArr.push(newElm);
+                }
+                await User.updateOne({ _id: userId }, { persQuiz: newArr })
             }
-            else {
-                console.log("no")
+            return true;
+        } catch (err) {
+            return false;
+        }
+    },
+
+    addQuizAns: async (req) => {
+
+        const userId = req.params.userId;
+
+        const AnsweredQuestions = req.body;
+
+
+        let matchingUser;
+
+        try {
+            matchingUser = await User.findOne({ '_id': userId });
+
+            if (!matchingUser) {
+                return {
+                    res: false,
+                    message: "User Was Not Found, Please Try Agian Later.."
+                };
             }
-            res.status(200).json({
-                message: `nothing`
-            })
-        }).catch(error => {
-            return res.status(500).json({
-                message: "Could not find user, check _ID"
-            })
-        });
 
 
+            for (let index = 0; index < matchingUser.persQuiz.length; index++) {
+                matchingUser.persQuiz[index].answer = AnsweredQuestions[index].answer;
+            }
 
+            await matchingUser.markModified('persQuiz');
+            await matchingUser.save();
+            return {
+                res: true,
+                message: ""
+            };
+
+        } catch (err) {
+            return {
+                res: false,
+                message: "Something Went Wrong, Please Try Agian Later.."
+            };
+        }
+
+
+    },
+
+    persCalc: async (req) => {
+
+        const userId = await req.params.userId;
+        let matchingUser;
+        let persRes;
+
+        try {
+
+            matchingUser = await User.findOne({ '_id': userId });
+
+            if (!matchingUser) {
+                return {
+                    res: false,
+                    message: "User Did Not Found!"
+                };
+            }
+
+        } catch (err) {
+            return {
+                res: false,
+                message: "Somthing Went Wrong, Please Try Later.."
+            };
+        }
+
+        try {
+            persRes = CalculatePersType(matchingUser.persQuiz);
+        } catch (err) {
+            return {
+                res: false,
+                message: "Answer Should Be a Number From [-3,3]"
+            };
+        }
+
+        matchingUser.personality = persRes;
+
+        try {
+            await matchingUser.markModified('personality');
+            await matchingUser.save();
+            return {
+                res: true,
+                message: ""
+            };
+        } catch (err) {
+            return {
+                res: false,
+                message: "Could Not Update User Personality, Please Try Agian Later.."
+            };
+        }
     },
 
     deleteUsers: (req, res) => {

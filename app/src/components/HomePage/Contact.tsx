@@ -1,27 +1,26 @@
 import { useState } from 'react';
-import emailjs from 'emailjs-com';
-import { init } from 'emailjs-com';
-import { templateId, serviceId, userID, animoMail } from '../../components/api/configuration/config'
-import { useAlert } from 'react-alert'
+import emailjs, { init } from 'emailjs-com';
+import { templateId, serviceId, userID, animoMail }
+  from '../../components/api/configuration/config';
+import { useAlert } from 'react-alert';
 
 init(userID);
-
 
 const initialState = {
   name: '',
   email: '',
-  message: '',
-}
+  message: ''
+};
 
 export const Contact = (props: any) => {
-  const alert = useAlert()
+  const alert = useAlert();
 
-  const [{ name, email, message }, setState] = useState(initialState)
+  const [{ name, email, message }, setState] = useState(initialState);
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target
-    setState((prevState) => ({ ...prevState, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setState((prevState) => ({ ...prevState, [name]: value }));
+  };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -30,14 +29,14 @@ export const Contact = (props: any) => {
       from_name: name,
       reply_to: email,
       message: message,
-      send_to: animoMail,
-    }
+      send_to: animoMail
+    };
     try {
-     await emailjs.send(serviceId, templateId, params);
-     alert.success('Sent Your Email :)')
-     setState(initialState);
+      await emailjs.send(serviceId, templateId, params);
+      alert.success('Sent Your Email :)');
+      setState(initialState);
     } catch (err) {
-      alert.error('Error, please try later')
+      alert.error('Error, please try later');
     }
   };
 
@@ -165,7 +164,8 @@ export const Contact = (props: any) => {
       <div id='footer'>
         <div className='container text-center'>
           <p>
-            &copy; 2020 Issaaf Kattan React Land Page Template. Design by{' '}
+            &copy; 2020 Issaaf Kattan React L
+            and Page Template. Design by{' '}
             <a href='http://www.templatewire.com' rel='nofollow'>
               TemplateWire
             </a>
@@ -173,5 +173,5 @@ export const Contact = (props: any) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

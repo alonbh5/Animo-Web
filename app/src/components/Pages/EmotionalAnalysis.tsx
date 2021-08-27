@@ -5,6 +5,8 @@ import config from "../chatbot/config";
 import MessageParser from "../chatbot/MessageParser";
 import ActionProvider from "../chatbot/ActionProvider";
 
+import React from 'react';
+
 export const EmotionalAnalysis = (props: any) => {
 
   return (

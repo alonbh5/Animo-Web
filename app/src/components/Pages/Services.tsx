@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const Services = (props: any) => {
   return (
     <div id='services' className='text-center'>
@@ -25,5 +27,5 @@ export const Services = (props: any) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -10,4 +10,6 @@ export type User = {
     age?: number;
     gender?: string; 
     permissions_to_app?: string[];
+    persQuiz?: []
+    personality?: string;
 }

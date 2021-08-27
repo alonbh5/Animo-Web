@@ -1,4 +1,6 @@
-export const Team = (props: any) => {
+import React from 'react';
+
+export function Team (props: any) {
   return (
     <div id='team' className='text-center'>
       <div className='container'>
@@ -26,5 +28,5 @@ export const Team = (props: any) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
