@@ -1,49 +1,47 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react';
 import { AxiosRequestConfig } from 'axios';
-import { useHttpClient } from "./http-hook";
+import { useHttpClient } from './http-hook';
 
 export const serverAPIPort = 3000;
-export const host = 'http://localhost'
-export const APIRootPath = `${host}:${serverAPIPort}`
+export const host = 'http://localhost';
+export const APIRootPath = `${host}:${serverAPIPort}`;
 export const staticsPort = 3001;
 export const staticsUrl = `${host}:${staticsPort}/`;
 
-
 export const useRoles = () => {
-    const { sendRequest } = useHttpClient();
-    const [rolesOptions, setRolesOptions] = useState([]);
-    const [error, setError] = useState("")
+  const { sendRequest } = useHttpClient();
+  const [rolesOptions, setRolesOptions] = useState([]);
+  const [error, setError] = useState('');
 
-    useEffect(() => {
-        const fetchRoles = async () => {
-            const params: AxiosRequestConfig = {
-                method: 'GET',
-                url: `/roles`,
-            }
-            try {
-                const response = await sendRequest(params);
-                setRolesOptions(response.data.allRoles)
-            } catch (err) {
-                setRolesOptions([])
-                setError('Could not fetch roles');
-            }
-        }
-        fetchRoles();
-    }, [])
+  useEffect(() => {
+    const fetchRoles = async () => {
+      const params: AxiosRequestConfig = {
+        method: 'GET',
+        url: '/roles'
+      };
+      try {
+        const response = await sendRequest(params);
+        setRolesOptions(response.data.allRoles);
+      } catch (err) {
+        setRolesOptions([]);
+        setError('Could not fetch roles');
+      }
+    };
+    fetchRoles();
+  }, []);
 
-    const getRoleById = useCallback(async (roleId: number) => {
-        const params: AxiosRequestConfig = {
-            method: 'GET',
-            url: `/roles/${roleId}`,
-        }
-        try {
-            const response = await sendRequest(params);
-            return response.data.role;
-        } catch {
-            setError('Could not fetch roles');
-        }
-    }, [])
+  const getRoleById = useCallback(async (roleId: number) => {
+    const params: AxiosRequestConfig = {
+      method: 'GET',
+      url: `/roles/${roleId}`
+    };
+    try {
+      const response = await sendRequest(params);
+      return response.data.role;
+    } catch {
+      setError('Could not fetch roles');
+    }
+  }, []);
 
-
-    return { rolesOptions, getRoleById, error };
-}
+  return { rolesOptions, getRoleById, error };
+};

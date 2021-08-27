@@ -1,8 +1,8 @@
-import { useContext } from "react"
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { AuthContext } from "../../shared/context/auth-context"
-import { User } from "../api/configuration/models/users";
+import { AuthContext } from '../../shared/context/auth-context';
+import { User } from '../api/configuration/models/users';
 
 export const Navigation = (props: any) => {
   const auth = useContext(AuthContext);
@@ -24,9 +24,12 @@ export const Navigation = (props: any) => {
           <ul className='nav navbar-nav navbar-right'>
             {auth.isLoggedIn &&
               <>
-                {(!user.personality || user.personality === '' )&&
+                {(!user.personality || user.personality === '') &&
                   <li>
-                    <Link to="/personalquiz" style={{ color: "blue" }}>Personal Quiz
+                    <Link
+                      to="/personalquiz"
+                      style={{ color: 'blue' }}>
+                       Personal Quiz
                     </Link>
                   </li>}
                 <li>
@@ -49,14 +52,16 @@ export const Navigation = (props: any) => {
             <li>
               <HashLink to="/home-page#contact">Contact</HashLink>
             </li>
-            {!auth.isLoggedIn ? <li>
-              <Link to="/login">Login</Link>
-            </li> : <li>
-              <Link to="/profile">Profile</Link>
-            </li>}
+            {!auth.isLoggedIn
+              ? <li>
+                <Link to="/login">Login</Link>
+              </li>
+              : <li>
+                <Link to="/profile">Profile</Link>
+              </li>}
           </ul>
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
