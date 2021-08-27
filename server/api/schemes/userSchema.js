@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
     age: {type: Number, min: 1, max: 120, require: true},
     gender: {type: String, require: true}, 
     persQuiz: {type: Array, require: false,default: []},
-    personality: {type: String, require: false, default: ""}
+    personality: {type: String, require: false, default: ""},
+    getToKnowState:{type: String, require: false, default: "uninitialized"}
 });
 
 module.exports = mongoose.model("Users",userSchema);
