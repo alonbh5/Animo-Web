@@ -1,12 +1,13 @@
+/* eslint-disable */
 import "./showOptions.css";
 
 export const ShowOptions = (props: any) => {
   const options = [
-    {
-      text: "First Talk",
-      handler: props.actionProvider.handlerFirstTalk,
-      id: 1,
-    },
+    // {
+    //   text: "First Talk",
+    //   handler: props.actionProvider.handlerFirstTalk,
+    //   id: 1,
+    // },
     {
       text: "Advice",
       handler: props.actionProvider.handlerAdvice,

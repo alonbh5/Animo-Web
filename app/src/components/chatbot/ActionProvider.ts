@@ -1,105 +1,127 @@
-import { truncateSync } from "fs";
-import axios, { AxiosRequestConfig } from 'axios';
-import { User } from '../api/configuration/models/users'
-import { isIfStatement } from "typescript";
-import validator from 'validator'
+/* eslint-disable */
 
+import axios, { AxiosRequestConfig } from 'axios';
+import { User } from '../api/configuration/models/users';
+import validator from 'validator';
+import { botResponse } from '../api/configuration/models/botRes';
 
 export const serverAPIPort = 3000;
-export const host = 'http://localhost'
-export const APIRootPath = `${host}:${serverAPIPort}`
+export const host = 'http://localhost';
+export const APIRootPath = `${host}:${serverAPIPort}`;
 
 class ActionProvider {
   createChatBotMessage: any;
   setState: any;
   createClientMessage: any;
-  constructor(createChatBotMessage: any, setStateFunc: any, createClientMessage: any) {
+  constructor(createChatBotMessage: any,
+    setStateFunc: any, createClientMessage: any) {
     this.createChatBotMessage = createChatBotMessage;
     this.setState = setStateFunc;
     this.createClientMessage = createClientMessage;
   }
 
   setUserParameters = async (message: string) => {
-    let botAnswer = '';
-    let userfound = false;
-    const params: AxiosRequestConfig = {
-      baseURL: `${APIRootPath}`,
-      method: 'GET',
-      url: `/users`, // url diffrent
-    }
+    // @ts-ignore
+    const storedData = JSON.parse(localStorage.getItem('userData'));
 
-    if (!validator.isEmail(message)) {
-      botAnswer = this.createChatBotMessage(`It seems like you entered a wrong email, please try again`);
-    }
-    else {
-      try {
-        const result = await axios.request(params);
-        const Users: User[] = result.data.data.allUser;
+    let botAnswer;
 
-        Users.forEach(user => {
-          if (user.email === message) {
-            userfound = true;
-            this.setState((prevState: { messages: any; }) => ({
-              ...prevState,
-              username: user.first_name,
-              userId: user.id,
-            }));
-            botAnswer = this.createChatBotMessage(`Hello ${user.first_name}. how can I help you?`, {
-              widget: "ShowOptions",
-            });
-          }
-        })
-        if (!userfound) {
-          botAnswer = this.createChatBotMessage(`It seems like you entered a wrong email, please try again`);
+    try {
+      const params: AxiosRequestConfig = {
+        baseURL: `${APIRootPath}`,
+        method: 'GET',
+        url: `/users/getuser/${storedData.userId}`,
+        headers: {
+          Authorization: 'Bearer ' + storedData.token
         }
-      } catch (error) {
-        botAnswer = this.createChatBotMessage(`Sorry, We have some internal Error. please try us later`);
-      }
-    }
+      };
 
+      const responseUser = await axios.request(params);
+      const data = responseUser.data.data;
+
+      this.setState((prevState: { messages: any; }) => ({
+        ...prevState,
+        user: {
+          id: data._id,
+          role_id: data.role_id,
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email: data.email,
+          age: data.age,
+          gender: data.gender,
+          getToKnowState: data.getToKnowState,
+          personality: data.personality
+        }
+      }))
+
+      //   if (data.getToKnowState === 'Done') {
+      //     botAnswer = this.createChatBotMessage(`Ok ${data.first_name}, 
+      //     What would you like to do now?`, {
+      //       widget: 'ShowOptions',
+      //       withAvatar: true,
+      //     });
+      //  } else {
+      //     this.handlerFirstTalk(message, data._id, 'GetToKnow')
+      //   }
+      botAnswer = this.createChatBotMessage(`Ok ${data.first_name}, ready for some questions?`)
+    }
+    catch (err) {
+      botAnswer = this.createChatBotMessage(
+        'Sorry, We have some internal Error. please try us later', {
+        withAvatar: true,
+      });
+    }
     this.setChatbotMessage(botAnswer);
+
   }
 
-  //fetach from DB
+
+  // fetach from DB
   getAnswerFromBot = async (params: AxiosRequestConfig) => {
     try {
       const result = await axios.request(params);
-      return result.data.message;
+      console.log(result.data);
+      return result.data as botResponse;
     } catch (error) {
-      return 'Sorry, We have some internal Error. please try us later';
+      console.log(error.message);
+      return undefined;
     }
   }
 
-  handlerFirstTalk = async (userMessage: string, userId: string, talkType: string) => {
-    this.setState((prevState: { messages: any; }) => ({
-      ...prevState,
-      talkType: `GetToKnow`,
-    }));
+  handlerFirstTalk = async (
+    textFromUser: string, userId: string, talkType: string) => {
+    // this.setState((prevState: { messages: any; }) => ({
+    //   ...prevState,
+    //   talkType: 'GetToKnow'
+    // }));
+
+    console.log("USETMESSGAE" + textFromUser)
+    console.log("USERID" + userId)
+    console.log("TALKTYPE" + talkType)
 
     const params: AxiosRequestConfig = {
       baseURL: `${APIRootPath}`,
-      method: 'GET',
-      url: `/botres/talk`, // url diffrent
+      method: 'POST',
+      url: '/botres/talk', // url diffrent
       data: {
         userId,
-        userMessage,
+        textFromUser,
         talkType
-      }
-    }
+      },
+      headers: {}
+    };
+    let botAnswer = '';
 
-    //const botAnswer = await this.getAnswerFromBot(params)
-    //check whats comming back .
-    let botAnswer
-    try {
-      botAnswer = await axios.request(params);
-      console.log(botAnswer);
-    } catch (error) {
-      botAnswer = 'Sorry, We have some internal Error. please try us later';
+    const botRes: botResponse | undefined = await this.getAnswerFromBot(params);
+    if (botRes) {
+      botAnswer = botRes.content
+    } else {
+      botAnswer = "Sorry we ave some issure, try later";
     }
 
     const botMessage = this.createChatBotMessage(botAnswer, {
-      withAvatar: true,
-    })
+      withAvatar: true
+    });
 
     this.setChatbotMessage(botMessage);
   };
@@ -108,21 +130,21 @@ class ActionProvider {
     const params: AxiosRequestConfig = {
       baseURL: `${APIRootPath}`,
       method: 'GET',
-      url: `/users`, // url diffrent
+      url: '/users' // url diffrent
       // data: {
       //   message
       // }
-    }
+    };
 
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
-      talkType: `Advice`,
+      talkType: 'Advice'
     }));
 
-    const botAnswer = await this.getAnswerFromBot(params)
+    const botAnswer = await this.getAnswerFromBot(params);
     const botMessage = this.createChatBotMessage(botAnswer, {
-      withAvatar: true,
-    })
+      withAvatar: true
+    });
 
     this.setChatbotMessage(botMessage);
   };
@@ -131,21 +153,21 @@ class ActionProvider {
     const params: AxiosRequestConfig = {
       baseURL: `${APIRootPath}`,
       method: 'GET',
-      url: `/users`, // url diffrent
+      url: '/users' // url diffrent
       // data: {
       //   message
       // }
-    }
+    };
 
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
-      talkType: `AnalyzeMyEmotion`,
+      talkType: 'AnalyzeMyEmotion'
     }));
 
-    const botAnswer = await this.getAnswerFromBot(params)
+    const botAnswer = await this.getAnswerFromBot(params);
     const botMessage = this.createChatBotMessage(botAnswer, {
-      withAvatar: true,
-    })
+      withAvatar: true
+    });
 
     this.setChatbotMessage(botMessage);
   };
@@ -153,20 +175,19 @@ class ActionProvider {
   setChatbotMessage = (message: any) => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
-      messages: [...prevState.messages, message],
+      messages: [...prevState.messages, message]
     }));
   }
-
 
   todosHandler = async (message: string) => {
     const params: AxiosRequestConfig = {
       baseURL: `${APIRootPath}`,
       method: 'GET',
-      url: `/users`, // url diffrent
-    }
-    const answer = await this.getAnswerFromBot(params)
+      url: '/users' // url diffrent
+    };
+    const answer = await this.getAnswerFromBot(params);
     const messageAnswer = this.createChatBotMessage(answer, {
-      widget: "CreateQuiz",
+      widget: 'CreateQuiz'
     });
     this.setChatbotMessage(messageAnswer);
   }

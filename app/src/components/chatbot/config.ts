@@ -1,8 +1,9 @@
+/* eslint-disable */
 //@ts-ignore
 import { createChatBotMessage } from "react-chatbot-kit";
 import { BotAvatar } from "./BotAvatar";
 import { ShowOptions } from "./showOptions";
-
+import { User } from '../api/configuration/models/users'
 const botName = "Animo";
 //const username = GetUserName();
 // type BotState = {
@@ -15,14 +16,15 @@ const botName = "Animo";
 const config = {
   initialMessages: [
     createChatBotMessage(`Hi I'm ${botName}.`),
-    createChatBotMessage(`What Is Your Email Address?`, {
+    createChatBotMessage(`How are you feeling today?`, {
     }),
   ],
   botName: botName,
   state: {
-    username: undefined,
-    userId: undefined,
+
+    user: undefined,
     talkType: undefined,
+    getToknow: false,
   },
   customComponents: {
     botAvatar: (props: any) => BotAvatar(),

@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+/* eslint-disable */
 export type User = {
     id?: string;
     role_id?: number;
@@ -8,7 +7,7 @@ export type User = {
     email?: string;
     password?: string;
     age?: number;
-    gender?: string; 
+    gender?: string;
     permissions_to_app?: string[];
     persQuiz?: []
     personality?: string;
