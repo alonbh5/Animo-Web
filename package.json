@@ -22,5 +22,10 @@
     "url": "https://github.com/yairdana/Animo-Web/issues"
   },
   "homepage": "https://github.com/yairdana/Animo-Web#readme",
-  "dependencies": {}
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
+    "react-chatbot-kit": "^1.1.20"
+  }
 }
