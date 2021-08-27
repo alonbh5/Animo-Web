@@ -1,4 +1,5 @@
-//@ts-ignore
+/* eslint-disable */
+// @ts-ignore
 import { createChatBotMessage } from "react-chatbot-kit";
 import { BotAvatar } from "./BotAvatar";
 import { ShowOptions } from "./showOptions";

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { truncateSync } from "fs";
 import axios, { AxiosRequestConfig } from 'axios';
 import { User } from '../api/configuration/models/users'
