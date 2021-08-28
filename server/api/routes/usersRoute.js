@@ -5,7 +5,7 @@ const {
     createUsers,
     getUser,
     updateUser,
-    deleteUsers,
+    deleteUser,
     addQuiz,
     createQuiz,
     login,
@@ -25,7 +25,7 @@ router.patch('/createquiz/:userId',createQuiz);
 router.use(checkAuth);
 router.get('/getuser/:userId' ,getUser);
 router.patch('/updateUser/:userId' , updateUser);
-router.delete('/:userId' , deleteUsers);
+router.delete('/deleteUser/:userId' , deleteUser);
 
 
 module.exports  = router;

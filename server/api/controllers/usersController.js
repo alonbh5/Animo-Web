@@ -9,6 +9,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require("crypto");
 const HttpError = require('../models/http-error');
+const adminRole = 1;
+
 
 const CalculatePersType = (personalQuiz) => {
     let I = 0;
@@ -153,7 +155,7 @@ module.exports = {
             let token;
             try {
                 token = jwt.sign(
-                    { userId: createUser._id, email: createUser.email, roleId: createUser.roleId }, 'supersecret', { expiresIn: '1h' }
+                    { userId: createUser._id, email: createUser.email, roleId: createUser.role_id }, 'supersecret', { expiresIn: '1h' }
                 )
             } catch (err) {
                 return next(new HttpError('Could not create a user, please try later.', 500));
@@ -253,7 +255,7 @@ module.exports = {
         let tokenLogin;
         try {
             tokenLogin = jwt.sign(
-                { userId: existingUser._id, email: existingUser.email, roleId: existingUser.roleId }, 'supersecret', { expiresIn: '1h' }
+                { userId: existingUser._id, email: existingUser.email, roleId: existingUser.role_id }, 'supersecret', { expiresIn: '1h' }
             )
         } catch (err) {
             return next(new HttpError('Loggin failed, please try later.', 500));
@@ -301,7 +303,7 @@ module.exports = {
         let token;
         try {
             token = jwt.sign(
-                { userId: existingUser._id, email: existingUser.email, roleId: existingUser.roleId }, 'supersecret', { expiresIn: '1h' }
+                { userId: existingUser._id, email: existingUser.email, roleId: existingUser.role_id }, 'supersecret', { expiresIn: '1h' }
             )
         } catch (err) {
             return next(new HttpError('Loggin failed, please try later', 500));
@@ -320,7 +322,7 @@ module.exports = {
     updateUser: async (req, res, next) => {
         const userId = req.params.userId;
 
-        if (userId !== req.userData.userId) {
+        if (userId !== req.userData.userId && req.userData.roleId !== adminRole) {
             return next(new HttpError('You are not allowed to update this user', 401));
         }
 
@@ -366,7 +368,7 @@ module.exports = {
 
             let tokenLogin;
             tokenLogin = jwt.sign(
-                { userId: userId, email: email, roleId: matchUser.roleId }, 'supersecret', { expiresIn: '1h' }
+                { userId: userId, email: email, roleId: matchUser.role_id }, 'supersecret', { expiresIn: '1h' }
             )
 
             res.status(200).send({
@@ -520,17 +522,31 @@ module.exports = {
         }
     },
 
-    deleteUsers: (req, res) => {
+    deleteUser: async (req, res, next) => {
         const userId = req.params.userId;
 
-        User.deleteOne({ _id: userId }).then(() => {
-            res.status(200).json({
-                message: `delete user - ${userId}`
-            })
-        }).catch(error => {
-            res.status(500).json({
-                error
-            })
-        });
+        if (req.userData.roleId !== adminRole) {
+            return next(new HttpError('You are not allowed to delete this user', 401));
+        }
+
+        if (req.userData.userId === userId) {
+            return next(new HttpError('You are not allowed to delete your own user', 401));
+        }
+
+        try {
+            const matchUser = await User.findById(userId);
+            if (!matchUser) {
+                return next(new HttpError(`User by id ${userId} did not found!`, 404));
+            }    
+            await User.deleteOne({ _id: userId });
+            res.status(200).send({
+                message: `Delete User successfuly!`,
+                data: {
+                    userId: userId,
+                }});
+    
+        } catch(err) {
+            return next(new HttpError('An Unknown Error, please try later.', 500));
+        }
     }
 }
