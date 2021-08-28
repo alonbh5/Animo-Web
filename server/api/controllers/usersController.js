@@ -139,7 +139,7 @@ module.exports = {
             } catch (err) {
                 return next(new HttpError('Could not create a user, please try again.', 500));
             }
-
+            const confirm = role_id === generalRole;
             const createUser = new User({
                 _id: new mongoose.Types.ObjectId(),
                 role_id,
@@ -149,11 +149,21 @@ module.exports = {
                 password: hashPassword,
                 age,
                 gender,
-                confirm: role_id === generalRole
+                confirm
             });
 
-
             await createUser.save();
+            if (!confirm) {
+                return res.status(202).send({
+                    message: `Created a new user successfuly! We will confirm your user soon!`,
+                    data: {
+                        userId: createUser._id,
+                        email: createUser.email,
+                        status: 'confirm'
+                    }
+                });
+            }
+
             let token;
             try {
                 token = jwt.sign(
@@ -177,7 +187,8 @@ module.exports = {
                 data: {
                     userId: createUser._id,
                     email: createUser.email,
-                    token: token
+                    token: token,
+                    status: 'login'
                 }
             });
         } catch (error) {
@@ -319,6 +330,17 @@ module.exports = {
             return next(new HttpError('Invalid Password, could not log you in.', 401));
         }
 
+        if(!existingUser.confirm) {
+            return res.status(202).json({
+                message: `We are still confirming your profile, please try later`,
+                data: {
+                    userId: existingUser._id,
+                    email: existingUser.email,
+                    status: 'confirm'
+                }
+            });
+        }
+
         let token;
         try {
             token = jwt.sign(
@@ -336,13 +358,13 @@ module.exports = {
             // could not change status
         }
 
-
         return res.status(200).json({
             message: `Logged in`,
             data: {
                 userId: existingUser._id,
                 email: existingUser.email,
-                token: token
+                token: token,
+                status: 'login'
             }
         });
     },
@@ -439,8 +461,8 @@ module.exports = {
                 data: {
                     userId: userId,
                 }
-            });      
-        
+            });
+
         } catch {
             return next(new HttpError('Something went wrong! please try later', 500));
         }
@@ -467,7 +489,7 @@ module.exports = {
                 data: {
                     userId: userId,
                 }
-            });      
+            });
         } catch {
             return next(new HttpError('Something went wrong! please try later', 500));
         }

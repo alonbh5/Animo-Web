@@ -32,9 +32,13 @@ const SignUp = () => {
     role
   }, setState] = useState(initialState);
   const [errorEmail, setErrorEmail] = useState<string>('');
+  const [disabled, setDisabled] = useState(false);
   const [errorAge, setErrorAge] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
-  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
+  const {
+    isLoading, error, sendRequest,
+    clearMessages, success
+  } = useHttpClient();
   const { rolesOptions } = useRoles();
 
   const handleChange = (e: any) => {
@@ -87,12 +91,15 @@ const SignUp = () => {
       url: '/users/createuser',
       data: {
         ...userToCreate
-      },
-      headers: {}
+      }
     };
     try {
       const response = await sendRequest(params);
-      auth.login(response.data.userId, response.data.token);
+      if (response.data.status === 'login') {
+        auth.login(response.data.userId, response.data.token);
+      } else {
+        setDisabled(true);
+      }
     } catch (err) {
       setErrorMsg(err.message);
     }
@@ -111,10 +118,12 @@ const SignUp = () => {
             <form onSubmit={handleSubmit}>
               {isLoading && <LoadingSpinner asOverlay />}
               {error && <h5 style={{ color: 'red' }}>{error}</h5>}
+              {success && <h5 style={{ color: 'blue' }}>{success}</h5>}
               <div className="form-group">
 
                 <Input
                   className="form-control"
+                  disabled={disabled}
                   required={true}
                   type="text"
                   name="firstName"
@@ -127,6 +136,7 @@ const SignUp = () => {
                 className="form-group">
                 <Input
                   className="form-control"
+                  disabled={disabled}
                   required={true}
                   type="text"
                   name="lastName"
@@ -138,6 +148,7 @@ const SignUp = () => {
               <div className="form-group">
                 <Input
                   className="form-control"
+                  disabled={disabled}
                   required={true}
                   type="email"
                   name="email"
@@ -151,6 +162,7 @@ const SignUp = () => {
               <div className="form-group">
                 <Input
                   className="form-control"
+                  disabled={disabled}
                   required={true}
                   type="password"
                   name="password"
@@ -164,6 +176,7 @@ const SignUp = () => {
                 <label className="required">Gender</label>
                 <select
                   value={gender}
+                  disabled={disabled}
                   onChange={handleChange}
                   name="gender"
                   className="form-control"
@@ -177,6 +190,7 @@ const SignUp = () => {
                 <label className="required">Role</label>
                 <select
                   value={role}
+                  disabled={disabled}
                   onChange={handleChange}
                   name="role"
                   className="form-control">
@@ -194,6 +208,7 @@ const SignUp = () => {
                 <input
                   type="age"
                   className="form-control"
+                  disabled={disabled}
                   placeholder="Enter age"
                   name="age"
                   value={age}
@@ -201,6 +216,7 @@ const SignUp = () => {
                 />
                 <input
                   name="age"
+                  disabled={disabled}
                   onInput={handleChange}
                   type="range"
                   min="1"
@@ -213,7 +229,7 @@ const SignUp = () => {
               </div>
               <button
                 type="submit"
-                disabled={!isFormValid()}
+                disabled={!isFormValid() || disabled}
                 className="btn btn-primary btn-block">
                   Sign Up
               </button>

@@ -14,8 +14,12 @@ const initialState = {
 
 const SignIn = (props: any) => {
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
+  const {
+    isLoading, error, sendRequest,
+    clearMessages, success
+  } = useHttpClient();
   const [{ email, password }, setState] = useState(initialState);
+  const [disabled, setDisabled] = useState(false);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -37,10 +41,12 @@ const SignIn = (props: any) => {
         password
       }
     };
-    try {
-      const response = await sendRequest(params);
+    const response = await sendRequest(params);
+    if (response.data.status === 'confirm') {
+      setDisabled(true);
+    } else if (response.data.status === 'login') {
       auth.login(response.data.userId, response.data.token);
-    } catch (err) { }
+    }
   };
 
   return (
@@ -54,10 +60,12 @@ const SignIn = (props: any) => {
           <div>
             {isLoading && <LoadingSpinner asOverlay />}
             {error && <h5 style={{ color: 'red' }}>{error}</h5>}
+            {success && <h5 style={{ color: 'blue' }}>{success}</h5>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <Input
                   type="email"
+                  disabled={disabled}
                   required={true}
                   name="email"
                   label="Email Address"
@@ -69,6 +77,7 @@ const SignIn = (props: any) => {
               <div className="form-group">
                 <Input
                   type="password"
+                  disabled={disabled}
                   required={true}
                   label="Password"
                   name="password"
@@ -79,7 +88,7 @@ const SignIn = (props: any) => {
               </div>
               <button
                 type="submit"
-                disabled={!isFormValid()}
+                disabled={!isFormValid() || disabled}
                 className="btn btn-primary btn-block">Submit</button>
               <br></br>
               <p >
