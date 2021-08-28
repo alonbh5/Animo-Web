@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require("crypto");
 const HttpError = require('../models/http-error');
 const adminRole = 1;
+const generalRole = 3;
 
 
 const CalculatePersType = (personalQuiz) => {
@@ -148,6 +149,7 @@ module.exports = {
                 password: hashPassword,
                 age,
                 gender,
+                confirm: role_id === generalRole
             });
 
 
@@ -333,7 +335,7 @@ module.exports = {
         } catch (err) {
             // could not change status
         }
-     
+
 
         return res.status(200).json({
             message: `Logged in`,
@@ -428,10 +430,44 @@ module.exports = {
                 { _id: userId },
                 {
                     $set: {
-                       online: online
+                        online: online
                     }
                 },
             );
+            res.status(200).send({
+                message: `Update User Status successfuly!`,
+                data: {
+                    userId: userId,
+                }
+            });      
+        
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    },
+
+    confirmUser: async (req, res, next) => {
+        const userId = req.params.userId;
+        if (req.userData.roleId !== adminRole) {
+            return next(new HttpError('You are not allowed to confirm this user, only admin have permission', 401));
+        }
+
+        try {
+            const matchUser = await User.findById(userId);
+            if (!matchUser) {
+                return next(new HttpError(`User by id ${userId} did not found`, 404));
+            }
+            await User.updateOne(
+                { _id: userId },
+                { $set: { confirm: true } },
+            );
+
+            res.status(200).send({
+                message: `Confirm User successfuly!`,
+                data: {
+                    userId: userId,
+                }
+            });      
         } catch {
             return next(new HttpError('Something went wrong! please try later', 500));
         }
@@ -590,15 +626,16 @@ module.exports = {
             const matchUser = await User.findById(userId);
             if (!matchUser) {
                 return next(new HttpError(`User by id ${userId} did not found!`, 404));
-            }    
+            }
             await User.deleteOne({ _id: userId });
             res.status(200).send({
                 message: `Delete User successfuly!`,
                 data: {
                     userId: userId,
-                }});
-    
-        } catch(err) {
+                }
+            });
+
+        } catch (err) {
             return next(new HttpError('An Unknown Error, please try later.', 500));
         }
     }

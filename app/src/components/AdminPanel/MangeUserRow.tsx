@@ -9,14 +9,15 @@ type ManageUserRowProp = {
     user: User;
     rowNumber: number;
     deleteUser: (userId: string) => void
+    confirmUser: (userId: string) => void
 }
 export const ManageUserRow = (props :ManageUserRowProp) => {
-  const { user, rowNumber, deleteUser } = props;
+  const { user, rowNumber, deleteUser, confirmUser} = props;
 
   const clickDeleteUser = () => {
     confirmAlert({
         title: 'Delete User',
-        message: `Are you sure to delter user ${user.first_name + ' ' + user.last_name}?`,
+        message: `Are you sure to delete user ${user.first_name + ' ' + user.last_name}?`,
         buttons: [
           {
             label: 'Yes',
@@ -29,6 +30,24 @@ export const ManageUserRow = (props :ManageUserRowProp) => {
         ]
       });
   };
+
+  const clickConfirmUser = () => {
+    confirmAlert({
+        title: 'Confirm User',
+        message: `Are you sure to confirm user ${user.first_name + ' ' + user.last_name}?`,
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: ()=> confirmUser(user._id!)
+          },
+          {
+            label: 'No',
+            onClick: () => close()
+          }
+        ]
+      });
+  };
+
 const date= user.created_at ? new Date(user.created_at).toLocaleDateString() : undefined
   return (
     <tr>
@@ -39,8 +58,8 @@ const date= user.created_at ? new Date(user.created_at).toLocaleDateString() : u
       <td>{Object.values(RoleEnum)[user.role_id! -1]}</td>
       <td><span className={user.online ? "status text-success": "status text-danger"}>&bull;</span>{user.online ? "Online":  "Offline"}</td>
       <td>
-        <a  className="confirm" title="Confrim" data-toggle="tooltip">
-          <i className="material-icons">&#xe876;</i></a>
+        {!user.confirm && <a  onClick= {() => clickConfirmUser()} className="confirm" title="Confrim" data-toggle="tooltip">
+          <i className="material-icons">&#xe876;</i></a>}
         <a href="#" className="settings" title="Settings" data-toggle="tooltip">
           <i className="material-icons">&#xE8B8;</i></a>
         <a onClick={() => clickDeleteUser()} className="delete" title="Delete" data-toggle="tooltip">

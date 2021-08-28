@@ -92,6 +92,7 @@ export const Navigation = (props: any) => {
   }, []);
 
   const Logout = () => {
+    auth.updateStatus(false);
     auth.logout();
   };
 

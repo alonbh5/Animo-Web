@@ -37,7 +37,6 @@ const ManageUsers = (props: any) => {
   }
   
   const deleteUser = async (userId: string) => {
-    console.log(userId)
     const params: AxiosRequestConfig = {
       method: 'DELETE',
       url: `/users/deleteUser/${userId}`,
@@ -50,7 +49,18 @@ const ManageUsers = (props: any) => {
     fetchUsers();
   };
 
-
+  const confirmUser = async (userId: string) => {
+    const params: AxiosRequestConfig = {
+      method: 'PATCH',
+      url: `/users/confirmUser/${userId}`,
+      headers: {
+        Authorization: 'Bearer ' + auth.token
+      }
+    };
+    await sendRequest(params);
+    await timeout(1000);
+    fetchUsers();
+  };
   return (
     <div id='team' className='text-center'>
       <div className='container'>
@@ -76,7 +86,7 @@ const ManageUsers = (props: any) => {
           </thead>
           <tbody>
             {users?.map((user: User, index: number) =>
-              <ManageUserRow rowNumber={index} user={user} deleteUser={deleteUser} />)}
+              <ManageUserRow rowNumber={index} user={user} deleteUser={deleteUser} confirmUser={confirmUser} />)}
           </tbody>
         </table>
       </div>

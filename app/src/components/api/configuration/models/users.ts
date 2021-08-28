@@ -13,4 +13,5 @@ export type User = {
     personality?: string;
     created_at?: string;
     online?: boolean;
+    confirm?: boolean;
 }
