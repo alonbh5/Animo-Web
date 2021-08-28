@@ -11,7 +11,8 @@ const userSchema = mongoose.Schema({
     gender: {type: String, require: true}, 
     persQuiz: {type: Array, require: false,default: []},
     personality: {type: String, require: false, default: ""},
-    getToKnowState:{type: String, require: false, default: "uninitialized"}
-});
+    getToKnowState:{type: String, require: false, default: "uninitialized"},
+    online:{type: Boolean, require: false, default: undefined}
+},  { timestamps: { createdAt: 'created_at' }} );
 
 module.exports = mongoose.model("Users",userSchema);

@@ -9,6 +9,7 @@ const {
     addQuiz,
     createQuiz,
     login,
+    updateStatus,
     forgotPassword,
     resetPassword,
 } = require('../controllers/usersController');
@@ -25,7 +26,7 @@ router.patch('/createquiz/:userId',createQuiz);
 router.use(checkAuth);
 router.get('/getuser/:userId' ,getUser);
 router.patch('/updateUser/:userId' , updateUser);
+router.patch('/updateStatus/:userId' , updateStatus);
 router.delete('/deleteUser/:userId' , deleteUser);
-
 
 module.exports  = router;

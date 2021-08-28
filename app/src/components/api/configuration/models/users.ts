@@ -11,4 +11,6 @@ export type User = {
     permissions_to_app?: string[];
     persQuiz?: []
     personality?: string;
+    created_at?: string;
+    online?: boolean;
 }

@@ -12,7 +12,7 @@ type ManageUserRowProp = {
 }
 export const ManageUserRow = (props :ManageUserRowProp) => {
   const { user, rowNumber, deleteUser } = props;
-  
+
   const clickDeleteUser = () => {
     confirmAlert({
         title: 'Delete User',
@@ -29,16 +29,15 @@ export const ManageUserRow = (props :ManageUserRowProp) => {
         ]
       });
   };
-
-
-
+const date= user.created_at ? new Date(user.created_at).toLocaleDateString() : undefined
   return (
     <tr>
       <td>{rowNumber}</td>
       <td>{user.first_name + ' ' + user.last_name}</td>
-      <td>27/1/2014</td>
+      <td>{user.gender}</td>
+      <td>{date}</td>
       <td>{Object.values(RoleEnum)[user.role_id! -1]}</td>
-      <td><span className="status text-success">&bull;</span> Active</td>
+      <td><span className={user.online ? "status text-success": "status text-danger"}>&bull;</span>{user.online ? "Online":  "Offline"}</td>
       <td>
         <a  className="confirm" title="Confrim" data-toggle="tooltip">
           <i className="material-icons">&#xe876;</i></a>
@@ -50,5 +49,3 @@ export const ManageUserRow = (props :ManageUserRowProp) => {
     </tr>
   );
 };
-
-//

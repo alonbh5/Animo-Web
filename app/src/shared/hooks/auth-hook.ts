@@ -50,6 +50,23 @@ export const useAuth = () => {
     );
   }, []);
 
+  const updateStatus = async (online: boolean) => {
+    const params: AxiosRequestConfig = {
+      method: 'PATCH',
+      url: `/users/updateStatus/${userId}`,
+      data: {
+        online
+      },
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    };
+    try {
+      await sendRequest(params);
+    } catch(err) {
+    }
+  }
+
   const logout = useCallback(() => {
     setToken(undefined);
     setTokenExpirationDate(undefined);
@@ -118,6 +135,7 @@ export const useAuth = () => {
     userId,
     user,
     userRole: userRoleType,
-    fetchUser
+    fetchUser,
+    updateStatus
   };
 };

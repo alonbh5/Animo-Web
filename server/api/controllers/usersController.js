@@ -161,6 +161,14 @@ module.exports = {
                 return next(new HttpError('Could not create a user, please try later.', 500));
             }
 
+            try {
+                await User.updateOne(
+                    { _id: createUser._id },
+                    { $set: { online: true } },
+                );
+            } catch (err) {
+                // could not change status
+            }
 
             res.status(201).send({
                 message: `Created a new user successfuly!`,
@@ -261,6 +269,15 @@ module.exports = {
             return next(new HttpError('Loggin failed, please try later.', 500));
         }
 
+        try {
+            await User.updateOne(
+                { _id: existingUser._id },
+                { $set: { online: true } },
+            );
+        } catch (err) {
+            // could not change status
+        }
+
         await passwordResetToken.deleteOne();
 
         res.status(200).send({
@@ -308,6 +325,15 @@ module.exports = {
         } catch (err) {
             return next(new HttpError('Loggin failed, please try later', 500));
         }
+        try {
+            await User.updateOne(
+                { _id: existingUser._id },
+                { $set: { online: true } },
+            );
+        } catch (err) {
+            // could not change status
+        }
+     
 
         return res.status(200).json({
             message: `Logged in`,
@@ -379,6 +405,33 @@ module.exports = {
                     token: tokenLogin
                 }
             });
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    },
+
+    updateStatus: async (req, res, next) => {
+        const userId = req.params.userId;
+
+        if (userId !== req.userData.userId) {
+            return next(new HttpError('You are not allowed to update this user', 401));
+        }
+
+        const { online } = req.body;
+
+        try {
+            const matchUser = await User.findById(userId);
+            if (!matchUser) {
+                return next(new HttpError(`User by id ${userId} did not found`, 404));
+            }
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                       online: online
+                    }
+                },
+            );
         } catch {
             return next(new HttpError('Something went wrong! please try later', 500));
         }

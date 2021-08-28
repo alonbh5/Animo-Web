@@ -67,6 +67,7 @@ const ManageUsers = (props: any) => {
             <tr>
               <th>#</th>
               <th>Name</th>
+              <th>Gender</th>
               <th>Created At</th>
               <th>Role</th>
               <th>Status</th>

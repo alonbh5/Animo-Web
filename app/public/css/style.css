@@ -686,11 +686,6 @@ table.table td a.confirm {
 table.table td i {
     font-size: 19px;
 }
-table.table .avatar {
-    border-radius: 50%;
-    vertical-align: middle;
-    margin-right: 10px;
-}
 .status {
     font-size: 40px;
     margin: 2px 2px;
