@@ -6,7 +6,7 @@ import SignUp from './Login/SignUp';
 import Profile from './Profile/Profile';
 import ForgotPassword from './ResetPassword/ForgotPassword';
 import ResetPassword from './ResetPassword/ResetPassword';
-
+import ManageUsers from '../AdminPanel/ManageUsers';
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
   let routers;
@@ -33,6 +33,9 @@ const AuthrizationRouters = () => {
             <Switch>
               <Route path="/profile">
                 <Profile />
+              </Route>
+              <Route path='/manageUsers'>
+                <ManageUsers/>
               </Route>
               <Redirect to="/home-page" />
             </Switch>;
