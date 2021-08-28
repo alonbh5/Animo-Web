@@ -1,19 +1,17 @@
-/* eslint-disable */
-
 import axios, { AxiosRequestConfig } from 'axios';
-import { User } from '../api/configuration/models/users';
-import validator from 'validator';
 import { botResponse } from '../api/configuration/models/botRes';
 
 export const serverAPIPort = 3000;
 export const host = 'http://localhost';
 export const APIRootPath = `${host}:${serverAPIPort}`;
 
+const errorMessage = 'Sorry we have some issue right now, please try later';
+
 class ActionProvider {
   createChatBotMessage: any;
   setState: any;
   createClientMessage: any;
-  constructor(createChatBotMessage: any,
+  constructor (createChatBotMessage: any,
     setStateFunc: any, createClientMessage: any) {
     this.createChatBotMessage = createChatBotMessage;
     this.setState = setStateFunc;
@@ -52,29 +50,106 @@ class ActionProvider {
           getToKnowState: data.getToKnowState,
           personality: data.personality
         }
-      }))
-
-      //   if (data.getToKnowState === 'Done') {
-      //     botAnswer = this.createChatBotMessage(`Ok ${data.first_name}, 
-      //     What would you like to do now?`, {
-      //       widget: 'ShowOptions',
-      //       withAvatar: true,
-      //     });
-      //  } else {
-      //     this.handlerFirstTalk(message, data._id, 'GetToKnow')
-      //   }
-      botAnswer = this.createChatBotMessage(`Ok ${data.first_name}, ready for some questions?`)
-    }
-    catch (err) {
-      botAnswer = this.createChatBotMessage(
-        'Sorry, We have some internal Error. please try us later', {
-        withAvatar: true,
+      }));
+      if (data.getToKnowState === 'Done') {
+        botAnswer = this.createChatBotMessage(`I got you ${data.first_name}, 
+          how can I help you today?`, {
+          widget: 'ShowOptions',
+          withAvatar: true
+        });
+      } else {
+        botAnswer = this.createChatBotMessage(`Ok ${data.first_name}, 
+          I see it is the first time we are talking.
+          How about I get to know you a little bit better?`);
+        this.setState((prevState: { messages: any; }) => ({
+          ...prevState,
+          talkType: 'GetToKnow'
+        }));
+        // this.handlerFirstTalk(message, data._id, 'GetToKnow')
+      }
+    } catch (err) {
+      botAnswer = this.createChatBotMessage(errorMessage, {
+        withAvatar: true
       });
     }
     this.setChatbotMessage(botAnswer);
-
   }
 
+  handlerFirstTalk = async (
+    textFromUser: string, userId: string, talkType: string) => {
+    const params = this.getParams(textFromUser, userId, talkType);
+    let botAnswer = '';
+    const botRes: botResponse | undefined = await this.getAnswerFromBot(params);
+
+    if (botRes) {
+      botAnswer = botRes.content;
+      if (botRes.response_type === 'GetToKnow-Done') {
+        this.setState((prevState: { messages: any; }) => ({
+          ...prevState,
+          talkType: undefined
+        }));
+      }
+    } else {
+      botAnswer = errorMessage;
+    }
+
+    const botMessage = this.createChatBotMessage(botAnswer, {
+      withAvatar: true
+    });
+    this.setChatbotMessage(botMessage);
+  };
+
+  handlerAdvice = async (
+    textFromUser: string, userId: string, talkType: string) => {
+    const params = this.getParams(textFromUser, userId, talkType);
+    let botAnswer = '';
+    const botRes: botResponse | undefined = await this.getAnswerFromBot(params);
+
+    if (botRes) {
+      botAnswer = botRes.content;
+      if (botRes.response_type === 'Advice-Done') {
+        this.setState((prevState: { messages: any; }) => ({
+          ...prevState,
+          talkType: undefined
+        }));
+      }
+    } else {
+      // eslint-disable-next-line max-len
+      botAnswer = errorMessage.concat(' - in Advice');
+    }
+
+    const botMessage = this.createChatBotMessage(botAnswer, {
+      withAvatar: true
+    });
+
+    this.setChatbotMessage(botMessage);
+  };
+
+  handlerAnalyzeMyEmotion = async (
+    textFromUser: string, userId: string, talkType: string) => {
+    const params = this.getParams(textFromUser, userId, talkType);
+    let botAnswer = '';
+    const botRes: botResponse | undefined = await this.getAnswerFromBot(params);
+
+    if (botRes) {
+      botAnswer = botRes.content;
+      if (botRes.response_type === 'AnalyzeMyEmotion-Done') {
+        this.setState((prevState: { messages: any; }) => ({
+          ...prevState,
+          talkType: undefined
+        }));
+      }
+    } else {
+      // eslint-disable-next-line max-len
+      botAnswer = errorMessage.concat('- in AnalyzeMyEmotion');
+    }
+
+    const botMessage = this.createChatBotMessage(botAnswer, {
+      withAvatar: true
+    });
+
+    this.setChatbotMessage(botMessage);
+  };
 
   // fetach from DB
   getAnswerFromBot = async (params: AxiosRequestConfig) => {
@@ -88,21 +163,11 @@ class ActionProvider {
     }
   }
 
-  handlerFirstTalk = async (
-    textFromUser: string, userId: string, talkType: string) => {
-    // this.setState((prevState: { messages: any; }) => ({
-    //   ...prevState,
-    //   talkType: 'GetToKnow'
-    // }));
-
-    console.log("USETMESSGAE" + textFromUser)
-    console.log("USERID" + userId)
-    console.log("TALKTYPE" + talkType)
-
+  getParams = (textFromUser: string, userId: string, talkType: string) => {
     const params: AxiosRequestConfig = {
       baseURL: `${APIRootPath}`,
       method: 'POST',
-      url: '/botres/talk', // url diffrent
+      url: '/botres/talk',
       data: {
         userId,
         textFromUser,
@@ -110,86 +175,45 @@ class ActionProvider {
       },
       headers: {}
     };
-    let botAnswer = '';
+    return params;
+  }
 
-    const botRes: botResponse | undefined = await this.getAnswerFromBot(params);
-    if (botRes) {
-      botAnswer = botRes.content
-    } else {
-      botAnswer = "Sorry we ave some issure, try later";
-    }
-
-    const botMessage = this.createChatBotMessage(botAnswer, {
-      withAvatar: true
-    });
-
+  setWidgetShowOptions = () => {
+    const botMessage = this.createChatBotMessage(
+      'Is there anything else I can help you with?', {
+        widget: 'ShowOptions',
+        withAvatar: true
+      });
     this.setChatbotMessage(botMessage);
-  };
+  }
 
-  handlerAdvice = async (userMessage: string) => {
-    const params: AxiosRequestConfig = {
-      baseURL: `${APIRootPath}`,
-      method: 'GET',
-      url: '/users' // url diffrent
-      // data: {
-      //   message
-      // }
-    };
-
+  setTalkTypeAdvice = () => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
       talkType: 'Advice'
     }));
 
-    const botAnswer = await this.getAnswerFromBot(params);
-    const botMessage = this.createChatBotMessage(botAnswer, {
-      withAvatar: true
-    });
-
+    const botMessage = this.createChatBotMessage(
+      'Tell me, on what subject do you need my advice?');
     this.setChatbotMessage(botMessage);
-  };
+  }
 
-  handlerAnalyzeMyEmotion = async (userMessage: string) => {
-    const params: AxiosRequestConfig = {
-      baseURL: `${APIRootPath}`,
-      method: 'GET',
-      url: '/users' // url diffrent
-      // data: {
-      //   message
-      // }
-    };
-
+  setTalkTypeAnalyzeMyEmotion = () => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
       talkType: 'AnalyzeMyEmotion'
     }));
 
-    const botAnswer = await this.getAnswerFromBot(params);
-    const botMessage = this.createChatBotMessage(botAnswer, {
-      withAvatar: true
-    });
-
+    const botMessage = this.createChatBotMessage(
+      'Tell me, what do you feel right now?');
     this.setChatbotMessage(botMessage);
-  };
+  }
 
   setChatbotMessage = (message: any) => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
       messages: [...prevState.messages, message]
     }));
-  }
-
-  todosHandler = async (message: string) => {
-    const params: AxiosRequestConfig = {
-      baseURL: `${APIRootPath}`,
-      method: 'GET',
-      url: '/users' // url diffrent
-    };
-    const answer = await this.getAnswerFromBot(params);
-    const messageAnswer = this.createChatBotMessage(answer, {
-      widget: 'CreateQuiz'
-    });
-    this.setChatbotMessage(messageAnswer);
   }
 }
 
