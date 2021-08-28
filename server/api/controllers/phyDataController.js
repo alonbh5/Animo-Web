@@ -1,5 +1,6 @@
 const PhyData = require('../schemes/phyDataSchema');
 const mongoose = require('mongoose');
+const HttpError = require('../models/http-error');
 
 module.exports = {
     getAllTexts: async (req, res) => {

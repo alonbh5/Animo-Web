@@ -7,6 +7,7 @@ export const AuthContext = createContext({
   login: (uid: string, token: string, expirationDate?: any) => { },
   logout: () => {
   },
+  updateStatus: async (online:boolean) => {},
   user: {},
   userRole: {},
   fetchUser: async () => {}

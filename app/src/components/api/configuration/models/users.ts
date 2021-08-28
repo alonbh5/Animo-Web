@@ -1,6 +1,6 @@
-/* eslint-disable */
+/*eslint-disable*/
 export type User = {
-    id?: string;
+    _id?: string;
     role_id?: number;
     first_name?: string;
     last_name?: string;
@@ -11,4 +11,7 @@ export type User = {
     permissions_to_app?: string[];
     persQuiz?: []
     personality?: string;
+    created_at?: string;
+    online?: boolean;
+    confirm?: boolean;
 }
