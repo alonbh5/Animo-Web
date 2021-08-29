@@ -11,8 +11,7 @@ const InitGetToKnow = async (matchUser, textFromUser, res) => {
     //send a new Answer from bot - start conversion
 
     let allQuestion = await BotPresonalQuestions.find();
-
-    console.log(allQuestion);
+    
     const ans = new AnswersFromUsers({
         _id: new mongoose.Types.ObjectId(),
         userId: String(matchUser._id),
@@ -40,6 +39,12 @@ const KeepGetToKnow = async (AnswersObjFromUser, matchUser, textFromUser, res) =
     let arrayLength = AnswersObjFromUser.answers.length; //this does not work
 
     if (currentUserIndex >= arrayLength) {
+        if (currentUserIndex = arrayLength) {
+            AnswersObjFromUser.answers[currentUserIndex - 1].useranswer = textFromUser; //save answer           
+            await AnswersObjFromUser.markModified("answers");
+            await AnswersObjFromUser.save();
+        }
+
         matchUser.getToKnowState = "Done"
         await matchUser.markModified('getToKnowState');
         await matchUser.save();
@@ -51,15 +56,15 @@ const KeepGetToKnow = async (AnswersObjFromUser, matchUser, textFromUser, res) =
 
     }
     else {
-        if (currentUserIndex != 0) {            
-            AnswersObjFromUser.answers[currentUserIndex].useranswer = textFromUser; //save answer           
+        if (currentUserIndex != 0) {
+            AnswersObjFromUser.answers[currentUserIndex - 1].useranswer = textFromUser; //save answer           
             await AnswersObjFromUser.markModified("answers");
 
         }
         let BotText = questionsArray[currentUserIndex].question;
-        
+
         AnswersObjFromUser.questionindex = parseInt(currentUserIndex) + 1;
-        
+
         await AnswersObjFromUser.markModified("questionindex");
         await AnswersObjFromUser.save();
 
@@ -256,10 +261,9 @@ module.exports = {
                                 res.status(404).json({ message: "Could Not Find Answers From This User - try agian" })
                             }
 
-
                             break;
-                        case "Done": // start a new session with him
-                            res.status(204).json({
+                        case "Done":                             
+                            res.status(200).json({
                                 massage: `You already Know The User ${matchUser.first_name}`
                             })
                             break;
