@@ -5,13 +5,16 @@ const User = require('../schemes/userSchema');
 const HttpError = require('../models/http-error');
 const AnswersFromUsers = require('../schemes/answersSchema');
 const BotPresonalQuestions = require('../schemes/presonalQuestionSchema');
+const Conversation = require('../schemes/conversationSchema');
+
+var RandomNumber = 0;
 
 const InitGetToKnow = async (matchUser, textFromUser, res) => {
     //save new log of system user in table DB (object from mongoose is AnswersFromUsers)
     //send a new Answer from bot - start conversion
 
     let allQuestion = await BotPresonalQuestions.find();
-    
+
     const ans = new AnswersFromUsers({
         _id: new mongoose.Types.ObjectId(),
         userId: String(matchUser._id),
@@ -262,7 +265,7 @@ module.exports = {
                             }
 
                             break;
-                        case "Done":                             
+                        case "Done":
                             res.status(200).json({
                                 massage: `You already Know The User ${matchUser.first_name}`
                             })
@@ -271,8 +274,39 @@ module.exports = {
                     }
 
                     break;
-                case "dsa":
-                    // code block
+                case "Conversation":
+                    let cleanText = textFromUser.replace(/[?!.,*()\\#$%^&]/g, '').trim().toLowerCase().replace(/\s\s+/g, ' ');
+                    var divRoot = await Conversation.countDocuments({ keyWords: cleanText });
+                    //let answer = await Conversation.find({ keyWords: cleanText }).limit(1).skip(RandomNumber++ % divRoot);
+                    let answer = await Conversation.findOne({ keyWords: cleanText }).skip(RandomNumber++ % divRoot); //TODO check if this work too
+                    if (answer) {                        
+                        if (answer.isPersonal) {
+                            let allAnswers = await AnswersFromUsers.findOne({ userId: matchUser._id });
+                            let HowManyToFill = answer.indexInQuestion.length;
+
+                            for (let index = 0; index < HowManyToFill; index++) {
+                                let cur = "{" + String(index) + "}";
+                                let replacement = allAnswers.answers[answer.indexInQuestion[index]].useranswer;                                
+                                answer.question = answer.question.replace(cur,replacement);
+                            }
+                        }
+
+
+                        res.status(200).json({
+                            response_type: "Conversation",
+                            content: answer,
+                            response_to: textFromUser
+                        });
+
+                    }
+                    else {
+                        res.status(200).json({
+                            response_type: "Conversation",
+                            content: "Im Sorry, My Bot Brain Cant Handel Your Question! Can you Rephrase It? (I am Still on Beta 😢)",
+                            response_to: textFromUser
+                        });
+                    }
+
                     break;
                 default:
                     res.status(405).json({
