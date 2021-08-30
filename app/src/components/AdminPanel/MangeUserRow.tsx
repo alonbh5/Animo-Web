@@ -4,16 +4,19 @@ import { User } from '../api/configuration/models/users';
 import { RoleEnum } from '../api/configuration/models/role';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
-
+import {EditUserModal} from './EditUserModal'
+import { useState } from 'react';
 type ManageUserRowProp = {
     user: User;
     rowNumber: number;
     deleteUser: (userId: string) => void
     confirmUser: (userId: string) => void
+    updateUser: (user:User) => void;
 }
 export const ManageUserRow = (props :ManageUserRowProp) => {
   const { user, rowNumber, deleteUser, confirmUser} = props;
-
+  const [openModal, setModalOpen] = useState(false);
+  
   const clickDeleteUser = () => {
     confirmAlert({
         title: 'Delete User',
@@ -50,6 +53,8 @@ export const ManageUserRow = (props :ManageUserRowProp) => {
 
 const date= user.created_at ? new Date(user.created_at).toLocaleDateString() : undefined
   return (
+    <>
+    <EditUserModal user={user} onUpdate={props.updateUser} isOpen={openModal} closeModal={() => setModalOpen(false)}/>
     <tr>
       <td>{rowNumber}</td>
       <td>{user.first_name + ' ' + user.last_name}</td>
@@ -57,14 +62,16 @@ const date= user.created_at ? new Date(user.created_at).toLocaleDateString() : u
       <td>{date}</td>
       <td>{Object.values(RoleEnum)[user.role_id! -1]}</td>
       <td><span className={user.online ? "status text-success": "status text-danger"}>&bull;</span>{user.online ? "Online":  "Offline"}</td>
-      <td>
+      <td>        
+
         {!user.confirm && <a  onClick= {() => clickConfirmUser()} className="confirm" title="Confrim" data-toggle="tooltip">
           <i className="material-icons">&#xe876;</i></a>}
-        <a href="#" className="settings" title="Settings" data-toggle="tooltip">
+        <a onClick={() => setModalOpen(prev=> !prev)} className="settings" title="Settings" data-toggle="tooltip">
           <i className="material-icons">&#xE8B8;</i></a>
         <a onClick={() => clickDeleteUser()} className="delete" title="Delete" data-toggle="tooltip">
           <i className="material-icons">&#xE5C9;</i></a>
       </td>
     </tr>
+    </>
   );
 };

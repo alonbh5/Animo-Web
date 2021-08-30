@@ -8,6 +8,6 @@ export type Role = {
 
 export enum RoleEnum {
     Admin = "Admin",
-    General = "General",
-    Psychologist = "Psychologist"
+    Psychologist = "Psychologist",
+    General = "General"
 }

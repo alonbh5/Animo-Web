@@ -680,7 +680,6 @@ table.table td a.delete {
 }
 table.table td a.confirm {
     color: green;
-	
 }
 
 table.table td i {
@@ -743,3 +742,14 @@ table.table td i {
     margin-top: 10px;
     font-size: 13px;
 }
+
+.container-update{
+	display: flex;
+	justify-content:center;
+	margin: 0 auto;
+	padding: 10px 0;
+	text-align:center;
+	align-items: center;
+	flex-direction: column;
+}
+

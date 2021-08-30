@@ -369,14 +369,67 @@ module.exports = {
         });
     },
 
-    updateUser: async (req, res, next) => {
+    updateUserByAdmin: async (req, res, next) => {
         const userId = req.params.userId;
-
-        if (userId !== req.userData.userId && req.userData.roleId !== adminRole) {
+        console.log(req.userData);
+        if (req.userData.roleId !== adminRole) {
+            console.log("EXIST")
             return next(new HttpError('You are not allowed to update this user', 401));
         }
 
-        const { role_id,
+        const { 
+            role_id,
+            first_name,
+            last_name,
+            email,
+            age,
+            gender
+        } = req.body;
+
+        try {
+            const matchUser = await User.findById(userId);
+            console.log(matchUser)
+            if (matchUser.email !== email) {
+                const isExisting = await User.findOne({ email: email });
+                if (isExisting) {
+                    return next(new HttpError(`User with email: ${email} already exists`, 400));
+                }
+            }
+
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        first_name: first_name || matchUser.first_name,
+                        last_name: last_name || matchUser.last_name,
+                        email: email || matchUser.email,
+                        age: age || matchUser.age,
+                        gender: gender || matchUser.gender,
+                        role_id: role_id || matchUser.role_id,
+                    }
+                },
+            );
+
+            res.status(200).send({
+                message: `Update User successfuly!`,
+                data: {
+                    userId: userId,
+                    email: email,
+                }
+            });
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    },
+
+    updateUser: async (req, res, next) => {
+        const userId = req.params.userId;
+
+        if (userId !== req.userData.userId) {
+            return next(new HttpError('You are not allowed to update this user', 401));
+        }
+
+        const { 
             first_name,
             last_name,
             email,
