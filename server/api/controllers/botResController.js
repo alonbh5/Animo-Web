@@ -277,20 +277,20 @@ module.exports = {
                 case "Conversation":
                     let cleanText = textFromUser.replace(/[?!.,*()\\#$%^&]/g, '').trim().toLowerCase().replace(/\s\s+/g, ' ');
                     var divRoot = await Conversation.countDocuments({ keyWords: cleanText });
-                    //let answer = await Conversation.find({ keyWords: cleanText }).limit(1).skip(RandomNumber++ % divRoot);
-                    let answer = await Conversation.findOne({ keyWords: cleanText }).skip(RandomNumber++ % divRoot); //TODO check if this work too
+                    let answer = await Conversation.findOne({ keyWords: cleanText }).skip(RandomNumber++ % divRoot); 
                     if (answer) {                        
                         if (answer.isPersonal) {
                             let allAnswers = await AnswersFromUsers.findOne({ userId: matchUser._id });
                             let HowManyToFill = answer.indexInQuestion.length;
 
                             for (let index = 0; index < HowManyToFill; index++) {
-                                let cur = "{" + String(index) + "}";
+                                let nextToReplace = "{" + String(index) + "}";
                                 let replacement = allAnswers.answers[answer.indexInQuestion[index]].useranswer;                                
-                                answer.question = answer.question.replace(cur,replacement);
+                                answer.question = answer.question.replace(nextToReplace,replacement);
                             }
-                        }
 
+                            //TODO now you need some how to continue
+                        }
 
                         res.status(200).json({
                             response_type: "Conversation",
