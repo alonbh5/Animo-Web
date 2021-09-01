@@ -44,7 +44,7 @@ const PersonalQuiz = (props: any) => {
   const handelSubmitQuiz = async (quizAnswers: personalQuiz[]) => {
     const params: AxiosRequestConfig = {
       method: 'PATCH',
-      url: `/botres/addquizans/${user.id}`,
+      url: `/botres/addquizans/${user._id}`,
       data: quizAnswers
     };
     try {
@@ -59,7 +59,7 @@ const PersonalQuiz = (props: any) => {
   const startQuiz = async () => {
     const params: AxiosRequestConfig = {
       method: 'POST',
-      url: `/botres/StartPersQuiz/${user.id}`
+      url: `/botres/StartPersQuiz/${user._id}`
     };
     try {
       await sendRequest(params);

@@ -21,7 +21,10 @@ export const scroll = new SmoothScroll('a[href*="#"]', {
 
 const App = () => {
   const [landingPageData] = useState(JsonData);
-  const { token, login, logout, userId, user, userRole, fetchUser } = useAuth();
+  const {
+    token, login, logout, userId, user,
+    userRole, fetchUser, updateStatus
+  } = useAuth();
   return (
     <AuthContext.Provider value={{
       isLoggedIn: !!token,
@@ -31,7 +34,8 @@ const App = () => {
       logout: logout,
       user: user,
       userRole: userRole,
-      fetchUser: fetchUser
+      fetchUser: fetchUser,
+      updateStatus: updateStatus
     }}>
       <Navigation />
       <Switch>

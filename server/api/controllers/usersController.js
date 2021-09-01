@@ -9,6 +9,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require("crypto");
 const HttpError = require('../models/http-error');
+const adminRole = 1;
+const generalRole = 3;
+
 
 const CalculatePersType = (personalQuiz) => {
     let I = 0;
@@ -136,7 +139,7 @@ module.exports = {
             } catch (err) {
                 return next(new HttpError('Could not create a user, please try again.', 500));
             }
-
+            const confirm = role_id === generalRole;
             const createUser = new User({
                 _id: new mongoose.Types.ObjectId(),
                 role_id,
@@ -146,26 +149,46 @@ module.exports = {
                 password: hashPassword,
                 age,
                 gender,
+                confirm
             });
 
-
             await createUser.save();
+            if (!confirm) {
+                return res.status(202).send({
+                    message: `Created a new user successfuly! We will confirm your user soon!`,
+                    data: {
+                        userId: createUser._id,
+                        email: createUser.email,
+                        status: 'confirm'
+                    }
+                });
+            }
+
             let token;
             try {
                 token = jwt.sign(
-                    { userId: createUser._id, email: createUser.email, roleId: createUser.roleId }, 'supersecret', { expiresIn: '1h' }
+                    { userId: createUser._id, email: createUser.email, roleId: createUser.role_id }, 'supersecret', { expiresIn: '1h' }
                 )
             } catch (err) {
                 return next(new HttpError('Could not create a user, please try later.', 500));
             }
 
+            try {
+                await User.updateOne(
+                    { _id: createUser._id },
+                    { $set: { online: true } },
+                );
+            } catch (err) {
+                // could not change status
+            }
 
             res.status(201).send({
                 message: `Created a new user successfuly!`,
                 data: {
                     userId: createUser._id,
                     email: createUser.email,
-                    token: token
+                    token: token,
+                    status: 'login'
                 }
             });
         } catch (error) {
@@ -253,10 +276,19 @@ module.exports = {
         let tokenLogin;
         try {
             tokenLogin = jwt.sign(
-                { userId: existingUser._id, email: existingUser.email, roleId: existingUser.roleId }, 'supersecret', { expiresIn: '1h' }
+                { userId: existingUser._id, email: existingUser.email, roleId: existingUser.role_id }, 'supersecret', { expiresIn: '1h' }
             )
         } catch (err) {
             return next(new HttpError('Loggin failed, please try later.', 500));
+        }
+
+        try {
+            await User.updateOne(
+                { _id: existingUser._id },
+                { $set: { online: true } },
+            );
+        } catch (err) {
+            // could not change status
         }
 
         await passwordResetToken.deleteOne();
@@ -298,13 +330,32 @@ module.exports = {
             return next(new HttpError('Invalid Password, could not log you in.', 401));
         }
 
+        if(!existingUser.confirm) {
+            return res.status(202).json({
+                message: `We are still confirming your profile, please try later`,
+                data: {
+                    userId: existingUser._id,
+                    email: existingUser.email,
+                    status: 'confirm'
+                }
+            });
+        }
+
         let token;
         try {
             token = jwt.sign(
-                { userId: existingUser._id, email: existingUser.email, roleId: existingUser.roleId }, 'supersecret', { expiresIn: '1h' }
+                { userId: existingUser._id, email: existingUser.email, roleId: existingUser.role_id }, 'supersecret', { expiresIn: '1h' }
             )
         } catch (err) {
             return next(new HttpError('Loggin failed, please try later', 500));
+        }
+        try {
+            await User.updateOne(
+                { _id: existingUser._id },
+                { $set: { online: true } },
+            );
+        } catch (err) {
+            // could not change status
         }
 
         return res.status(200).json({
@@ -312,7 +363,8 @@ module.exports = {
             data: {
                 userId: existingUser._id,
                 email: existingUser.email,
-                token: token
+                token: token,
+                status: 'login'
             }
         });
     },
@@ -320,7 +372,7 @@ module.exports = {
     updateUser: async (req, res, next) => {
         const userId = req.params.userId;
 
-        if (userId !== req.userData.userId) {
+        if (userId !== req.userData.userId && req.userData.roleId !== adminRole) {
             return next(new HttpError('You are not allowed to update this user', 401));
         }
 
@@ -366,7 +418,7 @@ module.exports = {
 
             let tokenLogin;
             tokenLogin = jwt.sign(
-                { userId: userId, email: email, roleId: matchUser.roleId }, 'supersecret', { expiresIn: '1h' }
+                { userId: userId, email: email, roleId: matchUser.role_id }, 'supersecret', { expiresIn: '1h' }
             )
 
             res.status(200).send({
@@ -375,6 +427,67 @@ module.exports = {
                     userId: userId,
                     email: email,
                     token: tokenLogin
+                }
+            });
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    },
+
+    updateStatus: async (req, res, next) => {
+        const userId = req.params.userId;
+
+        if (userId !== req.userData.userId) {
+            return next(new HttpError('You are not allowed to update this user', 401));
+        }
+
+        const { online } = req.body;
+
+        try {
+            const matchUser = await User.findById(userId);
+            if (!matchUser) {
+                return next(new HttpError(`User by id ${userId} did not found`, 404));
+            }
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        online: online
+                    }
+                },
+            );
+            res.status(200).send({
+                message: `Update User Status successfuly!`,
+                data: {
+                    userId: userId,
+                }
+            });
+
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    },
+
+    confirmUser: async (req, res, next) => {
+        const userId = req.params.userId;
+        if (req.userData.roleId !== adminRole) {
+            return next(new HttpError('You are not allowed to confirm this user, only admin have permission', 401));
+        }
+
+        try {
+            const matchUser = await User.findById(userId);
+            if (!matchUser) {
+                return next(new HttpError(`User by id ${userId} did not found`, 404));
+            }
+            await User.updateOne(
+                { _id: userId },
+                { $set: { confirm: true } },
+            );
+
+            res.status(200).send({
+                message: `Confirm User successfuly!`,
+                data: {
+                    userId: userId,
                 }
             });
         } catch {
@@ -520,17 +633,32 @@ module.exports = {
         }
     },
 
-    deleteUsers: (req, res) => {
+    deleteUser: async (req, res, next) => {
         const userId = req.params.userId;
 
-        User.deleteOne({ _id: userId }).then(() => {
-            res.status(200).json({
-                message: `delete user - ${userId}`
-            })
-        }).catch(error => {
-            res.status(500).json({
-                error
-            })
-        });
+        if (req.userData.roleId !== adminRole) {
+            return next(new HttpError('You are not allowed to delete this user', 401));
+        }
+
+        if (req.userData.userId === userId) {
+            return next(new HttpError('You are not allowed to delete your own user', 401));
+        }
+
+        try {
+            const matchUser = await User.findById(userId);
+            if (!matchUser) {
+                return next(new HttpError(`User by id ${userId} did not found!`, 404));
+            }
+            await User.deleteOne({ _id: userId });
+            res.status(200).send({
+                message: `Delete User successfuly!`,
+                data: {
+                    userId: userId,
+                }
+            });
+
+        } catch (err) {
+            return next(new HttpError('An Unknown Error, please try later.', 500));
+        }
     }
 }

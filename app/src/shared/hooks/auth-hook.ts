@@ -50,6 +50,23 @@ export const useAuth = () => {
     );
   }, []);
 
+  const updateStatus = async (online: boolean) => {
+    const params: AxiosRequestConfig = {
+      method: 'PATCH',
+      url: `/users/updateStatus/${userId}`,
+      data: {
+        online
+      },
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    };
+    try {
+      await sendRequest(params);
+    } catch(err) {
+    }
+  }
+
   const logout = useCallback(() => {
     setToken(undefined);
     setTokenExpirationDate(undefined);
@@ -68,24 +85,12 @@ export const useAuth = () => {
       };
 
       const responseUser = await sendRequest(params);
-      const data = responseUser.data;
 
-      setUser({
-        id: data._id,
-        role_id: data.role_id,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email,
-        password: data.password,
-        age: data.age,
-        gender: data.gender,
-        persQuiz: data.persQuiz,
-        personality: data.personality
-      });
+      setUser(responseUser.data as User);
 
       const paramsRole: AxiosRequestConfig = {
         method: 'GET',
-        url: `/roles/${data.role_id}`
+        url: `/roles/${responseUser.data.role_id}`
       };
       const responseRole = await sendRequest(paramsRole);
       setUserRoleType(responseRole.data.role);
@@ -130,6 +135,7 @@ export const useAuth = () => {
     userId,
     user,
     userRole: userRoleType,
-    fetchUser
+    fetchUser,
+    updateStatus
   };
 };
