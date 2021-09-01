@@ -4,7 +4,7 @@ const {
     createText,
     getText,
     getTips,
-    getArticals,
+    getArticles,
     updateText,
     deleteText
 } = require('../controllers/phyDataController');
@@ -12,7 +12,7 @@ const {
 
 router.get('/' ,getAllTexts);
 router.get('/getTips' ,getTips);
-router.get('/getArticals' ,getArticals);
+router.get('/getArticles' ,getArticles);
 router.post('/' , createText);
 router.get('/:textId' ,getText);
 router.patch('/:textId' , updateText);

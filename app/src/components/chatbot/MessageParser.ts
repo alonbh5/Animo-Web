@@ -1,3 +1,4 @@
+/* eslint-disable */
 import validator from 'validator'
 class MessageParser {
   actionProvider: any;

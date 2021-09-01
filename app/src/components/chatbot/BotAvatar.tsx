@@ -1,3 +1,4 @@
+/* eslint-disable */
 import "./BotAvatar.css";
 
 export const BotAvatar = () => {

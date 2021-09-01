@@ -1,3 +1,4 @@
+/* eslint-disable */
 import "./showOptions.css";
 
 export const ShowOptions = (props: any) => {

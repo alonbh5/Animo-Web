@@ -7,7 +7,7 @@ import { About } from './components/HomePage/About';
 import { Team } from './components/HomePage/Team';
 import { Contact } from './components/HomePage/Contact';
 import { EmotionalAnalysis } from './components/Pages/EmotionalAnalysis';
-import { TipsAndArticals } from './components/Pages/TipsAndArticals';
+import { TipsAndArticles } from './components/Pages/TipsAndArticles';
 import { Switch, Route } from 'react-router-dom';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
@@ -52,7 +52,7 @@ const App = () => {
           <EmotionalAnalysis data={landingPageData.About} />
         </Route>
         <Route path='/tips'>
-          <TipsAndArticals />
+          <TipsAndArticles />
         </Route>
         <AuthrizationRouters />
       </Switch>
