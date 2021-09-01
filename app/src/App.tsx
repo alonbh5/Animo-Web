@@ -51,7 +51,7 @@ const App = () => {
         <Route path='/analyze'>
           <EmotionalAnalysis data={landingPageData.About} />
         </Route>
-        <Route path='/tips'>
+        <Route path='/tips-and-articles'>
           <TipsAndArticles />
         </Route>
         <AuthrizationRouters />
