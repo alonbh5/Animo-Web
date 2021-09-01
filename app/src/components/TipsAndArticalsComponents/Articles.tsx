@@ -16,10 +16,10 @@
 // const text = TipsProps.text
 //const url = TipsProps.url
 export const ArticleComponent = ({ text, url, author, img }: ArticleProps) => {
-
+  console.log(img)
     return (
-      <div className= "article">
-        <img className='team-img' src={img} />
+      <div className= "tile">
+        {img.includes('.jpg') && <img src={img} />}
         <br></br>
         <a id="link" href={url} target="_blank"> {text} </a>
         <br></br>

@@ -16,11 +16,10 @@
 export const TipComponent = ({ text, content }: TipsProps) => {
 
     return (
-      <div >
-        {text}
+      <div className="" >
+        <h3>{text}</h3>
+        <p style = {{ width: "1000px" }}>{content}</p>
         <br></br>
-        <br></br>
-        {content}
       </div>
     )
   }

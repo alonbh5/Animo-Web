@@ -128,7 +128,7 @@ const SignUp = () => {
                 <Input
                   className="form-control"
                   required={true}
-                  type="text"
+                  type="text-area"
                   name="lastName"
                   label="Last name"
                   placeholder="Enter Last name"
