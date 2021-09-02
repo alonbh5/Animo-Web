@@ -1,12 +1,17 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
-import SignIn from './Login/SignIn';
-import SignUp from './Login/SignUp';
-import Profile from './Profile/Profile';
-import ForgotPassword from './ResetPassword/ForgotPassword';
-import ResetPassword from './ResetPassword/ResetPassword';
-import ManageUsers from '../AdminPanel/ManageUsers';
+
+const ManageUsers = React.lazy(() =>
+  import('../AdminPanel/ManageUsers'));
+const ResetPassword = React.lazy(() =>
+  import('./ResetPassword/ResetPassword'));
+const ForgotPassword = React.lazy(() =>
+  import('./ResetPassword/ForgotPassword'));
+const Profile = React.lazy(() => import('./Profile/Profile'));
+const SignIn = React.lazy(() => import('./Login/SignIn'));
+const SignUp = React.lazy(() => import('./Login/SignUp'));
+
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
   let routers;
