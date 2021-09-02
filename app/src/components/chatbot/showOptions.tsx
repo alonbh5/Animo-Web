@@ -1,21 +1,15 @@
-/* eslint-disable */
-import "./showOptions.css";
+import './showOptions.css';
 
 export const ShowOptions = (props: any) => {
   const options = [
     {
-      text: 'First Talk',
-      handler: props.actionProvider.handlerFirstTalk,
-      id: 1
-    },
-    {
       text: 'Advice',
-      handler: props.actionProvider.handlerAdvice,
+      handler: props.actionProvider.setTalkTypeAdvice,
       id: 2
     },
     {
       text: 'Analyze My Emotion',
-      handler: props.actionProvider.handlerAnalyzeMyEmotion,
+      handler: props.actionProvider.setTalkTypeAnalyzeMyEmotion,
       id: 3
     }
   ];

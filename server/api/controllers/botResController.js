@@ -53,7 +53,7 @@ const KeepGetToKnow = async (AnswersObjFromUser, matchUser, textFromUser, res) =
         await matchUser.save();
         res.status(200).json({
             response_type: "GetToKnow-Done", //mean for UI to STOP sending answers from user from now on
-            content: "Ok! That All I Wanted To know :)",
+            content: "Ok! That's All I Wanted To know :)",
             response_to: textFromUser
         });
 
@@ -261,7 +261,7 @@ module.exports = {
                                 let ansObj = await AnswersFromUsers.findOne({ userId: matchUser._id });
                                 KeepGetToKnow(ansObj, matchUser, textFromUser, res);
                             } catch (err) {
-                                res.status(404).json({ message: "Could Not Find Answers From This User - try agian" })
+                                res.status(404).json({ message: "Could Not Find Answers From This User - try again" })
                             }
 
                             break;
@@ -306,7 +306,7 @@ module.exports = {
                     else {
                         res.status(200).json({
                             response_type: "Conversation",
-                            content: "Im Sorry, My Bot Brain Cant Handel Your Question! Can you Rephrase It? (I am Still on Beta 😢)",
+                            content: "I am Sorry, My Bot Brain Can't Handel Your Question! Can you Rephrase It? (I am Still on Beta 😢)",
                             response_to: textFromUser
                         });
                     }
