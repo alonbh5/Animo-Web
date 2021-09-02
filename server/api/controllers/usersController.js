@@ -330,7 +330,7 @@ module.exports = {
             return next(new HttpError('Invalid Password, could not log you in.', 401));
         }
 
-        if(!existingUser.confirm) {
+        if (!existingUser.confirm) {
             return res.status(202).json({
                 message: `We are still confirming your profile, please try later`,
                 data: {
@@ -371,13 +371,12 @@ module.exports = {
 
     updateUserByAdmin: async (req, res, next) => {
         const userId = req.params.userId;
-        console.log(req.userData);
-        if (req.userData.roleId !== adminRole) {
-            console.log("EXIST")
+
+        if (req.userData.roleId !== adminRole || userId === req.userData.userId) {
             return next(new HttpError('You are not allowed to update this user', 401));
         }
 
-        const { 
+        const {
             role_id,
             first_name,
             last_name,
@@ -388,7 +387,7 @@ module.exports = {
 
         try {
             const matchUser = await User.findById(userId);
-            console.log(matchUser)
+
             if (matchUser.email !== email) {
                 const isExisting = await User.findOne({ email: email });
                 if (isExisting) {
@@ -429,7 +428,7 @@ module.exports = {
             return next(new HttpError('You are not allowed to update this user', 401));
         }
 
-        const { 
+        const {
             first_name,
             last_name,
             email,
@@ -439,6 +438,8 @@ module.exports = {
         } = req.body;
 
         try {
+            console.log("IM HERE1")
+
             const matchUser = await User.findById(userId);
             if (matchUser.email !== email) {
                 const isExisting = await User.findOne({ email: email });
@@ -446,6 +447,7 @@ module.exports = {
                     return next(new HttpError(`User with email: ${email} already exists`, 400));
                 }
             }
+            console.log("IM HERE2")
 
             await User.updateOne(
                 { _id: userId },
@@ -455,12 +457,11 @@ module.exports = {
                         last_name: last_name || matchUser.last_name,
                         email: email || matchUser.email,
                         age: age || matchUser.age,
-                        gender: gender || matchUser.gender,
-                        role_id: role_id || matchUser.role_id,
+                        gender: gender || matchUser.gender
                     }
                 },
             );
-
+            console.log("IM HERE")
             if (matchUser.password !== password && password) {
                 const hash = await bcrypt.hash(password, 12);
                 await User.updateOne(
@@ -468,6 +469,7 @@ module.exports = {
                     { $set: { password: hash } },
                 );
             }
+            console.log("IM HERE1")
 
             let tokenLogin;
             tokenLogin = jwt.sign(
