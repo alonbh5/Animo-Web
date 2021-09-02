@@ -125,7 +125,6 @@ export const TipsAndArticles = (props: any) => {
           {
             // 'tips' from the usestate line(52) for each tip create a tip compenent and send it the title and the url
             articlesArr.map((article: ArticleItem) => {
-              console.log(article);
               return <ArticleComponent
                 text={article.title}
                 url={article.link}

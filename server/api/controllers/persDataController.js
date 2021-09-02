@@ -45,15 +45,11 @@ module.exports = {
     getPersData: (req, res) => {
         const persDataId = req.params.persDataId;
 
-        console.log("im here by id ");
-        console.log(persDataId);
-
         PersData.findById(persDataId).then((persRes) => {
             res.status(200).json({
                 persRes
             })
         }).catch(error => {
-            console.log(error);
             res.status(500).json({
                 massage: "WTF"
             })
