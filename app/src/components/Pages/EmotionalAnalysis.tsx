@@ -1,5 +1,6 @@
+/* eslint-disable */
 // @ts-ignore
-import Chatbot from 'react-chatbot-kit';
+import  Chatbot from "react-chatbot-kit";
 
 import config from '../chatbot/config';
 import MessageParser from '../chatbot/MessageParser';

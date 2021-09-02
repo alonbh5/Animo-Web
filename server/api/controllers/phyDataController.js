@@ -17,7 +17,7 @@ module.exports = {
 
     getTips: async (req, res, next) => {
         try {
-            const allTips = await PhyData.find({ data_type: "Tips" })
+            const allTips = await PhyData.find({ data_type: "Tip" })
             if (allTips.length === 0) {
                 return next(new HttpError( `Found no Tips`, 204));
             }
@@ -32,16 +32,16 @@ module.exports = {
     },
 
 
-    getArticals: async (req, res, next) => {
+    getArticles: async (req, res, next) => {
         try {
-            const allArticals = await PhyData.find({ data_type: "Article1" })
-            if (allArticals.length === 0) {
-                return next(new HttpError( `Found no Articals`, 204));
+            const allArticles = await PhyData.find({ data_type: "Article" })
+            if (allArticles.length === 0) {
+                return next(new HttpError( `Found no Articles`, 204));
             }
-            const length = allArticals.length;
+            const length = allArticles.length;
             res.status(200).send({
-                message: `We Found ${length} tips`,
-                data: allArticals
+                message: `We Found ${length} Articles`,
+                data: allArticles
             });
         } catch (err) {
             return next(new HttpError( 'Unknown Error, please try later.', 500));
@@ -55,7 +55,8 @@ module.exports = {
             author,
             title,
             emotions,
-            created_by } = req.body;
+            content,
+            img } = req.body;
 
         const confirm = false;
 
@@ -66,8 +67,9 @@ module.exports = {
             author,
             title,
             emotions,
-            created_by,
-            confirm
+            content,
+            confirm,
+            img
         });
 
         phyData.save().then(() => {

@@ -1,5 +1,5 @@
-/*eslint-disable*/
-import validator from 'validator';
+/* eslint-disable */
+import validator from 'validator'
 class MessageParser {
   actionProvider: any;
   state: any;

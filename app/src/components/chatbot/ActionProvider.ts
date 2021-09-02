@@ -1,5 +1,5 @@
-/* eslint-disable*/
-import { truncateSync } from 'fs';
+/* eslint-disable */
+import { truncateSync } from "fs";
 import axios, { AxiosRequestConfig } from 'axios';
 import { User } from '../api/configuration/models/users';
 import { isIfStatement } from 'typescript';

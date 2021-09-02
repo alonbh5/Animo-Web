@@ -138,7 +138,7 @@ const SignUp = () => {
                   className="form-control"
                   disabled={disabled}
                   required={true}
-                  type="text"
+                  type="text-area"
                   name="lastName"
                   label="Last name"
                   placeholder="Enter Last name"
