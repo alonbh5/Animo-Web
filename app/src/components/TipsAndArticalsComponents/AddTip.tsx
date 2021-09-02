@@ -2,24 +2,20 @@
 
 import { AxiosRequestConfig } from "axios";
 import { useState } from "react";
-import { useEffect } from "react";
 import validator from "validator";
 import Input from "../../shared/FormElements/Input";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
-import { Article } from "../api/configuration/models/article";
-import { ArticleComponent } from "../TipsAndArticalsComponents/Articles";
-import { TipComponent } from "../TipsAndArticalsComponents/Tips";
+import { Tip } from "../api/configuration/models/tip";
+
 
 const initialState = {
-  url: "",
   title: "",
-  img: "",
   author: "",
   content: ""
 };
-export const AddArticle = () => {
-  const [{ url, title, img, author, content }, setState] = useState(initialState);
+export const AddTip = () => {
+  const [{ title, author, content }, setState] = useState(initialState);
   const { isLoading, error, sendRequest, clearMessages } = useHttpClient();
   //const { rolesOptions } = useRoles();
 
@@ -31,7 +27,7 @@ export const AddArticle = () => {
   const isFormValid = () => {
     return (
       !validator.isEmpty(title) &&
-      !validator.isEmpty(author) 
+      !validator.isEmpty(content) 
       // !(validator.isEmpty(url) || validator.isEmpty(content)) //TODO
     );
   };
@@ -39,10 +35,8 @@ export const AddArticle = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     clearMessages();
-    const articleToAddToDB: Article = {
-      url,
+    const tipToAddToDB: Tip = {
       title,
-      img,
       author,
       content
     };
@@ -51,8 +45,8 @@ export const AddArticle = () => {
       method: "POST",
       url: "/phydata",
       data: {
-        ...articleToAddToDB,
-        data_type: "Article",
+        ...tipToAddToDB,
+        data_type: "Tip",
         confirm: "false",
       },
     };
@@ -63,30 +57,18 @@ export const AddArticle = () => {
   
   return (
         <div className="col-md-8 col-md-offset-2 section-title">
-          <br></br>
-          <h5>Add article</h5>
+        <br></br>
+          <h5>Add Tip</h5>
           <form onSubmit={handleSubmit}>
             {isLoading && <LoadingSpinner asOverlay />}
-            <div className="form-group">
-              <Input
-                className="form-control"
-                required={false}
-                type="text"
-                name="url"
-                label="Article link"
-                placeholder="Enter the article url"
-                value={url}
-                onChange={handleChange}
-              />
-            </div>
             <div className="form-group">
               <Input
                 className="form-control"
                 required={true}
                 type="text"
                 name="title"
-                label="Article title"
-                placeholder="Enter article title"
+                label="Tip title"
+                placeholder="Enter tip title"
                 value={title}
                 onChange={handleChange}
               />
@@ -94,34 +76,23 @@ export const AddArticle = () => {
             <div className="form-group">
               <Input
                 className="form-control"
-                required={true}
+                required={false}
                 type="text"
                 name="author"
-                label="Article author"
-                placeholder="Enter article author"
+                label="Tip author"
+                placeholder="Enter tip author"
                 value={author}
                 onChange={handleChange}
               />
             </div>
-            <div className="form-group">
-              <Input
-                className="form-control"
-                required={false}
-                type="text"
-                name="img"
-                label="Article image"
-                placeholder="An image that describe the article, jpg file "
-                value={img}
-                onChange={handleChange}
-              />
-            </div>
+              
             <div className="form-group">
               <textarea
                 style={{height: "100px"}}
                 className="form-control"
                 required={false}
                 name="content"
-                placeholder="Place your article here "
+                placeholder="Place your tip here "
                 value={content}
                 onChange={handleChange}
               />
