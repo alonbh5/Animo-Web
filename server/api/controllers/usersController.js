@@ -34,7 +34,6 @@ const CalculatePersType = (personalQuiz) => {
 
 
         if (isNaN(num)) {
-            console.log("idiot");
             throw new Error();
         }
 
@@ -438,8 +437,6 @@ module.exports = {
         } = req.body;
 
         try {
-            console.log("IM HERE1")
-
             const matchUser = await User.findById(userId);
             if (matchUser.email !== email) {
                 const isExisting = await User.findOne({ email: email });
@@ -447,7 +444,6 @@ module.exports = {
                     return next(new HttpError(`User with email: ${email} already exists`, 400));
                 }
             }
-            console.log("IM HERE2")
 
             await User.updateOne(
                 { _id: userId },
@@ -461,7 +457,6 @@ module.exports = {
                     }
                 },
             );
-            console.log("IM HERE")
             if (matchUser.password !== password && password) {
                 const hash = await bcrypt.hash(password, 12);
                 await User.updateOne(
@@ -469,7 +464,6 @@ module.exports = {
                     { $set: { password: hash } },
                 );
             }
-            console.log("IM HERE1")
 
             let tokenLogin;
             tokenLogin = jwt.sign(
@@ -552,10 +546,6 @@ module.exports = {
 
     addQuiz: (req, res) => {
         const userId = req.params.userId;
-
-        //console.log(userId);
-
-        //console.log(req.body.persQuiz);
 
         res.status(200).json({
             message: `update user - ${userId}`

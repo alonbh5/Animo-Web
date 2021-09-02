@@ -39,7 +39,6 @@ const ManageUsers = (props: any) => {
 
   const onUpdateUser = async (user: User) => {
     clearMessages();
-    console.log(user)
     const params: AxiosRequestConfig = {
       method: 'PATCH',
       url: `/users/updateUserByAdmin/${user._id}`,

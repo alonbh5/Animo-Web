@@ -25,7 +25,12 @@ const Profile = (props: any) => {
                 isEditMode={isEditMode} />
             </div>
           </div>
-          <button className="btn btn-info" onClick={auth.logout}>LOGOUT</button>
+          <button
+            className="btn btn-primary"
+            onClick={auth.logout}
+          >
+            LOGOUT
+          </button>
         </div>
       </div>
     </div>);

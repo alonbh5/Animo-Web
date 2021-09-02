@@ -91,7 +91,6 @@ class ActionProvider {
     let botAnswer;
     try {
       botAnswer = await axios.request(params);
-      console.log(botAnswer);
     } catch (error) {
       botAnswer = 'Sorry, We have some internal Error. please try us later';
     }

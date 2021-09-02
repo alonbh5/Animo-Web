@@ -69,7 +69,6 @@ export const EditUserModal = (props: EditUserModalProps) => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    console.log(name + value);
     setState((prevState) => ({ ...prevState, [name]: value }));
     !isChange && setIsChange(true);
   };

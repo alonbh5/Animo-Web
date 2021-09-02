@@ -16,7 +16,6 @@
 // const text = TipsProps.text
 //const url = TipsProps.url
 export const ArticleComponent = ({ text, url, author, img }: ArticleProps) => {
-  console.log(img)
     return (
       <div className= "tile">
         {img.includes('.jpg') && <img src={img} />}

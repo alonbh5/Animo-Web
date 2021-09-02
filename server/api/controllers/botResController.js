@@ -12,7 +12,6 @@ const InitGetToKnow = async (matchUser, textFromUser, res) => {
 
     let allQuestion = await BotPresonalQuestions.find();
 
-    console.log(allQuestion);
     const ans = new AnswersFromUsers({
         _id: new mongoose.Types.ObjectId(),
         userId: String(matchUser._id),
