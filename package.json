@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "startclient": "cd app && npm start",
     "startserver": "cd server && npm start",
+    "startServerDev": "cd server && npm run startDev",
     "start": "npm run startserver | npm run startclient",
+    "startDev": "npm run startServerDev | npm run startclient",
     "installclient": "cd app && npm install",
     "installserver": "cd server && npm install",
     "install": "npm run installclient && npm run installserver"
