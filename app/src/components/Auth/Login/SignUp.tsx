@@ -47,7 +47,6 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    console.log(email);
     if (validator.isEmail(email) || validator.isEmpty(email)) {
       setErrorEmail('');
     } else {
@@ -138,7 +137,7 @@ const SignUp = () => {
                   className="form-control"
                   disabled={disabled}
                   required={true}
-                  type="text"
+                  type="text-area"
                   name="lastName"
                   label="Last name"
                   placeholder="Enter Last name"

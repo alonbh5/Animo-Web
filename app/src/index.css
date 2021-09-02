@@ -11,3 +11,58 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.cols {
+  display: flex;    
+  overflow-x: auto;
+  column-count: 3;
+  padding: 0 0 0 100px; 
+  margin: 0; 
+  column-rule:  0px;
+  list-style-type: none;
+}
+.article {
+  margin-right: 150px;
+}
+
+.container::-webkit-scrollbar {    display: none;}
+li.article {
+  width: 500px;
+  margin: 0; 
+  padding: 0;
+}
+.cols {   display: flex;   align-items: center;   height: 50vh;}
+li img {
+  height: 150px;
+  width: 150px;
+}
+ /* copied from https://reactjsexample.com/photo-gallery-using-react-js/ */
+@import 'https://fonts.googleapis.com/css?family=PT+Sans:400,700';
+body.article {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  font-family: "PT Sans";
+  font-size: 18px;
+}
+
+.tiles {
+  padding: 6vh 16vw;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.tile {
+  margin: 15px;
+  cursor: pointer;
+  overflow: hidden;
+  width: 18vw;
+  height: 18vw;
+  
+}
+.tile img {
+  width: 100%;
+  transition: transform 500ms ease;
+}

@@ -13,6 +13,7 @@ const {
     forgotPassword,
     resetPassword,
     confirmUser,
+    updateUserByAdmin
 } = require('../controllers/usersController');
 
 
@@ -27,6 +28,7 @@ router.patch('/createquiz/:userId',createQuiz);
 router.use(checkAuth);
 router.get('/getuser/:userId' ,getUser);
 router.patch('/updateUser/:userId' , updateUser);
+router.patch('/updateUserByAdmin/:userId' , updateUserByAdmin);
 router.patch('/updateStatus/:userId' , updateStatus);
 router.patch('/confirmUser/:userId' , confirmUser);
 router.delete('/deleteUser/:userId' , deleteUser);

@@ -7,12 +7,13 @@ import { About } from './components/HomePage/About';
 import { Team } from './components/HomePage/Team';
 import { Contact } from './components/HomePage/Contact';
 import { EmotionalAnalysis } from './components/Pages/EmotionalAnalysis';
-import { TipsAndArticals } from './components/Pages/TipsAndArticals';
+import { TipsAndArticles } from './components/Pages/TipsAndArticles';
 import { Switch, Route } from 'react-router-dom';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 import PersonalQuiz from './components/Pages/PersonalityQuiz';
 import AuthrizationRouters from './components/Auth';
+import { ModalProvider } from 'react-simple-hook-modal';
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
@@ -37,25 +38,27 @@ const App = () => {
       fetchUser: fetchUser,
       updateStatus: updateStatus
     }}>
-      <Navigation />
-      <Switch>
-        <Route path='/home-page'>
-          <Header data={landingPageData.Header} />
-          <About data={landingPageData.About} />
-          <Team data={landingPageData.Team} />
-          <Contact data={landingPageData.Contact} />
-        </Route>
-        <Route path='/personalquiz'>
-          <PersonalQuiz />
-        </Route>
-        <Route path='/analyze'>
-          <EmotionalAnalysis data={landingPageData.About} />
-        </Route>
-        <Route path='/tips'>
-          <TipsAndArticals />
-        </Route>
-        <AuthrizationRouters />
-      </Switch>
+      <ModalProvider>
+        <Navigation />
+        <Switch>
+          <Route path='/home-page'>
+            <Header data={landingPageData.Header} />
+            <About data={landingPageData.About} />
+            <Team data={landingPageData.Team} />
+            <Contact data={landingPageData.Contact} />
+          </Route>
+          <Route path='/personalquiz'>
+            <PersonalQuiz />
+          </Route>
+          <Route path='/analyze'>
+            <EmotionalAnalysis data={landingPageData.About} />
+          </Route>
+          <Route path='/tips'>
+            <TipsAndArticles />
+          </Route>
+          <AuthrizationRouters />
+        </Switch>
+      </ModalProvider>
     </AuthContext.Provider>
   );
 };

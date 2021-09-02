@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState, useCallback } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 export const serverAPIPort = 3000;
@@ -20,6 +21,7 @@ export const useHttpClient = () => {
       setSuccess(result.data.message);
       return result.data;
     } catch (error) {
+      console.error(error)
       setError(error.response.data.message);
       throw error;
     } finally {

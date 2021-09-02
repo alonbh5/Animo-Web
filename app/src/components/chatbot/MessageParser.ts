@@ -18,7 +18,7 @@ class MessageParser {
         message, this.state.user.id, this.state.talkType);
     }
 
-    if (this.state.talkType === 'undifined') {
+    if (this.state.talkType === undefined) {
       this.actionProvider.handlerFirstTalk(
         message, this.state.user.id, this.state.talkType);
     }

@@ -9,11 +9,13 @@ import { User } from '../api/configuration/models/users';
 import { userID } from '../api/configuration/config';
 import { ManageUserRow } from './MangeUserRow'
 import { AuthContext } from '../../shared/context/auth-context';
+import { useAlert } from 'react-alert';
 
 const ManageUsers = (props: any) => {
   const { isLoading, error, success, sendRequest, clearMessages } = useHttpClient();
   const [users, setUsers] = useState<User[] | undefined>(undefined);
   const auth = useContext(AuthContext);
+  const alert = useAlert();
 
   const fetchUsers = async () => {
     const params: AxiosRequestConfig = {
@@ -24,7 +26,6 @@ const ManageUsers = (props: any) => {
     try {
       const response = await sendRequest(params);
       setUsers(response.data.allUser as User[]);
-      console.log(response.data.allUser as User[])
     } catch (err) {
     }
   };
@@ -35,6 +36,29 @@ const ManageUsers = (props: any) => {
   const timeout = (delay: number) => {
     return new Promise(res => setTimeout(res, delay));
   }
+
+  const onUpdateUser = async (user: User) => {
+    clearMessages();
+    const params: AxiosRequestConfig = {
+      method: 'PATCH',
+      url: `/users/updateUserByAdmin/${user._id}`,
+      data: {
+        ...user
+      },
+      headers: {
+        Authorization: 'Bearer ' + auth.token
+      }
+    };
+
+    try {
+      await sendRequest(params);
+      alert.success('Update Successfuly!');
+      await timeout(1000);
+      fetchUsers();
+    } catch (err) {
+      alert.error('Error, please try later');
+    }
+  };
   
   const deleteUser = async (userId: string) => {
     const params: AxiosRequestConfig = {
@@ -72,7 +96,7 @@ const ManageUsers = (props: any) => {
         {isLoading && <LoadingSpinner asOverlay />}
         {error && <h5 style={{ color: 'red' }}>{error}</h5>}
         {success && <h5 style={{ color: 'blue' }}>{success}</h5>}
-        <table className="table table-striped table-hover">
+               <table className="table table-striped table-hover">
           <thead>
             <tr>
               <th>#</th>
@@ -86,7 +110,7 @@ const ManageUsers = (props: any) => {
           </thead>
           <tbody>
             {users?.map((user: User, index: number) =>
-              <ManageUserRow rowNumber={index} user={user} deleteUser={deleteUser} confirmUser={confirmUser} />)}
+              <ManageUserRow rowNumber={index} user={user} deleteUser={deleteUser} confirmUser={confirmUser} updateUser={onUpdateUser}/>)}
           </tbody>
         </table>
       </div>
