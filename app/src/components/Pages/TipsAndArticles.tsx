@@ -48,7 +48,7 @@ interface TipsResponse {
   data: TipItem[];
 }
 
-export const TipsAndArticles = (props: any) => {
+const TipsAndArticles = (props: any) => {
   // we send the sendRequest to the server
   const { sendRequest } = useHttpClient();
   // state: in tips we have the values from set tips, the useState function initialize the tips to an empty arr of ArticalItem interface.
@@ -158,3 +158,4 @@ export const TipsAndArticles = (props: any) => {
       </div>
   );
 };
+export default TipsAndArticles;
