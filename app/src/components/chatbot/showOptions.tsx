@@ -1,22 +1,22 @@
-import "./showOptions.css";
+import './showOptions.css';
 
 export const ShowOptions = (props: any) => {
   const options = [
     {
-      text: "First Talk",
+      text: 'First Talk',
       handler: props.actionProvider.handlerFirstTalk,
-      id: 1,
+      id: 1
     },
     {
-      text: "Advice",
+      text: 'Advice',
       handler: props.actionProvider.handlerAdvice,
-      id: 2,
+      id: 2
     },
     {
-      text: "Analyze My Emotion",
+      text: 'Analyze My Emotion',
       handler: props.actionProvider.handlerAnalyzeMyEmotion,
-      id: 3,
-    },
+      id: 3
+    }
   ];
 
   const optionsMarkup = options.map((option) => (
