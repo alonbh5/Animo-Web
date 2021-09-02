@@ -111,7 +111,7 @@ export const EditUserModal = (props: EditUserModalProps) => {
         isOpen={props.isOpen}
         transition={ModalTransition.BOTTOM_UP}
       >
-        <div className='container-update'>
+        <div>
           <div className='header'>
             <h2>Update User Settings</h2 ></div>
           <div className='table-edit'>
@@ -200,7 +200,7 @@ export const EditUserModal = (props: EditUserModalProps) => {
                 type="reset"
                 onClick={_onClose}
                 className="btn btn-primary btn-block">
-                  Close
+                Close
               </button>
             </form>
           </div>

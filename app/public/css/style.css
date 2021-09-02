@@ -610,6 +610,7 @@ font-family: inherit;
 font-weight:bold;
 font-size: 15px;
 margin-top: 30;
+}
 
 .table-responsive {
     margin: 30px 0;
@@ -763,15 +764,5 @@ table.table td i {
     float: left;
     margin-top: 10px;
     font-size: 13px;
-}
-
-.container-update{
-	display: flex;
-	justify-content:center;
-	margin: 0 auto;
-	padding: 10px 0;
-	text-align:center;
-	align-items: center;
-	flex-direction: column;
 }
 
