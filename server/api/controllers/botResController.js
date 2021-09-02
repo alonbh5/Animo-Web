@@ -285,7 +285,11 @@ module.exports = {
 
                             for (let index = 0; index < HowManyToFill; index++) {
                                 let nextToReplace = "{" + String(index) + "}";
-                                let replacement = allAnswers.answers[answer.indexInQuestion[index]].useranswer;                                
+                                let replacement = allAnswers.answers[answer.indexInQuestion[index]].useranswer;
+                                replacement = replacement.toLowerCase()
+                                                        .split(' ')
+                                                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                                                        .join(' ');                                
                                 answer.question = answer.question.replace(nextToReplace,replacement);
                             }
 
@@ -294,7 +298,7 @@ module.exports = {
 
                         res.status(200).json({
                             response_type: "Conversation",
-                            content: answer,
+                            content: answer.question,
                             response_to: textFromUser
                         });
 
