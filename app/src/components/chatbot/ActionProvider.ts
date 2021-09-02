@@ -52,20 +52,20 @@ class ActionProvider {
         }
       }));
       if (data.getToKnowState === 'Done') {
-        botAnswer = this.createChatBotMessage(`I got you ${data.first_name}, 
+        botAnswer = this.createChatBotMessage(`${data.first_name}, 
           how can I help you today?`, {
           widget: 'ShowOptions',
+          // talkType: 'Conversation',
           withAvatar: true
         });
       } else {
-        botAnswer = this.createChatBotMessage(`Ok ${data.first_name}, 
-          I see it is the first time we are talking.
-          How about I get to know you a little bit better?`);
+        botAnswer = this.createChatBotMessage(
+          `I see it is the first time we are talking.
+          Nice to meet you ${data.first_name}.`);
         this.setState((prevState: { messages: any; }) => ({
           ...prevState,
           talkType: 'GetToKnow'
         }));
-        // this.handlerFirstTalk(message, data._id, 'GetToKnow')
       }
     } catch (err) {
       botAnswer = this.createChatBotMessage(errorMessage, {
@@ -75,7 +75,7 @@ class ActionProvider {
     this.setChatbotMessage(botAnswer);
   }
 
-  handlerFirstTalk = async (
+  handlerTalk = async (
     textFromUser: string, userId: string, talkType: string) => {
     const params = this.getParams(textFromUser, userId, talkType);
     let botAnswer = '';
@@ -114,14 +114,17 @@ class ActionProvider {
         }));
       }
     } else {
-      // eslint-disable-next-line max-len
       botAnswer = errorMessage.concat(' - in Advice');
     }
 
-    const botMessage = this.createChatBotMessage(botAnswer, {
+    let botMessage = this.createChatBotMessage(botAnswer, {
       withAvatar: true
     });
 
+    this.setChatbotMessage(botMessage);
+
+    botMessage = this.createChatBotMessage('Do you want another advice?');
+    // delay
     this.setChatbotMessage(botMessage);
   };
 
@@ -140,7 +143,6 @@ class ActionProvider {
         }));
       }
     } else {
-      // eslint-disable-next-line max-len
       botAnswer = errorMessage.concat('- in AnalyzeMyEmotion');
     }
 
@@ -190,11 +192,11 @@ class ActionProvider {
   setTalkTypeAdvice = () => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
-      talkType: 'Advice'
+      talkType: 'Conversation'
     }));
 
     const botMessage = this.createChatBotMessage(
-      'Tell me, on what subject do you need my advice?');
+      'Tell me, what do you feel right now?');
     this.setChatbotMessage(botMessage);
   }
 
@@ -205,7 +207,8 @@ class ActionProvider {
     }));
 
     const botMessage = this.createChatBotMessage(
-      'Tell me, what do you feel right now?');
+      'Tell me, what are you doing right now?'
+    );
     this.setChatbotMessage(botMessage);
   }
 

@@ -9,26 +9,19 @@ class MessageParser {
   parse = (message: string) => {
     if (this.state.user === undefined) {
       this.actionProvider.setUserParameters(message);
+    } else if (this.state.talkType === undefined) {
+      this.actionProvider.setWidgetShowOptions();
     }
 
     console.log(this.state);
 
     if (this.state.talkType === 'GetToKnow') {
-      this.actionProvider.handlerFirstTalk(
+      this.actionProvider.handlerTalk(
         message, this.state.user.id, this.state.talkType);
     }
 
-    if (this.state.talkType === undefined) {
-      this.actionProvider.handlerFirstTalk(
-        message, this.state.user.id, this.state.talkType);
-    }
-
-    // if (this.state.talkType === 'GetToKnow') {
-    //   this.actionProvider.handlerFirstTalk(
-    //     message, this.state.userId, this.state.talkType);
-    // }
-
-    if (this.state.talkType === 'Advice') {
+    // change to advice
+    if (this.state.talkType === 'Conversation') {
       this.actionProvider.handlerAdvice(
         message, this.state.user.id, this.state.talkType);
     }

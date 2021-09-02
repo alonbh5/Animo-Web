@@ -7,8 +7,7 @@ const botName = 'Animo';
 const config = {
   initialMessages: [
     createChatBotMessage(`Hi I'm ${botName}.`),
-    createChatBotMessage('How are you feeling today?', {
-    })
+    createChatBotMessage('I am here to talk with you.')
   ],
   botName: botName,
   state: {
