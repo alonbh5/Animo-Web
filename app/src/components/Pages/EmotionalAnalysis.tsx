@@ -8,7 +8,7 @@ import ActionProvider from '../chatbot/ActionProvider';
 
 import React from 'react';
 
-export const EmotionalAnalysis = (props: any) => {
+const EmotionalAnalysis = (props: any) => {
   return (
     <div id="team" className="text-center">
       <div className="container">
@@ -24,3 +24,4 @@ export const EmotionalAnalysis = (props: any) => {
     </div>
   );
 };
+export default EmotionalAnalysis;
