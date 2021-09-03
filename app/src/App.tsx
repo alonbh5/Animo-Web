@@ -1,26 +1,11 @@
-import React, { useState, Suspense } from 'react';
-import JsonData from './data/data.json';
+import React, { Suspense } from 'react';
 import SmoothScroll from 'smooth-scroll';
 import { Navigation } from './components/HomePage/Navigation';
-import { Header } from './components/HomePage/Header';
-import { About } from './components/HomePage/About';
-import { Team } from './components/HomePage/Team';
-import { Contact } from './components/HomePage/Contact';
-import { Switch, Route } from 'react-router-dom';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 import AuthrizationRouters from './components/Auth';
 import { ModalProvider } from 'react-simple-hook-modal';
 import LoadingSpinner from './shared/UIElements/LoadingSpinner';
-import Chat from './components/Chat/Chat';
-const EmotionalAnalysis = React.lazy(() =>
-  import('./components/Pages/EmotionalAnalysis'));
-
-const TipsAndArticles = React.lazy(() =>
-  import('./components/Pages/TipsAndArticles'));
-
-const PersonalQuiz = React.lazy(() =>
-  import('./components/Pages/PersonalityQuiz'));
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
@@ -28,7 +13,6 @@ export const scroll = new SmoothScroll('a[href*="#"]', {
 });
 
 const App = () => {
-  const [landingPageData] = useState(JsonData);
   const {
     token, login, logout, userId, user,
     userRole, fetchUser, updateStatus
@@ -47,30 +31,9 @@ const App = () => {
     }}>
       <ModalProvider>
         <Navigation />
-        <Switch>
-
-          <Suspense fallback={<LoadingSpinner/>}>
-            <Route path='/home-page'>
-              <Header data={landingPageData.Header} />
-              <About data={landingPageData.About} />
-              <Team data={landingPageData.Team} />
-              <Contact data={landingPageData.Contact} />
-            </Route>
-            <Route path='/personalquiz'>
-              <PersonalQuiz />
-            </Route>
-            <Route path='/chat'>
-              <Chat/>
-            </Route>
-            <Route path='/analyze'>
-              <EmotionalAnalysis data={landingPageData.About} />
-            </Route>
-            <Route path='/tips'>
-              <TipsAndArticles />
-            </Route>
-            <AuthrizationRouters />
-          </Suspense>
-        </Switch>
+        <Suspense fallback={<LoadingSpinner/>}>
+          <AuthrizationRouters />
+        </Suspense>
       </ModalProvider>
     </AuthContext.Provider>
   );

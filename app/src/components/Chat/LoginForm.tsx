@@ -17,10 +17,14 @@ const Modal = () => {
   const user = auth.user as User;
   const [username, setUsername] =
   useState(auth.isLoggedIn ? user.first_name + '_' + user.last_name : '');
-
-  // const [first_name, setFirstName] = use;
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  // @ts-ignore
+  const storedData = JSON.parse(localStorage.getItem('chatData'));
+
+  const expirationDate =
+  storedData?.expiration || new Date(new Date().getTime() + 1000 * 60 * 60);
 
   const handelSubmit = async (e:any) => {
     e.preventDefault();
@@ -44,8 +48,14 @@ const Modal = () => {
           'User-Secret': password
         }
       });
-      localStorage.setItem('chatUsername', username);
-      localStorage.setItem('chatPassword', password);
+
+      localStorage.setItem(
+        'chatData',
+        JSON.stringify({
+          username: username,
+          password: password,
+          expiration: expirationDate.toISOString()
+        }));
       window.location.reload();
     } catch {
 
@@ -68,8 +78,13 @@ const Modal = () => {
       } catch (err) {
         setError('oops, something went wrong');
       }
-      localStorage.setItem('chatUsername', username);
-      localStorage.setItem('chatPassword', password);
+      localStorage.setItem(
+        'chatData',
+        JSON.stringify({
+          username: username,
+          password: password,
+          expiration: expirationDate.toISOString()
+        }));
       window.location.reload();
       setError('');
     } catch (error) {
