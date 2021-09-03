@@ -137,9 +137,6 @@ export const Navigation = (props: any) => {
                 <HashLink to="/sos">SOS</HashLink>
               </li>
               <li>
-                <HashLink to="/home-page#about">About</HashLink>
-              </li>
-              <li>
                 <HashLink to="/home-page#contact">Contact</HashLink>
               </li>
               <li>

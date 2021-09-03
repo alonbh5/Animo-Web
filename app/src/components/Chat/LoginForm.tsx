@@ -1,16 +1,24 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
+import { User } from '../api/configuration/models/users';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const projectID = '69cc354e-1763-4e7c-ac5b-8d3ec209e09e';
 const privateKey = 'e41f8273-96dc-4034-8242-feee63ed67cb';
 const authObject =
 {
   'Project-ID': projectID,
-  'User-Name': 'yairdana',
-  'User-Secret': 'Animo2021!'
+  'User-Name': 'YAIR_DANA',
+  'User-Secret': '1234567'
 };
+
 const Modal = () => {
-  const [username, setUsername] = useState('');
+  const auth = useContext(AuthContext);
+  const user = auth.user as User;
+  const [username, setUsername] =
+  useState(auth.isLoggedIn ? user.first_name + '_' + user.last_name : '');
+
+  // const [first_name, setFirstName] = use;
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -20,8 +28,8 @@ const Modal = () => {
     const userData = {
       username: username,
       secret: password,
-      first_name: 'Adam',
-      last_name: 'La Morre'
+      first_name: auth.isLoggedIn ? user.first_name : '',
+      last_name: auth.isLoggedIn ? user.last_name : ''
     };
     const headers = {
       'Content-Type': 'application/json',
@@ -29,29 +37,43 @@ const Modal = () => {
     };
 
     try {
-      const response = await axios.put(
-        'https://api.chatengine.io/users', userData, { headers });
-      if (response.status === 201) {
-        try {
-          await axios.post(
-            'https://api.chatengine.io/chats/54444/people/',
-            { username },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-                ...authObject
-              }
-            });
-        } catch (err) {
-          throw new Error();
+      await axios.get('https://api.chatengine.io/chats', {
+        headers: {
+          'Project-ID': projectID,
+          'User-Name': username,
+          'User-Secret': password
         }
+      });
+      localStorage.setItem('chatUsername', username);
+      localStorage.setItem('chatPassword', password);
+      window.location.reload();
+    } catch {
+
+    }
+
+    try {
+      await axios.post(
+        'https://api.chatengine.io/users/', userData, { headers });
+
+      try {
+        await axios.post(
+          'https://api.chatengine.io/chats/54499/people/',
+          { username },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              ...authObject
+            }
+          });
+      } catch (err) {
+        setError('oops, something went wrong');
       }
       localStorage.setItem('chatUsername', username);
       localStorage.setItem('chatPassword', password);
       window.location.reload();
       setError('');
     } catch (error) {
-      setError('oops, something went wrong');
+      setError('Oops, incorrect credentials.');
     }
   };
 
@@ -78,7 +100,8 @@ const Modal = () => {
             <button style={{ marginLeft: '20px' }}
               type="submit" className="button-form">
               <span>Start chatting</span>
-            </button></div>
+            </button>
+          </div>
         </form>
         <p style={{
           fontSize: '20px',

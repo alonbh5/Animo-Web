@@ -223,6 +223,11 @@
     justify-content: center;
     align-items: center;
   }
+
+  .chat-container {
+    margin-top: 80px;
+    
+  }
   
   .input {
     color: #333;

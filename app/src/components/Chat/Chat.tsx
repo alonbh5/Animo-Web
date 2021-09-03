@@ -9,16 +9,14 @@ const Chat = () => {
     return <LoginForm/>;
   }
   return (
-    <div id="team" className="text-center">
-      <div className="container">
-        <ChatEngine
-          height="100vh"
-          projectID="69cc354e-1763-4e7c-ac5b-8d3ec209e09e"
-          userName={localStorage.getItem('chatUsername')}
-          userSecret={localStorage.getItem('chatPassword')}
-          renderChatFeed={(chatAppProps:any) => <ChatFeed {...chatAppProps}/>}
-        />
-      </div>
+    <div className="chat-container">
+      <ChatEngine
+        height="90vh"
+        projectID="69cc354e-1763-4e7c-ac5b-8d3ec209e09e"
+        userName={localStorage.getItem('chatUsername')}
+        userSecret={localStorage.getItem('chatPassword')}
+        renderChatFeed={(chatAppProps:any) => <ChatFeed {...chatAppProps}/>}
+      />
     </div>
   );
 };
