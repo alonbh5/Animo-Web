@@ -12,7 +12,7 @@ import { useAuth } from './shared/hooks/auth-hook';
 import AuthrizationRouters from './components/Auth';
 import { ModalProvider } from 'react-simple-hook-modal';
 import LoadingSpinner from './shared/UIElements/LoadingSpinner';
-
+import Chat from './components/Chat/Chat';
 const EmotionalAnalysis = React.lazy(() =>
   import('./components/Pages/EmotionalAnalysis'));
 
@@ -58,6 +58,9 @@ const App = () => {
             </Route>
             <Route path='/personalquiz'>
               <PersonalQuiz />
+            </Route>
+            <Route path='/chat'>
+              <Chat/>
             </Route>
             <Route path='/analyze'>
               <EmotionalAnalysis data={landingPageData.About} />

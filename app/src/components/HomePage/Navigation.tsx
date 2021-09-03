@@ -142,6 +142,9 @@ export const Navigation = (props: any) => {
               <li>
                 <HashLink to="/home-page#contact">Contact</HashLink>
               </li>
+              <li>
+                <HashLink to="/chat">Chat</HashLink>
+              </li>
               {!auth.isLoggedIn
                 ? <li>
                   <Link to="/login">Login</Link>

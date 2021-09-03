@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.6.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -69,6 +70,7 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-react": "^7.24.0",
     "react-alert-template-basic": "^1.0.2",
+    "react-chat-engine": "^1.11.0",
     "tslint": "^6.1.3"
   }
 }
