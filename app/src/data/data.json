@@ -7,17 +7,11 @@
     "About": {
         "paragraph": "We are team Animo, We created this app to help people become aware to there daily feelings and thoughts. With our innovative and uniqe methods, Animo users are able to access easly to their minds and understand better what they need and how they feel. You are welcome to explore our app and website and by that to explore yourself.",
         "Why": [
-            "Lorem ipsum dolor",
-            "Tempor incididunt",
-            "Lorem ipsum dolor",
-            "Incididunt ut labore"
-        ],
-        "Why2": [
-            "Aliquip ex ea commodo",
-            "Lorem ipsum dolor",
-            "Exercitation ullamco",
-            "Lorem ipsum dolor"
-        ]
+            "We provide professional information",         
+            "Our site is accessible and user-friendly",
+            "We maintain the privacy of the user",
+            "There's no reason not to try ;)"
+        ]   
     },
     "Services": [{
             "icon": "fa fa-wordpress",
