@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../../shared/context/auth-context';
 import { useHttpClient } from '../../../shared/hooks/http-hook';
@@ -9,7 +11,7 @@ import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
 import Input from '../../../shared/FormElements/Input';
 import { Link } from 'react-router-dom';
 import { Role } from '../../api/configuration/models/role';
-
+import ImageUpload from '../../../shared/FormElements/ImageUpload';
 const initialState = {
   firstName: '',
   lastName: '',
@@ -17,7 +19,8 @@ const initialState = {
   email: '',
   password: '',
   gender: '',
-  role: ''
+  role: '',
+  file: ""
 };
 
 const SignUp = () => {
@@ -29,7 +32,8 @@ const SignUp = () => {
     email,
     password,
     gender,
-    role
+    role,
+    file
   }, setState] = useState(initialState);
   const [errorEmail, setErrorEmail] = useState<string>('');
   const [disabled, setDisabled] = useState(false);
@@ -70,6 +74,10 @@ const SignUp = () => {
       !validator.isEmpty(gender) &&
       !validator.isEmpty(role) &&
       validator.isNumeric(age));
+  };
+
+  const handleFile = (fileValue:string) => {
+    setState((prevState) => ({ ...prevState, file: fileValue }));
   };
 
   const handleSubmit = async (event: any) => {
@@ -193,7 +201,6 @@ const SignUp = () => {
                   onChange={handleChange}
                   name="role"
                   className="form-control">
-
                   <option value="" disabled selected>Select Role</option>
                   {rolesOptions?.map((role: Role, index:number) =>
                     <option key={role.role_id} value={`${role.role_id}`}>
@@ -225,7 +232,13 @@ const SignUp = () => {
                   list="tick-list"
                 />
                 <div className="error-msg">{errorAge}</div>
+
               </div>
+              <div className="form-group">
+
+              <ImageUpload center={true} id="image" onInput={handleFile} />
+              </div>
+
               <button
                 type="submit"
                 disabled={!isFormValid() || disabled}
