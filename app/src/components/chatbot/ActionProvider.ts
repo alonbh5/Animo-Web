@@ -43,7 +43,7 @@ class ActionProvider {
             this.setState((prevState: { messages: any; }) => ({
               ...prevState,
               username: user.first_name,
-              userId: user.id,
+              userId: user._id,
             }));
             botAnswer = this.createChatBotMessage(`Hello ${user.first_name}. how can I help you?`, {
               widget: "ShowOptions",

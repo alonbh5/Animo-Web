@@ -1,14 +1,16 @@
 /* eslint-disable */
-
+import React, { useContext, useState, useEffect } from "react";
 import { AxiosRequestConfig } from "axios";
-import { useState } from "react";
-import { useEffect } from "react";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import { Role, RoleEnum } from "../api/configuration/models/role";
 import { AddArticle } from "../TipsAndArticalsComponents/AddArticle";
+import { AddTip } from "../TipsAndArticalsComponents/AddTip";
 import { ArticleComponent } from "../TipsAndArticalsComponents/Articles";
 import { TipComponent } from "../TipsAndArticalsComponents/Tips";
+import { AuthContext } from "../../shared/context/auth-context";
+import { User } from "../api/configuration/models/users";
 
- enum PageState {
+enum PageState {
   Tips = "Tips",
   Article = "Article",
   AddTips = "AddTips",
@@ -55,7 +57,10 @@ export const TipsAndArticles = (props: any) => {
   const [articlesArr, setArticles] = useState<ArticleItem[]>([]);
   const [tipsArr, setTips] = useState<TipItem[]>([]); ///
   const [showType, setType] = useState(PageState.Tips);
-  const [getArticleInput, setGetInput] = useState(false)
+  const [getArticleInput, setGetInput] = useState(false);
+  const auth = useContext(AuthContext);
+  const user = auth.user as User;
+  const role = auth.userRole as Role;
   // //#1 this func recieve the data from the server type of ArticlesResponse interface
   // const onRequsetreturn = (res: ArticlesResponse) => {
   //   console.log(res.data)
@@ -66,6 +71,13 @@ export const TipsAndArticles = (props: any) => {
   const fetchData = () => {
     fetchTypeData("Tips");
     fetchTypeData("Articles");
+  };
+  const validateRole = () => {
+    if (
+      role.role_type === RoleEnum.Admin ||
+      role.role_type === RoleEnum.Psychologist
+    )
+      return true;
   };
   const fetchTypeData = async (type: String) => {
     //here we create the sendRequest
@@ -106,7 +118,7 @@ export const TipsAndArticles = (props: any) => {
           >
             Tips
           </button>
-          <button
+          {  validateRole()  && <><button
             className="btn btn-primary"
             style={{ width: "120px", marginLeft: "20px" }}
             onClick={() => setType(PageState.AddArticles)}
@@ -119,43 +131,49 @@ export const TipsAndArticles = (props: any) => {
             onClick={() => setType(PageState.AddTips)}
           >
             Add tip
-          </button>
-      {showType === PageState.Article && (
-        <div className="tiles">
-          {
-            // 'tips' from the usestate line(52) for each tip create a tip compenent and send it the title and the url
-            articlesArr.map((article: ArticleItem) => {
-              console.log(article);
-              return <ArticleComponent
-                text={article.title}
-                url={article.link}
-                author={article.author}
-                img={article.img}
-              />
-            })
-          }
+          </button></>}
+
+
+
+
+          {showType === PageState.Article && (
+            <div className="tiles">
+              {
+                // 'tips' from the usestate line(52) for each tip create a tip compenent and send it the title and the url
+                articlesArr.map((article: ArticleItem) => {
+                  return (
+                    article.confirm &&
+                    <ArticleComponent
+                      text={article.title}
+                      url={article.link}
+                      author={article.author}
+                      img={article.img}
+                    />
+                  );
+                })
+              }
+            </div>
+          )}
+
+          {showType === PageState.Tips && (
+            <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
+              {
+              tipsArr.map((tip: TipItem) => {
+                return (
+                  tip.confirm &&
+                
+                <TipComponent text={tip.title} content={tip.content} />
+              );
+              })
+            }
+            </div>
+          )}
+
+          {showType === PageState.AddArticles && <AddArticle />}
+
+          {showType === PageState.AddTips && <AddTip />}
         </div>
-      )}
- 
-      {showType === PageState.Tips && (
-          <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
-            {tipsArr.map((tip: TipItem) => (
-              <TipComponent text={tip.title} content={tip.content} />
-            ))}
-          </div>
-      )}
-    
-    {showType === PageState.AddArticles &&(
-           <AddArticle/>
-      )}
-    {showType === PageState.AddTips &&(
-      
-          <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
-          
-        </div>
-      )}
       </div>
-      </div>
-      </div>
+    </div>
   );
 };
