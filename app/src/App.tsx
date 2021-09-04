@@ -1,18 +1,11 @@
-import JsonData from './data/data.json';
+import React, { Suspense } from 'react';
 import SmoothScroll from 'smooth-scroll';
-import { useState } from 'react';
 import { Navigation } from './components/HomePage/Navigation';
-import { Header } from './components/HomePage/Header';
-import { About } from './components/HomePage/About';
-import { Team } from './components/HomePage/Team';
-import { Contact } from './components/HomePage/Contact';
-import { EmotionalAnalysis } from './components/Pages/EmotionalAnalysis';
-import { TipsAndArticles } from './components/Pages/TipsAndArticles';
-import { Switch, Route } from 'react-router-dom';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
-import PersonalQuiz from './components/Pages/PersonalityQuiz';
 import AuthrizationRouters from './components/Auth';
+import { ModalProvider } from 'react-simple-hook-modal';
+import LoadingSpinner from './shared/UIElements/LoadingSpinner';
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
@@ -20,7 +13,6 @@ export const scroll = new SmoothScroll('a[href*="#"]', {
 });
 
 const App = () => {
-  const [landingPageData] = useState(JsonData);
   const {
     token, login, logout, userId, user,
     userRole, fetchUser, updateStatus
@@ -37,6 +29,7 @@ const App = () => {
       fetchUser: fetchUser,
       updateStatus: updateStatus
     }}>
+
       <Navigation />
       <Switch>
         <Route path='/home-page'>
@@ -56,6 +49,14 @@ const App = () => {
         </Route>
         <AuthrizationRouters />
       </Switch>
+
+      <ModalProvider>
+        <Navigation />
+        <Suspense fallback={<LoadingSpinner/>}>
+          <AuthrizationRouters />
+        </Suspense>
+      </ModalProvider>
+
     </AuthContext.Provider>
   );
 };

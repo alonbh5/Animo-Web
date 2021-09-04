@@ -1,11 +1,6 @@
 /* eslint-disable */
 import { useState, useCallback } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
-export const serverAPIPort = 3000;
-export const host = 'http://localhost';
-export const APIRootPath = `${host}:${serverAPIPort}`;
-export const staticsPort = 3001;
-export const staticsUrl = `${host}:${staticsPort}/`;
 
 export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,17 +8,11 @@ export const useHttpClient = () => {
   const [success, setSuccess] = useState(undefined);
 
   const sendRequest = useCallback(async (params: AxiosRequestConfig) => {
-    console.log(1111111);
-    params.baseURL = `${APIRootPath}`;
-    console.log(1111112);
+    params.baseURL = process.env.REACT_APP_BACKEND_URL;
     setIsLoading(true);
-    console.log(1111113);
     clearMessages();
-    console.log(1111114);
     try {
-      console.log(1111151);
       const result = await axios.request(params);
-      console.log(11111116);
       setSuccess(result.data.message);
       return result.data;
     } catch (error) {

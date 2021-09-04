@@ -4,7 +4,7 @@ import { Role } from '../../components/api/configuration/models/role';
 import { AxiosRequestConfig } from 'axios';
 import { useHttpClient } from './http-hook';
 
-/* eslint-disable */
+// eslint-disable-next-line no-undef
 let logoutTimer: NodeJS.Timeout;
 
 const initalUser = {
@@ -63,15 +63,16 @@ export const useAuth = () => {
     };
     try {
       await sendRequest(params);
-    } catch(err) {
+    } catch (err) {
     }
-  }
+  };
 
   const logout = useCallback(() => {
     setToken(undefined);
     setTokenExpirationDate(undefined);
     setUserId(undefined);
     localStorage.removeItem('userData');
+    localStorage.removeItem('chatData');
   }, []);
 
   const fetchUser = async () => {

@@ -34,7 +34,6 @@ const CalculatePersType = (personalQuiz) => {
 
 
         if (isNaN(num)) {
-            console.log("idiot");
             throw new Error();
         }
 
@@ -330,7 +329,7 @@ module.exports = {
             return next(new HttpError('Invalid Password, could not log you in.', 401));
         }
 
-        if(!existingUser.confirm) {
+        if (!existingUser.confirm) {
             return res.status(202).json({
                 message: `We are still confirming your profile, please try later`,
                 data: {
@@ -369,14 +368,66 @@ module.exports = {
         });
     },
 
-    updateUser: async (req, res, next) => {
+    updateUserByAdmin: async (req, res, next) => {
         const userId = req.params.userId;
 
-        if (userId !== req.userData.userId && req.userData.roleId !== adminRole) {
+        if (req.userData.roleId !== adminRole || userId === req.userData.userId) {
             return next(new HttpError('You are not allowed to update this user', 401));
         }
 
-        const { role_id,
+        const {
+            role_id,
+            first_name,
+            last_name,
+            email,
+            age,
+            gender
+        } = req.body;
+
+        try {
+            const matchUser = await User.findById(userId);
+
+            if (matchUser.email !== email) {
+                const isExisting = await User.findOne({ email: email });
+                if (isExisting) {
+                    return next(new HttpError(`User with email: ${email} already exists`, 400));
+                }
+            }
+
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        first_name: first_name || matchUser.first_name,
+                        last_name: last_name || matchUser.last_name,
+                        email: email || matchUser.email,
+                        age: age || matchUser.age,
+                        gender: gender || matchUser.gender,
+                        role_id: role_id || matchUser.role_id,
+                    }
+                },
+            );
+
+            res.status(200).send({
+                message: `Update User successfuly!`,
+                data: {
+                    userId: userId,
+                    email: email,
+                }
+            });
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    },
+
+    updateUser: async (req, res, next) => {
+        const userId = req.params.userId;
+
+        if (userId !== req.userData.userId) {
+            return next(new HttpError('You are not allowed to update this user', 401));
+        }
+
+        const {
             first_name,
             last_name,
             email,
@@ -402,12 +453,10 @@ module.exports = {
                         last_name: last_name || matchUser.last_name,
                         email: email || matchUser.email,
                         age: age || matchUser.age,
-                        gender: gender || matchUser.gender,
-                        role_id: role_id || matchUser.role_id,
+                        gender: gender || matchUser.gender
                     }
                 },
             );
-
             if (matchUser.password !== password && password) {
                 const hash = await bcrypt.hash(password, 12);
                 await User.updateOne(
@@ -497,10 +546,6 @@ module.exports = {
 
     addQuiz: (req, res) => {
         const userId = req.params.userId;
-
-        //console.log(userId);
-
-        //console.log(req.body.persQuiz);
 
         res.status(200).json({
             message: `update user - ${userId}`

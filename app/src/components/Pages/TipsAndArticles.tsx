@@ -50,7 +50,7 @@ interface TipsResponse {
   data: TipItem[];
 }
 
-export const TipsAndArticles = (props: any) => {
+const TipsAndArticles = (props: any) => {
   // we send the sendRequest to the server
   const { sendRequest } = useHttpClient();
   // state: in tips we have the values from set tips, the useState function initialize the tips to an empty arr of ArticalItem interface.
@@ -131,6 +131,7 @@ export const TipsAndArticles = (props: any) => {
             onClick={() => setType(PageState.AddTips)}
           >
             Add tip
+
           </button></>}
 
 
@@ -172,8 +173,43 @@ export const TipsAndArticles = (props: any) => {
           {showType === PageState.AddArticles && <AddArticle />}
 
           {showType === PageState.AddTips && <AddTip />}
+
+          </button>
+      {showType === PageState.Article && (
+        <div className="tiles">
+          {
+            // 'tips' from the usestate line(52) for each tip create a tip compenent and send it the title and the url
+            articlesArr.map((article: ArticleItem) => {
+              return <ArticleComponent
+                text={article.title}
+                url={article.link}
+                author={article.author}
+                img={article.img}
+              />
+            })
+          }
+        </div>
+      )}
+ 
+      {showType === PageState.Tips && (
+          <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
+            {tipsArr.map((tip: TipItem) => (
+              <TipComponent text={tip.title} content={tip.content} />
+            ))}
+          </div>
+      )}
+    
+    {showType === PageState.AddArticles &&(
+           <AddArticle/>
+      )}
+    {showType === PageState.AddTips &&(
+      
+          <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
+          
+
         </div>
       </div>
     </div>
   );
 };
+export default TipsAndArticles;

@@ -2,12 +2,6 @@ import { useState, useCallback, useEffect } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import { useHttpClient } from './http-hook';
 
-export const serverAPIPort = 3000;
-export const host = 'http://localhost';
-export const APIRootPath = `${host}:${serverAPIPort}`;
-export const staticsPort = 3001;
-export const staticsUrl = `${host}:${staticsPort}/`;
-
 export const useRoles = () => {
   const { sendRequest } = useHttpClient();
   const [rolesOptions, setRolesOptions] = useState([]);

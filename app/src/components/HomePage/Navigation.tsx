@@ -137,10 +137,10 @@ export const Navigation = (props: any) => {
                 <HashLink to="/sos">SOS</HashLink>
               </li>
               <li>
-                <HashLink to="/home-page#about">About</HashLink>
+                <HashLink to="/home-page#contact">Contact</HashLink>
               </li>
               <li>
-                <HashLink to="/home-page#contact">Contact</HashLink>
+                <HashLink to="/chat">Chat</HashLink>
               </li>
               {!auth.isLoggedIn
                 ? <li>

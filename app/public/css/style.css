@@ -705,7 +705,6 @@ table.table td a.delete {
 }
 table.table td a.confirm {
     color: green;
-	
 }
 
 table.table td i {
@@ -768,3 +767,4 @@ table.table td i {
     margin-top: 10px;
     font-size: 13px;
 }
+

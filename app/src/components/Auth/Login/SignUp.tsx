@@ -47,7 +47,6 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    console.log(email);
     if (validator.isEmail(email) || validator.isEmpty(email)) {
       setErrorEmail('');
     } else {
