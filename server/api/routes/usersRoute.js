@@ -14,7 +14,8 @@ const {
     resetPassword,
     confirmUser,
     updateUserByAdmin,
-    getPsycUsers
+    getPsycUsers,
+    updateUserAboutMe
 } = require('../controllers/usersController');
 
 
@@ -34,5 +35,6 @@ router.patch('/updateUserByAdmin/:userId' , updateUserByAdmin);
 router.patch('/updateStatus/:userId' , updateStatus);
 router.patch('/confirmUser/:userId' , confirmUser);
 router.delete('/deleteUser/:userId' , deleteUser);
+router.patch('/updateUserAboutMe/:userId' , updateUserAboutMe);
 
 module.exports  = router;

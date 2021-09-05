@@ -21,8 +21,12 @@ export const TableDisplayMode = (user: User) => {
         <td>{user.gender}</td>
       </tr>
       <tr>
+        <td>Phone</td>
+        <td>{user.phone}</td>
+      </tr>
+      <tr>
         <td>About Me</td>
-        <td>{user.online ? 'Online' : 'Offline'}</td>
+        <td>{user.aboutMe}</td>
       </tr>
     </tbody>
   );

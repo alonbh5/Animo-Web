@@ -715,7 +715,41 @@ module.exports = {
         } catch (err) {
             return next(new HttpError('An Unknown Error, please try later.', 500));
         }
-    }
+    },
 
-    
+    updateUserAboutMe: async (req, res, next) => {
+        const userId = req.params.userId;
+
+        if (req.userData.roleId !== psycRole || userId !== req.userData.userId) {
+            return next(new HttpError('You are not allowed to update this user', 401));
+        }
+
+        const {
+            phone,
+            aboutMe
+        } = req.body;
+
+        try {
+            const matchUser = await User.findById(userId);
+
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        aboutMe: aboutMe || matchUser.aboutMe,
+                        phone: phone || phone.last_name,
+                    }
+                },
+            );
+
+            res.status(200).send({
+                message: `Update User successfuly!`,
+                data: {
+                    userId: userId,
+                }
+            });
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    }    
 }

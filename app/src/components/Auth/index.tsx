@@ -11,6 +11,7 @@ const ForgotPassword = React.lazy(() =>
 const Profile = React.lazy(() => import('./Profile/Profile'));
 const SignIn = React.lazy(() => import('./Login/SignIn'));
 const SignUp = React.lazy(() => import('./Login/SignUp'));
+const AboutMe = React.lazy(() => import('../PsycPanel/AbouMe'));
 
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
@@ -41,6 +42,9 @@ const AuthrizationRouters = () => {
               </Route>
               <Route path='/manageUsers'>
                 <ManageUsers/>
+              </Route>
+              <Route path='/aboutMePsycoligist'>
+                <AboutMe/>
               </Route>
               <Redirect to="/home-page" />
             </Switch>;
