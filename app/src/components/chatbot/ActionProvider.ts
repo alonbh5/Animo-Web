@@ -1,10 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { botResponse } from '../api/configuration/models/botRes';
 
-export const serverAPIPort = 3000;
-export const host = 'http://localhost';
-export const APIRootPath = `${host}:${serverAPIPort}`;
-
 const errorMessage = 'Sorry we have some issue right now, please try later';
 
 class ActionProvider {
@@ -26,7 +22,7 @@ class ActionProvider {
 
     try {
       const params: AxiosRequestConfig = {
-        baseURL: `${APIRootPath}`,
+        baseURL: process.env.REACT_APP_BACKEND_URL,
         method: 'GET',
         url: `/users/getuser/${storedData.userId}`,
         headers: {
@@ -167,7 +163,7 @@ class ActionProvider {
 
   getParams = (textFromUser: string, userId: string, talkType: string) => {
     const params: AxiosRequestConfig = {
-      baseURL: `${APIRootPath}`,
+      baseURL: process.env.REACT_APP_BACKEND_URL,
       method: 'POST',
       url: '/botres/talk',
       data: {

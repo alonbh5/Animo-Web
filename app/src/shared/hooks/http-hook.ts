@@ -16,8 +16,7 @@ export const useHttpClient = () => {
       setSuccess(result.data.message);
       return result.data;
     } catch (error) {
-      console.error(error)
-      setError(error.response.data.message);
+      setError(error?.response?.data?.message || "We have some internal issue, please try later");
       throw error;
     } finally {
       setIsLoading(false);
