@@ -22,6 +22,9 @@ const TipsAndArticles = React.lazy(() =>
 const PersonalQuiz = React.lazy(() =>
   import('./components/Pages/PersonalityQuiz'));
 
+const SOS = React.lazy(() =>
+  import('./components/Pages/SOS'));
+
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
   speedAsDuration: true
@@ -64,6 +67,9 @@ const App = () => {
             </Route>
             <Route path='/tips'>
               <TipsAndArticles />
+            </Route>
+            <Route path='/sos'>
+              <SOS data={landingPageData.About} />
             </Route>
             <AuthrizationRouters />
           </Suspense>

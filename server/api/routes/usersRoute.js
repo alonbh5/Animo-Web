@@ -13,7 +13,8 @@ const {
     forgotPassword,
     resetPassword,
     confirmUser,
-    updateUserByAdmin
+    updateUserByAdmin,
+    getPsycUsers
 } = require('../controllers/usersController');
 
 
@@ -24,6 +25,7 @@ router.post('/forgotPassword', forgotPassword)
 router.post('/createuser' , createUsers);
 router.post('/addquiz/:userId',addQuiz);
 router.patch('/createquiz/:userId',createQuiz);
+router.get('/sos' ,getPsycUsers);
 
 router.use(checkAuth);
 router.get('/getuser/:userId' ,getUser);
