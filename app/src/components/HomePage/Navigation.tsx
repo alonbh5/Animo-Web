@@ -21,7 +21,7 @@ const AdminDropdown = (props:clickItemProp) => {
       <Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link>
     </li>
     <li>
-      <Link to="/invitePsycoligist"
+      <Link to="/invitePsychologist"
         onClick={_onClickItem}>Invite Psycoligist</Link>
     </li>
     <li>

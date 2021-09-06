@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React from 'react';
-import { User } from '../api/configuration/models/users';
-import { RoleEnum } from '../api/configuration/models/role';
+import { User } from '../../api/configuration/models/users';
+import { RoleEnum } from '../../api/configuration/models/role';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import {EditUserModal} from './EditUserModal'

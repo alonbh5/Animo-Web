@@ -14,6 +14,8 @@ const ResetPassword = React.lazy(() =>
   import('./ResetPassword/ResetPassword'));
 const ForgotPassword = React.lazy(() =>
   import('./ResetPassword/ForgotPassword'));
+const InvitePsychologist =
+React.lazy(() => import('../AdminPanel/InvitePsychologist'));
 const Profile = React.lazy(() => import('./Profile/Profile'));
 const SignIn = React.lazy(() => import('./Login/SignIn'));
 const SignUp = React.lazy(() => import('./Login/SignUp'));
@@ -62,6 +64,7 @@ const AuthrizationRouters = () => {
               <Route path="/resetPassword">
                 <ResetPassword />
               </Route>
+
               <Redirect to="/home-page" />
             </Switch>;
   } else {
@@ -90,6 +93,9 @@ const AuthrizationRouters = () => {
               </Route>
               <Route path='/manageUsers'>
                 <ManageUsers/>
+              </Route>
+              <Route path='/invitePsychologist'>
+                <InvitePsychologist/>
               </Route>
               <Redirect to="/home-page" />
             </Switch>;
