@@ -131,40 +131,6 @@ const TipsAndArticles = (props: any) => {
             onClick={() => setType(PageState.AddTips)}
           >
             Add tip
-<<<<<<< HEAD
-          </button>
-      {showType === PageState.Article && (
-        <div className="tiles">
-          {
-            // 'tips' from the usestate line(52) for each tip create a tip compenent and send it the title and the url
-            articlesArr.map((article: ArticleItem) => {
-              return <ArticleComponent
-                text={article.title}
-                url={article.link}
-                author={article.author}
-                img={article.img}
-              />
-            })
-          }
-        </div>
-      )}
- 
-      {showType === PageState.Tips && (
-          <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
-            {tipsArr.map((tip: TipItem) => (
-              <TipComponent text={tip.title} content={tip.content} />
-            ))}
-          </div>
-      )}
-    
-    {showType === PageState.AddArticles &&(
-           <AddArticle/>
-      )}
-    {showType === PageState.AddTips &&(
-      
-          <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
-          
-=======
           </button></>}
 
 
@@ -206,7 +172,6 @@ const TipsAndArticles = (props: any) => {
           {showType === PageState.AddArticles && <AddArticle />}
 
           {showType === PageState.AddTips && <AddTip />}
->>>>>>> 6ff9051 (small updates)
         </div>
       </div>
     </div>
