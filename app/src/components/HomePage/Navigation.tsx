@@ -4,6 +4,8 @@ import { HashLink } from 'react-router-hash-link';
 import { AuthContext } from '../../shared/context/auth-context';
 import { User } from '../api/configuration/models/users';
 import { Role, RoleEnum } from '../api/configuration/models/role';
+/* eslint-disable max-len */
+const defualtImage = 'https://icons.iconarchive.com/icons/icons8/ios7/256/Users-User-Male-2-icon.png';
 
 type clickItemProp = {
   onClickItem: (value:boolean) => void;
@@ -154,7 +156,7 @@ export const Navigation = (props: any) => {
                   }}
                   onClick={() =>
                     changeDropdownState(prev => !prev)} alt={user.first_name}
-                  src={user.imageUrl || ''} />
+                  src={user.imageUrl || defualtImage} />
                   <i className="fa fa-caret-down"></i>
                   {role.role_type === RoleEnum.Admin &&
                    <AdminDropdown
