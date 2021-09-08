@@ -1,5 +1,3 @@
-/*eslint-disable*/
-
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../../shared/context/auth-context';
 import { useHttpClient } from '../../../shared/hooks/http-hook';
@@ -12,7 +10,7 @@ import Input from '../../../shared/FormElements/Input';
 import { Link } from 'react-router-dom';
 import { Role } from '../../api/configuration/models/role';
 import ImageUpload from '../../../shared/FormElements/ImageUpload';
-import {uploadImage} from '../../api/endpoints'
+import { uploadImage } from '../../api/endpoints';
 const initialState = {
   firstName: '',
   lastName: '',
@@ -39,7 +37,7 @@ const SignUp = () => {
   const [disabled, setDisabled] = useState(false);
   const [errorAge, setErrorAge] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
-  const [customError, setCustomError] = useState<string>('')
+  const [customError, setCustomError] = useState<string>('');
   const {
     isLoading, error, sendRequest,
     clearMessages, success
@@ -81,15 +79,12 @@ const SignUp = () => {
     setImage(file);
   };
 
-
-
-
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     clearMessages();
     const response = await uploadImage(imageFile);
-    if(response.isValid === false) {
-      setCustomError("We could not upload your image, please try later");
+    if (response.isValid === false) {
+      setCustomError('We could not upload your image, please try later');
       return;
     };
 
@@ -248,7 +243,7 @@ const SignUp = () => {
               </div>
               <div className="form-group">
 
-              <ImageUpload center={true} id="image" onInput={handleFile} />
+                <ImageUpload center={true} id="image" onInput={handleFile} />
               </div>
 
               <button

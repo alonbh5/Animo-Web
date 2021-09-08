@@ -28,8 +28,7 @@ const Modal = () => {
 
   const handelSubmit = async (e:any) => {
     e.preventDefault();
-    console.log('MY AVATAR');
-    console.log(user.imageUrl);
+
     const userData = {
       username: username,
       secret: password,
