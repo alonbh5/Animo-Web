@@ -1,13 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
+import { AxiosRequestConfig } from 'axios';
 import Chat from '../Chat/Chat';
 import { Header } from '../HomePage/Header';
 import { About } from '../HomePage/About';
 import { Team } from '../HomePage/Team';
 import { Contact } from '../HomePage/Contact';
 import JsonData from '../../data/data.json';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
+import { User } from '../api/configuration/models/users';
+const Messaging = React.lazy(() => import('../MyNetwork/Messaging'));
+
+const MyNetwork = React.lazy(() => import('../MyNetwork/MyNetwork'));
 const ManageUsers = React.lazy(() =>
   import('../AdminPanel/ManageUsers'));
 const ResetPassword = React.lazy(() =>
@@ -28,6 +34,25 @@ const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
   let routers;
   const [landingPageData] = useState(JsonData);
+  const user = auth.user as User;
+  const [allUsers, setAllUsers] = useState<User[]|undefined>();
+  const { sendRequest } = useHttpClient();
+
+  useEffect(() => {
+    const featchAllUsers = async () => {
+      const params: AxiosRequestConfig = {
+        method: 'GET',
+        url: '/users'
+      };
+      try {
+        const response = await sendRequest(params);
+        console.log(response.data.allUser);
+        setAllUsers(response.data.allUser as User[]);
+      } catch (err) {
+      }
+    };
+    featchAllUsers();
+  }, []);
 
   if (!auth.isLoggedIn) {
     routers =
@@ -88,6 +113,14 @@ const AuthrizationRouters = () => {
               <Route path="/profile">
                 <Profile />
               </Route>
+              {user._id && allUsers &&
+              <Route path='/mynetwork'>
+                <MyNetwork user={user} allUsers={allUsers}/>
+              </Route>}
+              {user._id &&
+              <Route path='/messaging'>
+                <Messaging user={user}/>
+              </Route>}
               <Route path='/manageUsers'>
                 <ManageUsers/>
               </Route>
