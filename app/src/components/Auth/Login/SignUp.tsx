@@ -12,6 +12,7 @@ import Input from '../../../shared/FormElements/Input';
 import { Link } from 'react-router-dom';
 import { Role } from '../../api/configuration/models/role';
 import ImageUpload from '../../../shared/FormElements/ImageUpload';
+import {uploadImage} from '../../api/endpoints'
 const initialState = {
   firstName: '',
   lastName: '',
@@ -19,8 +20,7 @@ const initialState = {
   email: '',
   password: '',
   gender: '',
-  role: '',
-  file: ""
+  role: ''
 };
 
 const SignUp = () => {
@@ -32,13 +32,14 @@ const SignUp = () => {
     email,
     password,
     gender,
-    role,
-    file
+    role
   }, setState] = useState(initialState);
+  const [imageFile, setImage] = useState<any>();
   const [errorEmail, setErrorEmail] = useState<string>('');
   const [disabled, setDisabled] = useState(false);
   const [errorAge, setErrorAge] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [customError, setCustomError] = useState<string>('')
   const {
     isLoading, error, sendRequest,
     clearMessages, success
@@ -76,13 +77,22 @@ const SignUp = () => {
       validator.isNumeric(age));
   };
 
-  const handleFile = (fileValue:string) => {
-    setState((prevState) => ({ ...prevState, file: fileValue }));
+  const handleFile = (file:any) => {
+    setImage(file);
   };
+
+
+
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     clearMessages();
+    const response = await uploadImage(imageFile);
+    if(response.isValid === false) {
+      setCustomError("We could not upload your image, please try later");
+      return;
+    };
+
     const userToCreate: User = {
       role_id: Number(role),
       first_name: firstName,
@@ -90,7 +100,8 @@ const SignUp = () => {
       email,
       password,
       age: Number(age),
-      gender
+      gender,
+      imageUrl: response.imageUrl
     };
 
     const params: AxiosRequestConfig = {
@@ -125,6 +136,7 @@ const SignUp = () => {
             <form onSubmit={handleSubmit}>
               {isLoading && <LoadingSpinner asOverlay />}
               {error && <h5 style={{ color: 'red' }}>{error}</h5>}
+              {customError && <h5 style={{ color: 'red' }}>{customError}</h5>}
               {success && <h5 style={{ color: 'blue' }}>{success}</h5>}
               <div className="form-group">
 

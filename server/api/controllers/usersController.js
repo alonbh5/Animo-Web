@@ -124,6 +124,7 @@ module.exports = {
             password,
             age,
             gender,
+            imageUrl,
         } = req.body;
 
         let hashPassword;
@@ -148,7 +149,8 @@ module.exports = {
                 password: hashPassword,
                 age,
                 gender,
-                confirm
+                confirm,
+                imageUrl
             });
 
             await createUser.save();
