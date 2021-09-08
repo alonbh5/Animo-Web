@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../../shared/context/auth-context';
 import { useHttpClient } from '../../../shared/hooks/http-hook';
@@ -9,7 +11,8 @@ import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
 import Input from '../../../shared/FormElements/Input';
 import { Link } from 'react-router-dom';
 import { Role } from '../../api/configuration/models/role';
-
+import ImageUpload from '../../../shared/FormElements/ImageUpload';
+import {uploadImage} from '../../api/endpoints'
 const initialState = {
   firstName: '',
   lastName: '',
@@ -31,10 +34,12 @@ const SignUp = () => {
     gender,
     role
   }, setState] = useState(initialState);
+  const [imageFile, setImage] = useState<any>();
   const [errorEmail, setErrorEmail] = useState<string>('');
   const [disabled, setDisabled] = useState(false);
   const [errorAge, setErrorAge] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [customError, setCustomError] = useState<string>('')
   const {
     isLoading, error, sendRequest,
     clearMessages, success
@@ -72,9 +77,22 @@ const SignUp = () => {
       validator.isNumeric(age));
   };
 
+  const handleFile = (file:any) => {
+    setImage(file);
+  };
+
+
+
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     clearMessages();
+    const response = await uploadImage(imageFile);
+    if(response.isValid === false) {
+      setCustomError("We could not upload your image, please try later");
+      return;
+    };
+
     const userToCreate: User = {
       role_id: Number(role),
       first_name: firstName,
@@ -82,7 +100,8 @@ const SignUp = () => {
       email,
       password,
       age: Number(age),
-      gender
+      gender,
+      imageUrl: response.imageUrl
     };
 
     const params: AxiosRequestConfig = {
@@ -117,6 +136,7 @@ const SignUp = () => {
             <form onSubmit={handleSubmit}>
               {isLoading && <LoadingSpinner asOverlay />}
               {error && <h5 style={{ color: 'red' }}>{error}</h5>}
+              {customError && <h5 style={{ color: 'red' }}>{customError}</h5>}
               {success && <h5 style={{ color: 'blue' }}>{success}</h5>}
               <div className="form-group">
 
@@ -193,7 +213,6 @@ const SignUp = () => {
                   onChange={handleChange}
                   name="role"
                   className="form-control">
-
                   <option value="" disabled selected>Select Role</option>
                   {rolesOptions?.map((role: Role, index:number) =>
                     <option key={role.role_id} value={`${role.role_id}`}>
@@ -225,7 +244,13 @@ const SignUp = () => {
                   list="tick-list"
                 />
                 <div className="error-msg">{errorAge}</div>
+
               </div>
+              <div className="form-group">
+
+              <ImageUpload center={true} id="image" onInput={handleFile} />
+              </div>
+
               <button
                 type="submit"
                 disabled={!isFormValid() || disabled}

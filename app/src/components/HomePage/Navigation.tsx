@@ -4,8 +4,8 @@ import { HashLink } from 'react-router-hash-link';
 import { AuthContext } from '../../shared/context/auth-context';
 import { User } from '../api/configuration/models/users';
 import { Role, RoleEnum } from '../api/configuration/models/role';
-/*eslint-disable*/
-const defualtImage ='https://icons.iconarchive.com/icons/icons8/ios7/256/Users-User-Male-2-icon.png';
+/* eslint-disable max-len */
+const defualtImage = 'https://icons.iconarchive.com/icons/icons8/ios7/256/Users-User-Male-2-icon.png';
 
 type clickItemProp = {
   onClickItem: (value:boolean) => void;
@@ -26,7 +26,7 @@ const AdminDropdown = (props:clickItemProp) => {
       <Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link>
     </li>
     <li>
-      <Link to="/invitePsycoligist"
+      <Link to="/invitePsychologist"
         onClick={_onClickItem}>Invite Psycoligist</Link>
     </li>
     <li>
@@ -161,10 +161,15 @@ export const Navigation = (props: any) => {
                   <Link to="/login">Login</Link>
                 </li>
                 : <li className={dropdownState ? 'open' : 'dropdown'}>
-            
-                    <img style={{height: "50px", width: "50px"}}  onClick={() => changeDropdownState(prev => !prev)} alt={user.first_name}
-                      src={defualtImage} />
-                    <i className="fa fa-caret-down"></i>
+                  <img style={{
+                    height: '50px',
+                    width: '50px',
+                    borderRadius: user.imageUrl ? '50%' : undefined
+                  }}
+                  onClick={() =>
+                    changeDropdownState(prev => !prev)} alt={user.first_name}
+                  src={user.imageUrl || defualtImage} />
+                  <i className="fa fa-caret-down"></i>
                   {role.role_type === RoleEnum.Admin &&
                    <AdminDropdown
                      onClickItem={changeDropdownState}
