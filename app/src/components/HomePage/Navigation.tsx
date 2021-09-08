@@ -147,17 +147,15 @@ export const Navigation = (props: any) => {
                   <Link to="/login">Login</Link>
                 </li>
                 : <li className={dropdownState ? 'open' : 'dropdown'}>
-                  <a className="dropdown-toggle"
-                    style={{
-                      fontWeight: 'bold',
-                      color: 'black',
-                      background: 'light grey'
-                    }}
-                    onClick={() => changeDropdownState(prev => !prev)}
-                    id="dropdownMenuButton1">
-                    {user.first_name + ' ' + user.last_name}
-                    <i className="fa fa-caret-down"></i>
-                  </a>
+                  <img style={{
+                    height: '50px',
+                    width: '50px',
+                    borderRadius: user.imageUrl ? '50%' : undefined
+                  }}
+                  onClick={() =>
+                    changeDropdownState(prev => !prev)} alt={user.first_name}
+                  src={user.imageUrl || ''} />
+                  <i className="fa fa-caret-down"></i>
                   {role.role_type === RoleEnum.Admin &&
                    <AdminDropdown
                      onClickItem={changeDropdownState}
