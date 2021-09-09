@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import 'react-simple-hook-modal/dist/styles.css';
-import { useRoles } from '../../shared/hooks/roles-hook';
+import { useRoles } from '../../../shared/hooks/roles-hook';
 import validator from 'validator';
-import Input from '../../shared/FormElements/Input';
-import { User } from '../api/configuration/models/users';
-import { Role } from '../api/configuration/models/role';
+import Input from '../../../shared/FormElements/Input';
+import { User } from '../../api/configuration/models/users';
+import { Role } from '../../api/configuration/models/role';
 
 import {
   Modal,
