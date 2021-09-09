@@ -28,7 +28,8 @@ const Modal = () => {
 
   const handelSubmit = async (e:any) => {
     e.preventDefault();
-
+    console.log('MY AVATAR');
+    console.log(user.imageUrl);
     const userData = {
       username: username,
       secret: password,
@@ -67,7 +68,7 @@ const Modal = () => {
 
       try {
         await axios.post(
-          'https://api.chatengine.io/chats/54499/people/',
+          'https://api.chatengine.io/chats/55660/people/',
           { username },
           {
             headers: {
