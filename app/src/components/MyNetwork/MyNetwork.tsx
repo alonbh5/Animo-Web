@@ -52,7 +52,7 @@ class MyNetwork extends Component<{user:User}, {currentUser: userChat, allPsycol
           email: user.email,
           photoUrl:  user.imageUrl || defualtImage,
           role: 'Member',
-          info:  user.aboutMe || "TRY",
+          info:  user.aboutMe,
           online:  user.online,
           phoneNumber: user.phone,
           welcomeMessage: 'Hey there! How are you? :-)',
@@ -118,7 +118,7 @@ class MyNetwork extends Component<{user:User}, {currentUser: userChat, allPsycol
                         <div>
                           <picture className="current-user-picture">
                             <img alt={currentUser.name}
-                              src={currentUser.photoUrl || ""} />
+                              src={currentUser.photoUrl || defualtImage} />
                           </picture>
                           <div className="current-user-info">
                             <h3>{currentUser.name}</h3>
