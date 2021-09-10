@@ -10,14 +10,9 @@ import { User } from '../api/configuration/models/users';
 const AboutMe = () => {
   const auth = useContext(AuthContext);
   const user = auth.user as User;
+  const [phone, setPhone] = useState<string>(user.phone || '');
+  const [aboutMe, setAboutMe] = useState<string>(user.aboutMe || '');
 
-  const [{
-    phone,
-    aboutMe
-  }, setState] = useState({
-    phone: user.phone as string,
-    aboutMe: user.aboutMe as string
-  });
   const [errorPhone, setErrorPhone] = useState<string>('');
   const [errorAboutMe, setErrorAboutMe] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -27,13 +22,16 @@ const AboutMe = () => {
     clearMessages, success
   } = useHttpClient();
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({ ...prevState, [name]: value }));
+  const handleAboutMe = (e: any) => {
+    setAboutMe(e.target.value);
+  };
+
+  const handlePhone = (e: any) => {
+    setPhone(e.target.value);
   };
 
   useEffect(() => {
-    if (validator.isMobilePhone(phone, 'he-IL') || validator.isEmpty(phone)) {
+    if (validator.isMobilePhone(phone, 'he-IL')) {
       setErrorPhone('');
     } else {
       setErrorPhone('Please enter a valid phone number');
@@ -50,7 +48,7 @@ const AboutMe = () => {
   const isFormValid = () => {
     return (
       validator.isMobilePhone(phone, 'he-IL') &&
-      !validator.isEmpty(aboutMe) &&
+        !validator.isEmpty(aboutMe) &&
       (aboutMe.length >= 75));
   };
 
@@ -112,7 +110,7 @@ const AboutMe = () => {
                   label="Phone Number"
                   placeholder="Enter Phone Number"
                   value={phone}
-                  onChange={handleChange} />
+                  onChange={handlePhone} />
               </div>
               <div className="error-msg">{errorPhone}</div>
 
@@ -125,7 +123,7 @@ const AboutMe = () => {
                   name="aboutMe"
                   placeholder="Write 50 words about yourself"
                   value={aboutMe}
-                  onChange={handleChange}
+                  onChange={handleAboutMe}
                 />
               </div>
 

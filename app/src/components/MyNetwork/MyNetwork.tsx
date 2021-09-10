@@ -1,55 +1,81 @@
 import React, { Component } from 'react';
 import './MyNetwork.css';
+import axios, { AxiosRequestConfig } from 'axios';
 import Talk from 'talkjs';
 import { User } from '../api/configuration/models/users';
 type userChat = Talk.UserOptions & {
-    info?:string;
+    info?: string;
+    online?: boolean;
+    phoneNumber?: string;
 }
 /*eslint-disable*/
 const defualtImage ='https://icons.iconarchive.com/icons/icons8/ios7/256/Users-User-Male-2-icon.png';
-class MyNetwork extends Component<{user:User, allUsers:User[]}, {currentUser: userChat, allPsycologist:userChat[]}> {
-  constructor (props: any) {
+class MyNetwork extends Component<{user:User}, {currentUser: userChat, allPsycologist?:userChat[]}> {
+   constructor (props: any) {
     super(props);
     let currentUser: userChat = {
       id: props.user._id,
       name: props.user.first_name + ' ' + props.user.last_name,
       email: props.user.email,
-      photoUrl: defualtImage,
+      photoUrl:  props.user.imageUrl || defualtImage,
       role: 'Member',
-      info: 'Product Designer at Facebook',
+      info:  props.user.aboutMe,
       welcomeMessage: 'Hey there! How are you? :-)',
     };
 
-    let allPsycologist: userChat[] = props.allUsers.filter((user: User)=> user.role_id === 2).map((user:User) => {
-        return {
-            id: user._id,
-            name: user.first_name + ' ' + user.last_name,
-            email: user.email,
-            photoUrl: defualtImage,
-            role: 'Member',
-            info: 'Product Designer at Facebook',
-            welcomeMessage: 'Hey there! How are you? :-)',
-        };
-    })
-    
+    this.fetchUsers();
 
     this.state = {
-      currentUser,
-      allPsycologist
+      currentUser
     };
   }
+
+   fetchUsers = async ()=>  {
+     let psyco;
+    const params: AxiosRequestConfig = {
+      baseURL: process.env.REACT_APP_BACKEND_URL,
+      method: 'GET',
+      url: '/users/sos'
+    };
+
+    try {
+      const response = await axios.request(params);
+      psyco= response.data.data.psycUsers as User[];
+    } catch (err) {
+      psyco= undefined;
+    }
+
+    let allPsycologist: userChat[] | undefined = psyco?.sort((x:User) => !x.online ? 1: -1).map((user:User, index:number) => {
+      return {
+          id: user._id || index,
+          name: user.first_name + ' ' + user.last_name,
+          email: user.email,
+          photoUrl:  user.imageUrl || defualtImage,
+          role: 'Member',
+          info:  user.aboutMe || "TRY",
+          online:  user.online,
+          phoneNumber: user.phone,
+          welcomeMessage: 'Hey there! How are you? :-)',
+      };
+  })
+
+    this.setState({
+      allPsycologist
+    })
+
+  };
 
   handleClick (userId:any) {
     /* Retrieve the two users that will participate in the conversation */
     const { currentUser,allPsycologist} = this.state;
-    const user = allPsycologist.find((user: userChat, index:number)=> user.id === userId);
+    const user = allPsycologist?.find((user: userChat, index:number)=> user.id === userId);
     console.log(userId)
     /* Session initialization code */
     Talk.ready
       .then(() => {
         /* Create the two users that will participate in the conversation */
-        const me = new Talk.User(currentUser as userChat);
-        const other = new Talk.User(user as userChat);
+        const me = new Talk.User(currentUser as Talk.UserOptions);
+        const other = new Talk.User(user as Talk.UserOptions);
 
         /* Create a talk session if this does not exist.
         Remember to replace tthe APP ID with the one on your dashboard */
@@ -106,17 +132,20 @@ class MyNetwork extends Component<{user:User, allUsers:User[]}, {currentUser: us
             {allPsycologist?.map((user:userChat)=>
               <li key={user.id} className="user">
                 <picture className="user-picture">
-                  <img src={defualtImage} alt={`${user.name}`} />
+                  <img src={user.photoUrl||defualtImage} alt={`${user.name}`} />
                 </picture>
                 <div className="user-info-container">
                   <div className="user-info">
                     <h4>{user.name}</h4>
+                    <h5>{user.phoneNumber}</h5>
                     <p>{user.info}</p>
                   </div>
                   <div className="user-action">
+                    <span>
                     <button onClick={(userId) => this.handleClick(user.id)}>
                         Message
                     </button>
+                  <span className={user.online ? "status text-success": "status text-danger"}>&bull;</span>{user.online ? "Online":  "Offline"}</span>
                   </div>
                 </div>
               </li>

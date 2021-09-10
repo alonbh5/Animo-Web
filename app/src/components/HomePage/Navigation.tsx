@@ -20,7 +20,7 @@ const AdminDropdown = (props:clickItemProp) => {
       <Link to="/profile" onClick={_onClickItem}>Profile</Link>
     </li>
     <li>
-      <HashLink to="/messaging">Messaging</HashLink>
+      <HashLink to="/messaging">Messanger</HashLink>
     </li>
     <li>
       <Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link>
@@ -54,7 +54,7 @@ const PsychologistDropdown = (props:clickItemProp) => {
       <Link to="/profile" onClick={_onClickItem}>Profile</Link>
     </li>
     <li>
-      <HashLink to="/messaging">Messaging</HashLink>
+      <HashLink to="/messaging">Messanger</HashLink>
     </li>
     <li>
       <Link to="/aboutMePsycoligist"
@@ -83,7 +83,7 @@ const GeneralDropdown = (props:clickItemProp) => {
         <Link to="/profile" onClick={_onClickItem}>Profile</Link>
       </li>
       <li>
-        <HashLink to="/messaging">Messaging</HashLink>
+        <HashLink to="/messaging">Messanger</HashLink>
       </li>
       <li>
         <a onClick={() => props.Logout()}>Logout</a>
@@ -137,19 +137,15 @@ export const Navigation = (props: any) => {
                     <Link to="/analyze">Emotional Analysis
                     </Link>
                   </li>
-                  <li>
-                    <HashLink to="/mynetwork">MyNetwork</HashLink>
-                  </li>
                 </>
               }
               <li>
                 <Link to="/tips">Tips & article
                 </Link>
               </li>
-
-              {/* <li>
+              <li>
                 <HashLink to="/sos">SOS</HashLink>
-              </li> */}
+              </li>
               <li>
                 <HashLink to="/home-page#contact">Contact</HashLink>
               </li>

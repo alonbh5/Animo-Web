@@ -1,5 +1,5 @@
 .users {
-    padding: 200px 0;
+    padding: 50px 0;
     display: flex;
     width: 55%;
     margin: 0 auto;
@@ -9,7 +9,6 @@
 
     background-color: #ffffff;
     width: 65%;
-    padding: 20px 0;
   }
   .user {
     display: flex;
