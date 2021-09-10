@@ -2,7 +2,6 @@ const User = require('../schemes/userSchema');
 const Token = require('../schemes/token');
 const PersQuiz = require('../schemes/persQuiz');
 
-const clientURL = 'http://localhost:3001'
 const mongoose = require('mongoose');
 const { connect } = require('mongodb');
 const bcrypt = require('bcryptjs');
@@ -125,6 +124,7 @@ module.exports = {
             password,
             age,
             gender,
+            imageUrl,
         } = req.body;
 
         let hashPassword;
@@ -149,7 +149,8 @@ module.exports = {
                 password: hashPassword,
                 age,
                 gender,
-                confirm
+                confirm,
+                imageUrl
             });
 
             await createUser.save();
@@ -242,8 +243,8 @@ module.exports = {
             });
             await newResetToken.save();
 
-            const resetLink = `${clientURL}/resetPassword?token=${resetToken}&userId=${matchUser._id}`;
-            res.status(200).send({ message: 'We`ve sent password reset instructions to your mailbox', resetLink: resetLink });
+            const suffixResetLink = `/resetPassword?token=${resetToken}&userId=${matchUser._id}`;
+            res.status(200).send({ message: 'We`ve sent password reset instructions to your mailbox', resetLink: suffixResetLink });
             return;
         } catch (error) {
             return next(new HttpError('Something went wrong! please try later', 500));

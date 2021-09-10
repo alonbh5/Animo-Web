@@ -2,13 +2,13 @@
 import React, { useContext, useState } from 'react';
 import { useEffect } from 'react';
 import validator from 'validator';
-import { useHttpClient } from '../../shared/hooks/http-hook';
-import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
+import { useHttpClient } from '../../../shared/hooks/http-hook';
+import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
 import { AxiosRequestConfig } from 'axios';
-import { User } from '../api/configuration/models/users';
-import { userID } from '../api/configuration/config';
+import { User } from '../../api/configuration/models/users';
+import { userID } from '../../api/configuration/config';
 import { ManageUserRow } from './MangeUserRow'
-import { AuthContext } from '../../shared/context/auth-context';
+import { AuthContext } from '../../../shared/context/auth-context';
 import { useAlert } from 'react-alert';
 
 const ManageUsers = (props: any) => {

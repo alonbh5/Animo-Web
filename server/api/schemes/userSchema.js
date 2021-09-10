@@ -16,6 +16,7 @@ const userSchema = mongoose.Schema({
     confirm: { type: Boolean, require: true, default: false },
     aboutMe: {type: String, require: false, default: ""},
     phone: {type: String, require: false, default: ""}
+    imageUrl: {type: String, require: false, default:undefined}
 }, { timestamps: { createdAt: 'created_at' } });
 
 module.exports = mongoose.model("Users", userSchema);

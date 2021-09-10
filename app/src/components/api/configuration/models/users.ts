@@ -16,4 +16,5 @@ export type User = {
     confirm?: boolean;
     aboutMe?: String;
     phone?: String;
+    imageUrl?: string;
 }

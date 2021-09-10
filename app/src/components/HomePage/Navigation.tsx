@@ -4,6 +4,8 @@ import { HashLink } from 'react-router-hash-link';
 import { AuthContext } from '../../shared/context/auth-context';
 import { User } from '../api/configuration/models/users';
 import { Role, RoleEnum } from '../api/configuration/models/role';
+/* eslint-disable max-len */
+const defualtImage = 'https://icons.iconarchive.com/icons/icons8/ios7/256/Users-User-Male-2-icon.png';
 
 type clickItemProp = {
   onClickItem: (value:boolean) => void;
@@ -21,7 +23,7 @@ const AdminDropdown = (props:clickItemProp) => {
       <Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link>
     </li>
     <li>
-      <Link to="/invitePsycoligist"
+      <Link to="/invitePsychologist"
         onClick={_onClickItem}>Invite Psycoligist</Link>
     </li>
     <li>
@@ -137,27 +139,25 @@ export const Navigation = (props: any) => {
                 <HashLink to="/sos">SOS</HashLink>
               </li>
               <li>
-                <HashLink to="/home-page#about">About</HashLink>
+                <HashLink to="/home-page#contact">Contact</HashLink>
               </li>
               <li>
-                <HashLink to="/home-page#contact">Contact</HashLink>
+                <HashLink to="/chat">Chat</HashLink>
               </li>
               {!auth.isLoggedIn
                 ? <li>
                   <Link to="/login">Login</Link>
                 </li>
                 : <li className={dropdownState ? 'open' : 'dropdown'}>
-                  <a className="dropdown-toggle"
-                    style={{
-                      fontWeight: 'bold',
-                      color: 'black',
-                      background: 'light grey'
-                    }}
-                    onClick={() => changeDropdownState(prev => !prev)}
-                    id="dropdownMenuButton1">
-                    {user.first_name + ' ' + user.last_name}
-                    <i className="fa fa-caret-down"></i>
-                  </a>
+                  <img style={{
+                    height: '50px',
+                    width: '50px',
+                    borderRadius: user.imageUrl ? '50%' : undefined
+                  }}
+                  onClick={() =>
+                    changeDropdownState(prev => !prev)} alt={user.first_name}
+                  src={user.imageUrl || defualtImage} />
+                  <i className="fa fa-caret-down"></i>
                   {role.role_type === RoleEnum.Admin &&
                    <AdminDropdown
                      onClickItem={changeDropdownState}

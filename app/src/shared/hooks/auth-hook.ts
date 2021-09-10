@@ -72,6 +72,7 @@ export const useAuth = () => {
     setTokenExpirationDate(undefined);
     setUserId(undefined);
     localStorage.removeItem('userData');
+    localStorage.removeItem('chatData');
   }, []);
 
   const fetchUser = async () => {
