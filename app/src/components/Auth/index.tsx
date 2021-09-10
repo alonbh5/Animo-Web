@@ -19,12 +19,15 @@ React.lazy(() => import('../AdminPanel/InvitePsychologist'));
 const Profile = React.lazy(() => import('./Profile/Profile'));
 const SignIn = React.lazy(() => import('./Login/SignIn'));
 const SignUp = React.lazy(() => import('./Login/SignUp'));
+const AboutMe = React.lazy(() => import('../PsycPanel/AbouMe'));
 const EmotionalAnalysis = React.lazy(() =>
   import('../Pages/EmotionalAnalysis'));
 const TipsAndArticles = React.lazy(() =>
   import('../Pages/TipsAndArticles'));
 const PersonalQuiz = React.lazy(() =>
   import('../Pages/PersonalityQuiz'));
+const Sos = React.lazy(() =>
+  import('../Pages/SOS'));
 
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
@@ -51,6 +54,9 @@ const AuthrizationRouters = () => {
               </Route>
               <Route path='/tips'>
                 <TipsAndArticles />
+              </Route>
+              <Route path='/sos'>
+                <Sos />
               </Route>
               <Route path="/login">
                 <SignIn />
@@ -88,11 +94,17 @@ const AuthrizationRouters = () => {
               <Route path='/tips'>
                 <TipsAndArticles />
               </Route>
+              <Route path='/sos'>
+                <Sos />
+              </Route>
               <Route path="/profile">
                 <Profile />
               </Route>
               <Route path='/manageUsers'>
                 <ManageUsers/>
+              </Route>
+              <Route path='/aboutMePsycoligist'>
+                <AboutMe/>
               </Route>
               <Route path='/invitePsychologist'>
                 <InvitePsychologist/>

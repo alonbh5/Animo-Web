@@ -14,6 +14,8 @@ const userSchema = mongoose.Schema({
     getToKnowState: { type: String, require: false, default: "uninitialized" },
     online: { type: Boolean, require: false, default: undefined },
     confirm: { type: Boolean, require: true, default: false },
+    aboutMe: {type: String, require: false, default: undefined},
+    phone: {type: String, require: false, default: undefined},
     imageUrl: {type: String, require: false, default:undefined}
 }, { timestamps: { createdAt: 'created_at' } });
 

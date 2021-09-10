@@ -14,5 +14,7 @@ export type User = {
     created_at?: string;
     online?: boolean;
     confirm?: boolean;
+    aboutMe?: String;
+    phone?: String;
     imageUrl?: string;
 }
