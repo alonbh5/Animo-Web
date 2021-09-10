@@ -11,9 +11,6 @@ const AboutMe = () => {
   const auth = useContext(AuthContext);
   const user = auth.user as User;
 
-  console.log(user.phone);
-  console.log(user.aboutMe);
-
   const [{
     phone,
     aboutMe
@@ -65,9 +62,6 @@ const AboutMe = () => {
       phone,
       aboutMe
     };
-
-    console.log(auth.userId);
-    console.log(data);
 
     const params: AxiosRequestConfig = {
       method: 'PATCH',

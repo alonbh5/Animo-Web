@@ -712,10 +712,10 @@ module.exports = {
 
     getPsycUsers: async (req, res, next) => {
         try {
-            const allUser = await User.find({
+            const psycUsers = await User.find({
                 role_id: psycRole, online: 'true', phone: {$ne:undefined}, aboutMe: {$ne:undefined}
             });
-            return res.status(200).json({ message: `Found ${allUser.length} Users`, data: { allUser } })
+            return res.status(200).json({ message: `Found ${psycUsers.length} Users`, data: { psycUsers } })
         } catch (err) {
             return next(new HttpError('An Unknown Error, please try later.', 500));
         }
@@ -741,7 +741,7 @@ module.exports = {
                 {
                     $set: {
                         aboutMe: aboutMe || matchUser.aboutMe,
-                        phone: phone || phone.last_name,
+                        phone: phone || matchUser.phone,
                     }
                 },
             );
