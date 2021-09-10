@@ -16,7 +16,9 @@ const IdentityTable = () => {
 
     try {
       const response = await axios.request(params);
-      setUsers(response.data.data.psycUsers as User[]);
+      const onlinePsycos =
+      (response.data.data.psycUsers as User[])?.filter(psyc => psyc.online);
+      setUsers(onlinePsycos);
     } catch (err) {
       setUsers(undefined);
     }

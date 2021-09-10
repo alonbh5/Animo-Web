@@ -20,6 +20,9 @@ const AdminDropdown = (props:clickItemProp) => {
       <Link to="/profile" onClick={_onClickItem}>Profile</Link>
     </li>
     <li>
+      <HashLink to="/messaging">Messanger</HashLink>
+    </li>
+    <li>
       <Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link>
     </li>
     <li>
@@ -51,6 +54,9 @@ const PsychologistDropdown = (props:clickItemProp) => {
       <Link to="/profile" onClick={_onClickItem}>Profile</Link>
     </li>
     <li>
+      <HashLink to="/messaging">Messanger</HashLink>
+    </li>
+    <li>
       <Link to="/aboutMePsycoligist"
         onClick={_onClickItem}>About Me</Link>
     </li>
@@ -58,6 +64,7 @@ const PsychologistDropdown = (props:clickItemProp) => {
       <Link to="/uploadTipsArticals"
         onClick={_onClickItem}>{'Upload Tips & Articals'}</Link>
     </li>
+
     <li>
       <a onClick={() => props.Logout()}>Logout</a>
     </li>
@@ -74,6 +81,9 @@ const GeneralDropdown = (props:clickItemProp) => {
     <div className="dropdown-menu">
       <li>
         <Link to="/profile" onClick={_onClickItem}>Profile</Link>
+      </li>
+      <li>
+        <HashLink to="/messaging">Messanger</HashLink>
       </li>
       <li>
         <a onClick={() => props.Logout()}>Logout</a>
@@ -108,7 +118,6 @@ export const Navigation = (props: any) => {
               Animo
             </a>
           </div>
-
           <div
             className='collapse navbar-collapse'
             id='bs-example-navbar-collapse-1'
@@ -128,7 +137,6 @@ export const Navigation = (props: any) => {
                     <Link to="/analyze">Emotional Analysis
                     </Link>
                   </li>
-
                 </>
               }
               <li>

@@ -713,7 +713,7 @@ module.exports = {
     getPsycUsers: async (req, res, next) => {
         try {
             const psycUsers = await User.find({
-                role_id: psycRole, online: 'true', phone: {$ne:undefined}, aboutMe: {$ne:undefined}
+                role_id: psycRole, phone: {$ne: undefined}, aboutMe: {$ne: undefined}
             });
             return res.status(200).json({ message: `Found ${psycUsers.length} Users`, data: { psycUsers } })
         } catch (err) {

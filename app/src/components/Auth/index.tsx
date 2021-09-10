@@ -8,6 +8,8 @@ import { Team } from '../HomePage/Team';
 import { Contact } from '../HomePage/Contact';
 import JsonData from '../../data/data.json';
 
+import { User } from '../api/configuration/models/users';
+const Messaging = React.lazy(() => import('../MyNetwork/Messaging'));
 const ManageUsers = React.lazy(() =>
   import('../AdminPanel/ManageUsers'));
 const ResetPassword = React.lazy(() =>
@@ -33,6 +35,7 @@ const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
   let routers;
   const [landingPageData] = useState(JsonData);
+  const user = auth.user as User;
 
   if (!auth.isLoggedIn) {
     routers =
@@ -100,6 +103,10 @@ const AuthrizationRouters = () => {
               <Route path="/profile">
                 <Profile />
               </Route>
+              {user._id &&
+              <Route path='/messaging'>
+                <Messaging user={user}/>
+              </Route>}
               <Route path='/manageUsers'>
                 <ManageUsers/>
               </Route>
