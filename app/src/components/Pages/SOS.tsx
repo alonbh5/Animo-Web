@@ -7,7 +7,7 @@ const SOS = (props: any) => {
       <div className="container">
         <div className="col-md-8 col-md-offset-2 section-title">
           <h2>SOS</h2>
-          <div><IdentityTable /></div>
+          <IdentityTable />
         </div>
       </div>
     </div>

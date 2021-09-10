@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require("crypto");
 const HttpError = require('../models/http-error');
+const { validate } = require('../schemes/userSchema');
 const adminRole = 1;
 const psycRole = 2;
 const generalRole = 3;
@@ -711,7 +712,9 @@ module.exports = {
 
     getPsycUsers: async (req, res, next) => {
         try {
-            const allUser = await User.find({role_id: psycRole, online: 'true'});
+            const allUser = await User.find({
+                role_id: psycRole, online: 'true', phone: {$ne:undefined}, aboutMe: {$ne:undefined}
+            });
             return res.status(200).json({ message: `Found ${allUser.length} Users`, data: { allUser } })
         } catch (err) {
             return next(new HttpError('An Unknown Error, please try later.', 500));

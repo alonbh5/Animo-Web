@@ -5,18 +5,22 @@ import { AxiosRequestConfig } from 'axios';
 import validator from 'validator';
 import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
 import Input from '../../shared/FormElements/Input';
-
-const initialState = {
-  phone: '',
-  aboutMe: ''
-};
+import { User } from '../api/configuration/models/users';
 
 const AboutMe = () => {
   const auth = useContext(AuthContext);
+  const user = auth.user as User;
+
+  console.log(user.phone);
+  console.log(user.aboutMe);
+
   const [{
     phone,
     aboutMe
-  }, setState] = useState(initialState);
+  }, setState] = useState({
+    phone: user.phone as string,
+    aboutMe: user.aboutMe as string
+  });
   const [errorPhone, setErrorPhone] = useState<string>('');
   const [errorAboutMe, setErrorAboutMe] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -41,15 +45,16 @@ const AboutMe = () => {
     if (validator.isEmpty(aboutMe)) {
       aboutMeError = 'You must write something about yourself.';
     } else if (aboutMe.length < 75) {
-      aboutMeError = 'You must write at least 15 words about yourself';
+      aboutMeError = 'You must write at least 50 words about yourself';
     }
     setErrorAboutMe(aboutMeError);
   }, [phone, aboutMe]);
 
   const isFormValid = () => {
     return (
-      !validator.isEmpty(phone) &&
-      !validator.isEmpty(aboutMe));
+      validator.isMobilePhone(phone, 'he-IL') &&
+      !validator.isEmpty(aboutMe) &&
+      (aboutMe.length >= 75));
   };
 
   const handleSubmit = async (event: any) => {
@@ -118,13 +123,12 @@ const AboutMe = () => {
               <div className="error-msg">{errorPhone}</div>
 
               <div className="form-group">
-                <Input
+                <label htmlFor="aboutMe">About Me</label>
+                <textarea
+                  style={{ height: '100px' }}
                   className="form-control"
-                  disabled={disabled}
                   required={true}
-                  type="aboutMe"
                   name="aboutMe"
-                  label="aboutMe"
                   placeholder="Write 50 words about yourself"
                   value={aboutMe}
                   onChange={handleChange}

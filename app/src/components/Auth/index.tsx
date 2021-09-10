@@ -26,6 +26,8 @@ const TipsAndArticles = React.lazy(() =>
   import('../Pages/TipsAndArticles'));
 const PersonalQuiz = React.lazy(() =>
   import('../Pages/PersonalityQuiz'));
+const Sos = React.lazy(() =>
+  import('../Pages/SOS'));
 
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
@@ -52,6 +54,9 @@ const AuthrizationRouters = () => {
               </Route>
               <Route path='/tips'>
                 <TipsAndArticles />
+              </Route>
+              <Route path='/sos'>
+                <Sos />
               </Route>
               <Route path="/login">
                 <SignIn />
@@ -88,6 +93,9 @@ const AuthrizationRouters = () => {
               </Route>
               <Route path='/tips'>
                 <TipsAndArticles />
+              </Route>
+              <Route path='/sos'>
+                <Sos />
               </Route>
               <Route path="/profile">
                 <Profile />

@@ -4,10 +4,6 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { User } from '../../api/configuration/models/users';
 import React, { useState, useEffect } from 'react';
 
-// import { User } from '../../api/configuration/models/users';
-
-// import { useHttpClient } from '../../../shared/hooks/http-hook';
-
 export const serverAPIPort = 3000;
 export const host = 'http://localhost';
 export const APIRootPath = `${host}:${serverAPIPort}`;
@@ -55,13 +51,6 @@ const IdentityTable = () => {
       {itemRows}
     </div>
   );
-
-  // return (
-  //   <table>
-  //     <TableDisplayMode users = {users} />
-  //     {/* {users as User[]} */}
-  //   </table>
-  // );
 };
 
 export default IdentityTable;
