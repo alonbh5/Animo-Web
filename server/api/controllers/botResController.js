@@ -6,6 +6,7 @@ const HttpError = require('../models/http-error');
 const AnswersFromUsers = require('../schemes/answersSchema');
 const BotPresonalQuestions = require('../schemes/presonalQuestionSchema');
 const Conversation = require('../schemes/conversationSchema');
+const Emotion = require('../schemes/emotionsSchema');
 
 var RandomNumber = 0;
 
@@ -277,7 +278,9 @@ module.exports = {
                 case "Conversation":
                     let cleanText = textFromUser.replace(/[?!.,*()\\#$%^&]/g, '').trim().toLowerCase().replace(/\s\s+/g, ' ');
                     var divRoot = await Conversation.countDocuments({ keyWords: cleanText });
-                    let answer = await Conversation.findOne({ keyWords: cleanText }).skip(RandomNumber++ % divRoot); 
+                    let answer = await Conversation.findOne({ keyWords: cleanText }).skip(RandomNumber++ % divRoot);
+                    let state = "Conversation";
+                     
                     if (answer) {                        
                         if (answer.isPersonal) {
                             let allAnswers = await AnswersFromUsers.findOne({ userId: matchUser._id });
@@ -291,21 +294,30 @@ module.exports = {
                                                         .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
                                                         .join(' ');                                
                                 answer.question = answer.question.replace(nextToReplace,replacement);
-                            }
+                            }                            
+                        }
 
-                            //TODO now you need some how to continue
+                        let curEmotion = await Emotion.findById(answer.emotionId);
+
+                        if (curEmotion) {
+                            
+                            matchUser.currentEmotion = "answer.emotionId";
+                            await matchUser.markModified('currentEmotion');
+                            await matchUser.save();
+
+                            state = "Conversation-Analyze";
                         }
 
                         res.status(200).json({
-                            response_type: "Conversation",
+                            response_type: state,
                             content: answer.question,
                             response_to: textFromUser
-                        });
+                        });                        
 
                     }
                     else {
                         res.status(200).json({
-                            response_type: "Conversation",
+                            response_type: "Conversation-Error",
                             content: "Im Sorry, My Bot Brain Cant Handel Your Question! Can you Rephrase It? (I am Still on Beta 😢)",
                             response_to: textFromUser
                         });
