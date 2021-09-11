@@ -24,7 +24,7 @@ const NavigationBar = (props: NavigationBarProps) => {
       <li><Link to="/tips">Tips & article</Link></li>
       <li><HashLink to="/sos">SOS</HashLink></li>
       <li><HashLink to="/home-page#contact">Contact</HashLink></li>
-      <li><HashLink to="/chat">Chat</HashLink></li>
+      <li><HashLink to="/chat">Forum</HashLink></li>
     </>
   );
 };
