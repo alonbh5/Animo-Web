@@ -23,3 +23,4 @@ export const TipComponent = ({ text, content }: TipsProps) => {
       </div>
     )
   }
+  

@@ -55,7 +55,7 @@ const TipsAndArticles = (props: any) => {
   const { sendRequest } = useHttpClient();
   // state: in tips we have the values from set tips, the useState function initialize the tips to an empty arr of ArticalItem interface.
   const [articlesArr, setArticles] = useState<ArticleItem[]>([]);
-  const [tipsArr, setTips] = useState<TipItem[]>([]); ///
+  const [tipsArr, setTips] = useState<TipItem[]>([]); 
   const [showType, setType] = useState(PageState.Tips);
   const [getArticleInput, setGetInput] = useState(false);
   const auth = useContext(AuthContext);

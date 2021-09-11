@@ -34,8 +34,8 @@ const AdminDropdown = (props:clickItemProp) => {
         onClick={_onClickItem}>{'Upload Tips & Articals'}</Link>
     </li>
     <li>
-      <Link to="/confirmTipsArticals"
-        onClick={_onClickItem}>{'Confirm Tips & Articals'}</Link>
+      <Link to="/ConfirmTipsAndArticles"
+        onClick={_onClickItem}>{'Confirm Tips & Articles'}</Link>
     </li>
     <li>
       <a onClick={() => props.Logout()}>Logout</a>

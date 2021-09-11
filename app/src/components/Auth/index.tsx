@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useContext, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthContext from '../../shared/context/auth-context';
@@ -7,7 +8,7 @@ import { About } from '../HomePage/About';
 import { Team } from '../HomePage/Team';
 import { Contact } from '../HomePage/Contact';
 import JsonData from '../../data/data.json';
-
+import { Role, RoleEnum } from '../api/configuration/models/role';
 import { User } from '../api/configuration/models/users';
 /* eslint-disable max-len */
 const Messaging = React.lazy(() => import('../MyNetwork/Messaging'));
@@ -23,13 +24,20 @@ const EmotionalAnalysis = React.lazy(() => import('../Pages/EmotionalAnalysis'))
 const TipsAndArticles = React.lazy(() => import('../Pages/TipsAndArticles'));
 const PersonalQuiz = React.lazy(() => import('../Pages/PersonalityQuiz'));
 const Sos = React.lazy(() => import('../Pages/Sos'));
+const ConfirmTipsAndArticles = React.lazy(() => import('../AdminPanel/ConfirmTipsAndArticles/ConfirmTipsAndArticles'));
 
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
   let routers;
   const [landingPageData] = useState(JsonData);
   const user = auth.user as User;
-
+  const role = auth.userRole as Role;
+  const validateRole = () => {
+    if (role.role_type === RoleEnum.Admin) 
+      {
+        return true;
+      }
+  };
   if (!auth.isLoggedIn) {
     routers =
             <Switch>
@@ -70,6 +78,10 @@ const AuthrizationRouters = () => {
               <Route path='/messaging'>
                 <Messaging user={user}/>
               </Route>}
+              {validateRole() && 
+              <Route path='/ConfirmTipsAndArticles' component= {ConfirmTipsAndArticles}> 
+              </Route>
+              }
               <Redirect to='/home-page' />
             </Switch>;
   }
