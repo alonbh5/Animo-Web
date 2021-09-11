@@ -18,11 +18,11 @@ const InvitePsychologist = React.lazy(() => import('../AdminPanel/InvitePsycholo
 const Profile = React.lazy(() => import('./Profile/Profile'));
 const SignIn = React.lazy(() => import('./Login/SignIn'));
 const SignUp = React.lazy(() => import('./Login/SignUp'));
-const AboutMe = React.lazy(() => import('../PsycPanel/AbouMe'));
+const AboutMe = React.lazy(() => import('../PsycPanel/AboutMe'));
 const EmotionalAnalysis = React.lazy(() => import('../Pages/EmotionalAnalysis'));
 const TipsAndArticles = React.lazy(() => import('../Pages/TipsAndArticles'));
 const PersonalQuiz = React.lazy(() => import('../Pages/PersonalityQuiz'));
-const Sos = React.lazy(() => import('../Pages/SOS'));
+const Sos = React.lazy(() => import('../Pages/Sos'));
 
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);

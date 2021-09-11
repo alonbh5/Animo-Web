@@ -1,8 +1,7 @@
-/*eslint-disable*/
+/* eslint-disable max-len */
 import { useState } from 'react';
 import emailjs, { init } from 'emailjs-com';
-import { templateId, serviceId, userID, animoMail }
-  from '../../api/configuration/config';
+import { templateId, serviceId, userID, animoMail } from '../../api/configuration/config';
 import { useAlert } from 'react-alert';
 import './invitePsychologist.css';
 init(userID);
