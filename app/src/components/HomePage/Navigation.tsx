@@ -30,7 +30,7 @@ const AdminDropdown = (props:clickItemProp) => {
         onClick={_onClickItem}>Invite Psycoligist</Link>
     </li>
     <li>
-      <Link to="/uploadTipsArticals"
+      <Link to="/tips"
         onClick={_onClickItem}>{'Upload Tips & Articals'}</Link>
     </li>
     <li>
