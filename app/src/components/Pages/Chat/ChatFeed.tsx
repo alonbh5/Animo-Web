@@ -1,6 +1,6 @@
 
 /*eslint-disable*/
-import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
+import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
 import './Chat.css';
 
 import MessageForm from './MessageForm';

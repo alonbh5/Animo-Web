@@ -4,12 +4,12 @@ import { AxiosRequestConfig } from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import validator from "validator";
-import Input from "../../shared/FormElements/Input";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
-import { Article } from "../api/configuration/models/article";
-import { ArticleComponent } from "../TipsAndArticalsComponents/Articles";
-import { TipComponent } from "../TipsAndArticalsComponents/Tips";
+import Input from "../../../shared/FormElements/Input";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import LoadingSpinner from "../../../shared/UIElements/LoadingSpinner";
+import { Article } from "../../api/configuration/models/article";
+import { ArticleComponent } from "./Articles";
+import { TipComponent } from "./Tips";
 
 const initialState = {
   url: "",
@@ -53,6 +53,7 @@ export const AddArticle = () => {
       data: {
         ...articleToAddToDB,
         data_type: "Article",
+        confirm: "false",
       },
     };
     try {
@@ -62,7 +63,8 @@ export const AddArticle = () => {
   
   return (
         <div className="col-md-8 col-md-offset-2 section-title">
-          <h2>Add article</h2>
+          <br></br>
+          <h5>Add article</h5>
           <form onSubmit={handleSubmit}>
             {isLoading && <LoadingSpinner asOverlay />}
             <div className="form-group">

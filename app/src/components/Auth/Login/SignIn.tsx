@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import validator from 'validator';
-import { AuthContext } from '../../../shared/context/auth-context';
+import AuthContext from '../../../shared/context/auth-context';
 import { useHttpClient } from '../../../shared/hooks/http-hook';
 import { AxiosRequestConfig } from 'axios';
 import LoadingSpinner from '../../../shared/UIElements/LoadingSpinner';
