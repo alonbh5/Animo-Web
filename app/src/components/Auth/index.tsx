@@ -39,35 +39,14 @@ const AuthrizationRouters = () => {
                 <Team data={landingPageData.Team} />
                 <Contact data={landingPageData.Contact} />
               </Route>
-              <Route path='/personalquiz'>
-                <PersonalQuiz />
-              </Route>
-              <Route path='/chat'>
-                <Chat/>
-              </Route>
-              <Route path='/analyze'>
-                <EmotionalAnalysis data={landingPageData.About} />
-              </Route>
-              <Route path='/tips'>
-                <TipsAndArticles />
-              </Route>
-              <Route path='/sos'>
-                <Sos />
-              </Route>
-              <Route path="/login">
-                <SignIn />
-              </Route>
-              <Route path="/signup">
-                <SignUp />
-              </Route>
-              <Route path="/forgotPassword">
-                <ForgotPassword />
-              </Route>
-              <Route path="/resetPassword">
-                <ResetPassword />
-              </Route>
-
-              <Redirect to="/home-page" />
+              <Route path='/chat' component={Chat}/>
+              <Route path='/tips' component={TipsAndArticles}/>
+              <Route path='/sos' component={Sos}/>
+              <Route path='/login' component={SignIn}/>
+              <Route path='/signup' component={SignUp}/>
+              <Route path='/forgotPassword' component={ForgotPassword}/>
+              <Route path='/resetPassword' component={ResetPassword}/>
+              <Redirect to='/home-page' />
             </Switch>;
   } else {
     routers =
@@ -78,38 +57,20 @@ const AuthrizationRouters = () => {
                 <Team data={landingPageData.Team} />
                 <Contact data={landingPageData.Contact} />
               </Route>
-              <Route path='/personalquiz'>
-                <PersonalQuiz />
-              </Route>
-              <Route path='/chat'>
-                <Chat/>
-              </Route>
-              <Route path='/analyze'>
-                <EmotionalAnalysis data={landingPageData.About} />
-              </Route>
-              <Route path='/tips'>
-                <TipsAndArticles />
-              </Route>
-              <Route path='/sos'>
-                <Sos />
-              </Route>
-              <Route path="/profile">
-                <Profile />
-              </Route>
+              <Route path='/personalquiz' component={PersonalQuiz}/>
+              <Route path='/chat' component={Chat}/>
+              <Route path='/analyze' component={EmotionalAnalysis}/>
+              <Route path='/tips' component={TipsAndArticles}/>
+              <Route path='/sos' component={Sos}/>
+              <Route path='/profile' component={Profile}/>
+              <Route path='/manageUsers' component={ManageUsers}/>
+              <Route path='/aboutMePsycoligist' component={AboutMe}/>
+              <Route path='/invitePsychologist' component={InvitePsychologist}/>
               {user._id &&
               <Route path='/messaging'>
                 <Messaging user={user}/>
               </Route>}
-              <Route path='/manageUsers'>
-                <ManageUsers/>
-              </Route>
-              <Route path='/aboutMePsycoligist'>
-                <AboutMe/>
-              </Route>
-              <Route path='/invitePsychologist'>
-                <InvitePsychologist/>
-              </Route>
-              <Redirect to="/home-page" />
+              <Redirect to='/home-page' />
             </Switch>;
   }
   return (
