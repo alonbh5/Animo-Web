@@ -34,7 +34,17 @@ const ConfirmTipsAndArticles = () => {
   };
 
   useEffect(fetchData, []);
-
+  
+  const confirmData = async (dataId: string) => {
+    const params: AxiosRequestConfig = {
+      method: 'PATCH',
+      url: `/phydata/confirmData/${dataId}`,
+    };
+    await sendRequest(params);
+    fetchData();
+    console.log("after fetch");
+  };
+  
   return (
       <PageLayout title="Confirm ">
         <h3>Articles</h3>
@@ -47,6 +57,8 @@ const ConfirmTipsAndArticles = () => {
             <th>Author</th>
             <th>link</th>
             <th>img</th>
+            <th>confirm</th>
+
           </tr>
         </thead>
         <tbody>
@@ -60,10 +72,10 @@ const ConfirmTipsAndArticles = () => {
               author = {article.author}
               link = {article.link}
               img = {article.img}
-              confirm = {article.confirm}
+              confirmData = {confirmData}
               article = {article}
               //deleteUser={deleteUser}
-              confirmArticle={confirm}
+              
               //updateUser={onUpdateUser}
             />)})
           }
@@ -80,6 +92,7 @@ const ConfirmTipsAndArticles = () => {
       //     );
       //   })}
       // </div> */}
+    }
     </PageLayout>
   );
 };

@@ -12,9 +12,7 @@ import {
 } from 'react-simple-hook-modal';
 
 type ArticleModalProps = {
-  article: typeof ArticleItem;
-
-
+  article: ArticleItem;
 }
 export const ArticleModal = (props: ArticleModalProps) => {
   const { article } = props;

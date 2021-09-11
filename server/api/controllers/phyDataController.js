@@ -1,8 +1,32 @@
 const PhyData = require('../schemes/phyDataSchema');
 const mongoose = require('mongoose');
 const HttpError = require('../models/http-error');
+const adminRole = 1;
 
 module.exports = {
+
+    confirmData: async (req, res, next) => {
+        const dataId = req.params.dataId;
+        try {
+            const matchData = await PhyData.findById(dataId);
+            if (!matchData) {
+                return next(new HttpError(`User by id ${dataId} did not found`, 404));
+            }
+            await PhyData.updateOne(
+                { _id: dataId },
+                { $set: { confirm: true } },
+            );
+
+            res.status(200).send({
+                message: `Confirm User successfuly!`,
+                data: {
+                    dataId: dataId,
+                }
+            });
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    },
     getAllTexts: async (req, res) => {
         PhyData.find().then((allTextsRes) => {
             res.status(200).json({

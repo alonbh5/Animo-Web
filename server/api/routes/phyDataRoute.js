@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const checkAuth = require('../middleware/check-auth');
+
 const {
     getAllTexts,
     createText,
@@ -6,7 +8,8 @@ const {
     getTips,
     getArticles,
     updateText,
-    deleteText
+    deleteText,
+    confirmData
 } = require('../controllers/phyDataController');
 
 
@@ -17,5 +20,7 @@ router.post('/' , createText);
 router.get('/:textId' ,getText);
 router.patch('/:textId' , updateText);
 router.delete('/:textId' , deleteText);
+router.patch('/confirmData/:dataId' , confirmData);
+
 
 module.exports  = router;
