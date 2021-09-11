@@ -1,11 +1,9 @@
-// @ts-ignore
 import { ChatEngine } from 'react-chat-engine';
-import './Chat.css';
 import ChatFeed from './ChatFeed';
 import LoginForm from './LoginForm';
+import './Chat.css';
 
 const Chat = () => {
-  // @ts-ignore
   const storedData = JSON.parse(localStorage.getItem('chatData'));
   if (!storedData || new Date(storedData.expiration) < new Date()) {
     return <LoginForm/>;

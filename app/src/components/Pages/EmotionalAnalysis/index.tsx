@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-ignore
 import Chatbot from 'react-chatbot-kit';
 import PageLayout from '../../../shared/UIElements/PageLayout';
 import config from './chatbot/config';
