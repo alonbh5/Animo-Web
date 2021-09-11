@@ -9,7 +9,7 @@ const Conversation = require('../schemes/conversationSchema');
 const Emotions = require('../schemes/emotionsSchema');
 const AnalyzeAnswersSchema = require ('../schemes/analyzeAnswersSchema');
 const AnalyzeQuestionsSchema = require ('../schemes/analyzeSchema');
-const yesWords = ["yes","yep","Yes"];
+const yesWords = ["yes","yep","3","4","5","6","i do"];
 
 var RandomNumber = 0;
 var allAnalyzedQuestionArray = AnalyzeQuestionsSchema.find();
@@ -141,8 +141,8 @@ const KeepAnalyze = async (curAnalzyeAnswersObj, matchUser, textFromUser, res) =
     
         if (currentUserIndex >= arrayLength) {
             if (currentUserIndex = arrayLength) {
-                if (yesWords.some(word => textFromUser.includes(word))) {
-                    curAnalzyeAnswersObj.answers[currentUserIndex - 1].score++; //TODO this is not good..           
+                if (yesWords.some(word => textFromUser.toLowerCase.includes(word))) {
+                    curAnalzyeAnswersObj.answers[currentUserIndex - 1].score++; //TODO           
                 await curAnalzyeAnswersObj.markModified("answers");
                 await curAnalzyeAnswersObj.save();
                 }
@@ -160,8 +160,8 @@ const KeepAnalyze = async (curAnalzyeAnswersObj, matchUser, textFromUser, res) =
         }
         else {
             if (currentUserIndex != 0) {
-                if (yesWords.some(word => textFromUser.includes(word))) {
-                    curAnalzyeAnswersObj.answers[currentUserIndex - 1].score++; //TODO this is not good..          
+                if (yesWords.some(word => textFromUser.toLowerCase.includes(word))) {
+                    curAnalzyeAnswersObj.answers[currentUserIndex - 1].score++; //TODO          
                     await curAnalzyeAnswersObj.markModified("answers");
                 }
     
@@ -458,6 +458,15 @@ module.exports = {
                         default:
                     }
 
+                    break;
+                case "GiveMeAnswer":
+
+                    res.status(200).json({
+                        response_type: "AnalyzeMyEmotion-InProgress", //mean for UI to keep sending answer from user from now on
+                        content: "You Are Idiot!",
+                        response_to: textFromUser
+                    })
+                    
                     break;
                 default:
                     res.status(405).json({
