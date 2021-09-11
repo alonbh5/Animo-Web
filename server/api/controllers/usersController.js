@@ -436,7 +436,8 @@ module.exports = {
             email,
             password,
             age,
-            gender
+            gender,
+            imageUrl
         } = req.body;
 
         try {
@@ -456,7 +457,8 @@ module.exports = {
                         last_name: last_name || matchUser.last_name,
                         email: email || matchUser.email,
                         age: age || matchUser.age,
-                        gender: gender || matchUser.gender
+                        gender: gender || matchUser.gender,
+                        imageUrl: imageUrl || matchUser.imageUrl
                     }
                 },
             );
@@ -713,7 +715,7 @@ module.exports = {
     getPsycUsers: async (req, res, next) => {
         try {
             const psycUsers = await User.find({
-                role_id: psycRole, online: 'true', phone: {$ne:undefined}, aboutMe: {$ne:undefined}
+                role_id: psycRole, phone: {$ne: undefined}, aboutMe: {$ne: undefined}
             });
             return res.status(200).json({ message: `Found ${psycUsers.length} Users`, data: { psycUsers } })
         } catch (err) {

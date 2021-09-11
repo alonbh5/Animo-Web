@@ -1,11 +1,11 @@
 import { useContext, useState, useEffect } from 'react';
-import { AuthContext } from '../../../../shared/context/auth-context';
+import AuthContext from '../../../../shared/context/auth-context';
 import { User } from '../../../api/configuration/models/users';
 import { TableDisplayMode } from './TableDisplayMode';
 import { TableEditMode } from './TableEditMode';
 import { AxiosRequestConfig } from 'axios';
 import { useHttpClient } from '../../../../shared/hooks/http-hook';
-import LoadingSpinner from '../../../../shared/UIElements/LoadingSpinner';
+import Status from '../../../../shared/UIElements/Status';
 import { useAlert } from 'react-alert';
 
 type IdentityTableProps = {
@@ -56,10 +56,7 @@ const IdentityTable = (props: IdentityTableProps) => {
     <div className="error-msg">{errorEmail}</div>
     <div className="error-msg">{errorAge}</div>
     <div className="error-msg">{errorPassword}</div>
-    <div>
-      {isLoading && <LoadingSpinner asOverlay />}
-      {error && <h5 style={{ color: 'red' }}>{error}</h5>}
-    </div>
+    <Status isLoading={isLoading} error={error} />
     <table>
       {!isEditMode
         ? <TableDisplayMode />

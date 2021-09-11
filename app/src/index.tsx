@@ -1,10 +1,9 @@
+// <reference path="../typings/lodash/lodash.d.ts"/>
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
-// @ts-ignore
 import AlertTemplate from 'react-alert-template-basic';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -28,5 +27,3 @@ const Root = () => (
   </AlertProvider>
 );
 ReactDOM.render(<Root />, document.getElementById('root'));
-
-reportWebVitals();

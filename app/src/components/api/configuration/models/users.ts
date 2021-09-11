@@ -1,4 +1,3 @@
-/*eslint-disable*/
 export type User = {
     _id?: string;
     role_id?: number;
@@ -14,7 +13,7 @@ export type User = {
     created_at?: string;
     online?: boolean;
     confirm?: boolean;
-    aboutMe?: String;
-    phone?: String;
+    aboutMe?: string;
+    phone?: string;
     imageUrl?: string;
 }

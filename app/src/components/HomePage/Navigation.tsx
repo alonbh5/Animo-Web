@@ -1,85 +1,25 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { AuthContext } from '../../shared/context/auth-context';
+import AuthContext from '../../shared/context/auth-context';
 import { User } from '../api/configuration/models/users';
 import { Role, RoleEnum } from '../api/configuration/models/role';
-/* eslint-disable max-len */
-const defualtImage = 'https://icons.iconarchive.com/icons/icons8/ios7/256/Users-User-Male-2-icon.png';
-
-type clickItemProp = {
-  onClickItem: (value:boolean) => void;
-  Logout: () => void;
-}
-const AdminDropdown = (props:clickItemProp) => {
-  const _onClickItem = () => {
-    props.onClickItem(false);
-  };
-  return (<div className="dropdown-menu">
-    <li>
-      <Link to="/profile" onClick={_onClickItem}>Profile</Link>
-    </li>
-    <li>
-      <Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link>
-    </li>
-    <li>
-      <Link to="/invitePsychologist"
-        onClick={_onClickItem}>Invite Psycoligist</Link>
-    </li>
-    <li>
-      <Link to="/uploadTipsArticals"
-        onClick={_onClickItem}>{'Upload Tips & Articals'}</Link>
-    </li>
-    <li>
-      <Link to="/confirmTipsArticals"
-        onClick={_onClickItem}>{'Confirm Tips & Articals'}</Link>
-    </li>
-    <li>
-      <a onClick={() => props.Logout()}>Logout</a>
-    </li>
-  </div>
-  );
-};
-
-const PsychologistDropdown = (props:clickItemProp) => {
-  const _onClickItem = () => {
-    props.onClickItem(false);
-  };
-
-  return (<div className="dropdown-menu">
-    <li>
-      <Link to="/profile" onClick={_onClickItem}>Profile</Link>
-    </li>
-    <li>
-      <Link to="/aboutMePsycoligist"
-        onClick={_onClickItem}>About Me</Link>
-    </li>
-    <li>
-      <Link to="/uploadTipsArticals"
-        onClick={_onClickItem}>{'Upload Tips & Articals'}</Link>
-    </li>
-    <li>
-      <a onClick={() => props.Logout()}>Logout</a>
-    </li>
-  </div>
-  );
-};
-
-const GeneralDropdown = (props:clickItemProp) => {
-  const _onClickItem = () => {
-    props.onClickItem(false);
-  };
+import { avatarImage } from '../utils';
+import { AdminDropdown, PsychologistDropdown, GeneralDropdown } from './Dropdowns';
+const NavigationBar = (props: {isLoggedIn:boolean}) => {
+  const navigateForLoggedIn = <>
+    <li><Link to="/personalquiz" style={{ color: 'blue' }}>Personal Quiz</Link></li>
+    <li><Link to="/analyze">Emotional Analysis</Link></li>
+  </>;
 
   return (
-    <div className="dropdown-menu">
-      <li>
-        <Link to="/profile" onClick={_onClickItem}>Profile</Link>
-      </li>
-      <li>
-        <a onClick={() => props.Logout()}>Logout</a>
-      </li>
-    </div>
-
+    <>
+      {props.isLoggedIn && navigateForLoggedIn}
+      <li><Link to="/tips">Tips & article</Link></li>
+      <li><HashLink to="/sos">SOS</HashLink></li>
+      <li><HashLink to="/home-page#contact">Contact</HashLink></li>
+      <li><HashLink to="/chat">Chat</HashLink></li>
+    </>
   );
 };
 
@@ -108,46 +48,14 @@ export const Navigation = (props: any) => {
               Animo
             </a>
           </div>
-
           <div
             className='collapse navbar-collapse'
             id='bs-example-navbar-collapse-1'
           >
             <ul className='nav navbar-nav navbar-right'>
-              {auth.isLoggedIn &&
-                <>
-                  {(!user.personality || user.personality === '') &&
-                    <li>
-                      <Link
-                        to="/personalquiz"
-                        style={{ color: 'blue' }}>
-                        Personal Quiz
-                      </Link>
-                    </li>}
-                  <li>
-                    <Link to="/analyze">Emotional Analysis
-                    </Link>
-                  </li>
-
-                </>
-              }
-              <li>
-                <Link to="/tips">Tips & article
-                </Link>
-              </li>
-              <li>
-                <HashLink to="/sos">SOS</HashLink>
-              </li>
-              <li>
-                <HashLink to="/home-page#contact">Contact</HashLink>
-              </li>
-              <li>
-                <HashLink to="/chat">Chat</HashLink>
-              </li>
+              <NavigationBar isLoggedIn={auth.isLoggedIn}/>
               {!auth.isLoggedIn
-                ? <li>
-                  <Link to="/login">Login</Link>
-                </li>
+                ? <li><Link to="/login">Login</Link></li>
                 : <li className={dropdownState ? 'open' : 'dropdown'}>
                   <img style={{
                     height: '50px',
@@ -156,7 +64,7 @@ export const Navigation = (props: any) => {
                   }}
                   onClick={() =>
                     changeDropdownState(prev => !prev)} alt={user.first_name}
-                  src={user.imageUrl || defualtImage} />
+                  src={user.imageUrl || avatarImage} />
                   <i className="fa fa-caret-down"></i>
                   {role.role_type === RoleEnum.Admin &&
                    <AdminDropdown
@@ -179,7 +87,6 @@ export const Navigation = (props: any) => {
           </div>
         </div>
       </nav>
-
     </span>
   );
 };

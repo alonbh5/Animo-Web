@@ -116,7 +116,6 @@ export const useAuth = () => {
   }, [token, logout, tokenExpirationDate]);
 
   useEffect(() => {
-    // @ts-ignore
     const storedData = JSON.parse(localStorage.getItem('userData'));
     if (
       storedData &&
