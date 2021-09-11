@@ -7,12 +7,14 @@ const AnswersFromUsers = require('../schemes/answersSchema');
 const BotPresonalQuestions = require('../schemes/presonalQuestionSchema');
 const Conversation = require('../schemes/conversationSchema');
 const Emotions = require('../schemes/emotionsSchema');
-const AnalyzeAnswersSchema = require ('../schemes/analyzeAnswersSchema');
-const AnalyzeQuestionsSchema = require ('../schemes/analyzeSchema');
-const yesWords = ["yes","yep","3","4","5","6","i do"];
+const AnalyzeAnswersSchema = require('../schemes/analyzeAnswersSchema');
+const AnalyzeQuestionsSchema = require('../schemes/analyzeSchema');
+const emotionData = require ('../schemes/personalEmotionalDataSchema');
+const yesWords = ["yes", "yep", "3", "4", "5", "6", "i do"];
 
 var RandomNumber = 0;
 var allAnalyzedQuestionArray = AnalyzeQuestionsSchema.find();
+var howManyToAsk = 7;
 
 
 const InitGetToKnow = async (matchUser, textFromUser, res) => {
@@ -91,24 +93,24 @@ const InitAnalyze = async (matchUser, textFromUser, res) => {
     //save new log of system user in table DB (object from mongoose is AnswersFromUsers)
     //send a new Answer from bot - start conversion
 
-   
+
 
     let allEmotions = await AnalyzeQuestionsSchema.find();
     let newArr = allEmotions.map((emo) => {
-        return(
+        return (
             {
-                questionId: String(emo.emotionId),
+                emotionId: String(emo.emotionId),
                 score: 0
             }
-      
+
         );
     });
 
-    var HowManyToRemove = newArr.length - 5;
+    var HowManyToRemove = newArr.length - howManyToAsk;
 
     for (let index = 0; index < HowManyToRemove; index++) {
         let rand = Math.floor(Math.random() * (newArr.length - index));
-        newArr.splice(rand,1);        
+        newArr.splice(rand, 1);
     }
 
     const ans = new AnalyzeAnswersSchema({
@@ -134,60 +136,122 @@ const InitAnalyze = async (matchUser, textFromUser, res) => {
 
 const KeepAnalyze = async (curAnalzyeAnswersObj, matchUser, textFromUser, res) => {
     {
-        
+
         let currentUserIndex = curAnalzyeAnswersObj.currentUserIndex;
         let questionsArray = curAnalzyeAnswersObj.answers;
-        let arrayLength = curAnalzyeAnswersObj.answers.length; 
-    
+        let arrayLength = curAnalzyeAnswersObj.answers.length;
+
         if (currentUserIndex >= arrayLength) {
             if (currentUserIndex = arrayLength) {
-                if (yesWords.some(word => textFromUser.toLowerCase.includes(word))) {
+                if (yesWords.some(word => textFromUser.toLowerCase().includes(word))) {
                     curAnalzyeAnswersObj.answers[currentUserIndex - 1].score++; //TODO           
-                await curAnalzyeAnswersObj.markModified("answers");
-                await curAnalzyeAnswersObj.save();
+                    await curAnalzyeAnswersObj.markModified("answers");
+                    await curAnalzyeAnswersObj.save();
                 }
             }
-    
-            matchUser.analyzeState = "Done"
+
+            
+            matchUser.analyzeState = "Done";
             await matchUser.markModified('analyzeState');
-            await matchUser.save();            
+
+            let finalScore = curAnalzyeAnswersObj.answers;            
+            var dict = {};
+
+            for (let index = 1; index < finalScore.length; index++) {
+                let key = finalScore[index].emotionId;
+                if (dict[key])
+                    dict[key] = dict[key] + finalScore[index].score; 
+                else
+                    dict[key] = finalScore[index].score;      
+            }
+
+            var maxVal = Object.keys(dict).reduce((a, b) => dict[a] > dict[b] ? a : b);           
+
+            matchUser.currentEmotion = maxVal;
+            await matchUser.markModified('currentEmotion'); 
+
+            await matchUser.save();
 
             res.status(200).json({
                 response_type: "AnalyzeMyEmotion-Done",
                 content: "Ok! I Think I Know What You are Feeling!",
                 response_to: textFromUser
             });
-    
+
+
+
         }
         else {
             if (currentUserIndex != 0) {
-                if (yesWords.some(word => textFromUser.toLowerCase.includes(word))) {
+                if (yesWords.some(word => textFromUser.toLowerCase().includes(word))) {
                     curAnalzyeAnswersObj.answers[currentUserIndex - 1].score++; //TODO          
                     await curAnalzyeAnswersObj.markModified("answers");
                 }
-    
-            }            
-            let divRoot = await AnalyzeQuestionsSchema.countDocuments({ emotionId: questionsArray[currentUserIndex].questionId });
 
-            console.log(divRoot);
-            let BotText = await AnalyzeQuestionsSchema.findOne({ emotionId: questionsArray[currentUserIndex].questionId  }).skip(RandomNumber++ % divRoot);
-            console.log(BotText);
-            console.log( BotText.question);
+            }
+            let divRoot = await AnalyzeQuestionsSchema.countDocuments({ emotionId: questionsArray[currentUserIndex].emotionId });
+
+            let BotText = await AnalyzeQuestionsSchema.findOne({ emotionId: questionsArray[currentUserIndex].emotionId }).skip(RandomNumber++ % divRoot);
+        
 
             curAnalzyeAnswersObj.currentUserIndex = parseInt(currentUserIndex) + 1;
-    
+
             await curAnalzyeAnswersObj.markModified("currentUserIndex");
             await curAnalzyeAnswersObj.save();
-    
+
             res.status(200).json({
                 response_type: "AnalyzeMyEmotion-InProgress", //mean for UI to Keep sending answers from user from now on
                 content: BotText.question,
                 response_to: textFromUser
             });
         }
-    
-    
+
+
     }
+}
+
+const InitResult = async (matchUser, textFromUser, res) => {
+    {
+        let currentEmotion= matchUser.currentEmotion;
+        let TheEmotion = await Emotions.findById(currentEmotion);
+        let index = 0;
+        var botText = `I Think You Are ${TheEmotion.key_name}, Please Choose What Best Describes Your Feeling: (by number)`;
+        TheEmotion.name.forEach(element => {
+            botText += `\n ${index++} - ${element}`;
+        });
+
+        matchUser.emotionState = "In Progress";
+        matchUser.markModified('emotionState');
+        await matchUser.save();
+
+        res.status(200).json({
+            response_type: "AnalyzeMyEmotion-ResultInProgress", //mean for UI to Keep sending answers from user from now on
+            content: botText,
+            response_to: textFromUser
+        });
+    }
+}
+
+const KeepResult  = async ( matchUser, textFromUser, res) => {
+
+    let currentEmotion= matchUser.currentEmotion;
+    let TheEmotion = await Emotions.findById(currentEmotion);
+    let choice = TheEmotion.name[parseInt(textFromUser)];
+    choice = choice.toLowerCase();
+    
+
+    let botText = await emotionData.findOne({emotion : choice, personality: matchUser.personality});
+    
+
+    res.status(200).json({
+        response_type: "AnalyzeMyEmotion-ResultDone", //mean for UI to Keep sending answers from user from now on
+        content: botText.data,
+        response_to: textFromUser
+    });
+
+    matchUser.emotionState = "Done";
+    matchUser.markModified('emotionState');
+    await matchUser.save();
 }
 
 //--------------------------------------------------------------------------
@@ -389,8 +453,8 @@ module.exports = {
                     var divRoot = await Conversation.countDocuments({ keyWords: cleanText });
                     let answer = await Conversation.findOne({ keyWords: cleanText }).skip(RandomNumber++ % divRoot);
                     let state = "Advice-Done";
-                     
-                    if (answer) {                        
+
+                    if (answer) {
                         if (answer.isPersonal) {
                             let allAnswers = await AnswersFromUsers.findOne({ userId: matchUser._id });
                             let HowManyToFill = answer.indexInQuestion.length;
@@ -399,21 +463,21 @@ module.exports = {
                                 let nextToReplace = "{" + String(index) + "}";
                                 let replacement = allAnswers.answers[answer.indexInQuestion[index]].useranswer;
                                 replacement = replacement.toLowerCase()
-                                                        .split(' ')
-                                                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-                                                        .join(' ');                                
-                                answer.question = answer.question.replace(nextToReplace,replacement);
-                            }                            
-                        }                       
+                                    .split(' ')
+                                    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                                    .join(' ');
+                                answer.question = answer.question.replace(nextToReplace, replacement);
+                            }
+                        }
 
                         if (!answer.done)
-                            state = "Advice"; 
+                            state = "Advice";
 
                         res.status(200).json({
                             response_type: state,
                             content: answer.question,
                             response_to: textFromUser
-                        });                        
+                        });
 
                     }
                     else {
@@ -427,7 +491,7 @@ module.exports = {
                     break;
                 case "AnalyzeMyEmotion":
 
-                    
+
                     switch (matchUser.analyzeState) {
                         case "uninitialized": // start a new session with him
 
@@ -437,7 +501,7 @@ module.exports = {
                         case "In Progress": // continue asking him questions
 
                             try {
-                                let ansObj = await AnalyzeAnswersSchema.find({ userId: matchUser._id }).sort({time: -1}).limit(1);
+                                let ansObj = await AnalyzeAnswersSchema.find({ userId: matchUser._id }).sort({ time: -1 }).limit(1);
                                 KeepAnalyze(ansObj[0], matchUser, textFromUser, res);
                             } catch (err) {
                                 res.status(404).json({ message: "Could Not Find Answers From This User - try again" })
@@ -451,14 +515,33 @@ module.exports = {
                     }
 
                     break;
-                case "GiveMeAnswer":
+                case "AnalyzeMyEmotion-Result":
+
+                    switch (matchUser.emotionState) {
+                        case "uninitialized": // start a new session with him
+
+                            InitResult(matchUser, textFromUser, res);
+
+                            break;
+                        case "In Progress": // continue asking him questions
+
+                        KeepResult(matchUser, textFromUser, res);
+
+                            break;
+                        case "Done":
+                            InitResult(matchUser, textFromUser, res);
+                            break;
+                        default:
+                    }
+
+                    break;
 
                     res.status(200).json({
                         response_type: "GiveMeAnswer", //mean for UI to keep sending answer from user from now on
                         content: "You Are Idiot!",
                         response_to: textFromUser
                     })
-                    
+
                     break;
                 default:
                     res.status(405).json({
