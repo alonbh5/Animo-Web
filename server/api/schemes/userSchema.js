@@ -13,6 +13,7 @@ const userSchema = mongoose.Schema({
     personality: { type: String, require: false, default: "" },
     currentEmotion: { type: String, require: false, default: "" },
     getToKnowState: { type: String, require: false, default: "uninitialized" },
+    analyzeState: { type: String, require: false, default: "uninitialized" },
     online: { type: Boolean, require: false, default: undefined },
     confirm: { type: Boolean, require: true, default: false },
     aboutMe: {type: String, require: false, default: undefined},
