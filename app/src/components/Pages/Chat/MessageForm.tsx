@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-// @ts-ignore
 import { sendMessage, isTyping } from 'react-chat-engine';
 import { SendOutlined, PictureOutlined } from '@ant-design/icons';
 import './Chat.css';

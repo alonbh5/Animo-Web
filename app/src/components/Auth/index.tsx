@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthContext from '../../shared/context/auth-context';
-import Chat from '../Pages/Chat/Chat';
 import { Header } from '../HomePage/Header';
 import { About } from '../HomePage/About';
 import { Team } from '../HomePage/Team';
 import { Contact } from '../HomePage/Contact';
-import JsonData from '../../data/data.json';
-
 import { User } from '../api/configuration/models/users';
+import JsonData from '../../data/data.json';
+import Chat from '../Pages/Chat/Chat';
+
 /* eslint-disable max-len */
 const Messaging = React.lazy(() => import('../MyNetwork/Messaging'));
 const ManageUsers = React.lazy(() => import('../AdminPanel/ManageUsers'));
@@ -18,7 +18,7 @@ const InvitePsychologist = React.lazy(() => import('../AdminPanel/InvitePsycholo
 const Profile = React.lazy(() => import('./Profile/Profile'));
 const SignIn = React.lazy(() => import('./Login/SignIn'));
 const SignUp = React.lazy(() => import('./Login/SignUp'));
-const AboutMe = React.lazy(() => import('../PsycPanel/AboutMe'));
+const AboutMe = React.lazy(() => import('../PsycologistPanel/AboutMe'));
 const EmotionalAnalysis = React.lazy(() => import('../Pages/EmotionalAnalysis'));
 const TipsAndArticles = React.lazy(() => import('../Pages/TipsAndArticles'));
 const PersonalQuiz = React.lazy(() => import('../Pages/PersonalityQuiz'));

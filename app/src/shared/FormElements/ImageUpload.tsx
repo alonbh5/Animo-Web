@@ -1,12 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
-/*eslint-disable*/
 import './ImageUpload.css';
 
 const ImageUpload = (props: {id:string;
   center:boolean; onInput: (value:string)=> void;}) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
-  const [isValid, setIsValid] = useState(false);
 
   const filePickerRef = useRef();
 
@@ -16,10 +14,8 @@ const ImageUpload = (props: {id:string;
     }
     const fileReader = new FileReader();
     fileReader.onload = () => {
-      //@ts-ignore
       setPreviewUrl(fileReader.result);
     };
-          //@ts-ignore
     fileReader.readAsDataURL(file);
   }, [file]);
 
@@ -29,17 +25,11 @@ const ImageUpload = (props: {id:string;
     if (event.target.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
-      setIsValid(true);
-      // fileIsValid = true;
-    } else {
-      setIsValid(false);
-      // fileIsValid = false;
     }
     props.onInput(pickedFile);
   };
 
   const pickImageHandler = () => {
-              //@ts-ignore
     filePickerRef.current.click();
   };
 
@@ -47,7 +37,6 @@ const ImageUpload = (props: {id:string;
     <div>
       <input
         id={props.id}
-                  //@ts-ignore
         ref={filePickerRef}
         style={{ display: 'none' }}
         type="file"
@@ -58,7 +47,7 @@ const ImageUpload = (props: {id:string;
         <div className="image-upload__preview">
           {previewUrl && <img src={previewUrl} alt="Preview" />}
           {!previewUrl && <p>Please pick an image.</p>}
-  
+
         </div>
         <button className="btn btn-outline-primary" type="button" onClick={pickImageHandler}>
           PICK IMAGE
