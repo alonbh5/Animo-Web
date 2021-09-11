@@ -1,4 +1,4 @@
-import './BotAvatar.css';
+import './Avatar.css';
 
 export const BotAvatar = () => {
   return (
