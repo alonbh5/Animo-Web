@@ -53,7 +53,6 @@ const ResetPassword = (props: any) => {
 
   return (
     <PageLayout title='Reset Password' cols={true}>
-      <h2></h2>
       <p>
             For reset your password, please type your email address
       </p>
