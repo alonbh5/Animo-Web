@@ -1,14 +1,13 @@
-/* eslint-disable */
+import React from 'react';
 // @ts-ignore
-import  Chatbot from "react-chatbot-kit";
+
+import Chatbot from 'react-chatbot-kit';
 
 import config from '../chatbot/config';
 import MessageParser from '../chatbot/MessageParser';
 import ActionProvider from '../chatbot/ActionProvider';
 
-import React from 'react';
-
-export const EmotionalAnalysis = (props: any) => {
+const EmotionalAnalysis = (props: any) => {
   return (
     <div id="team" className="text-center">
       <div className="container">
@@ -24,3 +23,4 @@ export const EmotionalAnalysis = (props: any) => {
     </div>
   );
 };
+export default EmotionalAnalysis;

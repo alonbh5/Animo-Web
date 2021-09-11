@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startclient": "cd app && npm start",
-    "startserver": "cd server && npm start",
-    "start": "npm run startserver | npm run startclient",
+    "start_client": "cd app && npm start",
+    "start_server": "cd server && npm start",
+    "dev_client": "cd server && npm run dev",
+    "dev_server": "cd app && npm run dev",
+    "start": "npm run start_server | npm run start_client",
+    "dev": "npm run dev_server | npm run dev_client",
     "installclient": "cd app && npm install",
     "installserver": "cd server && npm install",
     "install": "npm run installclient && npm run installserver"

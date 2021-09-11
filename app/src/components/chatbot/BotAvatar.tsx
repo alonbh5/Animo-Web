@@ -1,5 +1,4 @@
-/* eslint-disable */
-import "./BotAvatar.css";
+import './BotAvatar.css';
 
 export const BotAvatar = () => {
   return (

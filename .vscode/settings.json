@@ -2,5 +2,10 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
     },
-    "eslint.validate": ["javascript"]
+    "eslint.validate": [
+      "javascript"
+    ],
+    "typescript.format.enable": false,
+    "typescript.validate.enable": false,
+    "javascript.validate.enable": false
  }

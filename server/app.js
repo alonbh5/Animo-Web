@@ -33,7 +33,7 @@ const PersQuizRoute = require('./api/routes/persQuizRoute');
 const RolesRoute = require('./api/routes/rolesRoute');
 const HttpError = require('./api/models/http-error');
 const PersDataRoute = require('./api/routes/persDataRoute');
-const ConversationRoute = require ('./api/routes/conversationRoute');
+const ConversationRoute = require('./api/routes/conversationRoute');
 //==============================================================================
 
 app.use(morgan("dev"));
@@ -68,13 +68,13 @@ app.use('/botres', BotResRoute);
 app.use('/emotions', EmotionsRoute);
 app.use('/persquiz', PersQuizRoute);
 app.use('/roles', RolesRoute);
-app.use('/persdata',PersDataRoute);
-app.use('/Conversation',ConversationRoute);
+app.use('/persdata', PersDataRoute);
+app.use('/Conversation', ConversationRoute);
 //********************************************/// END /////*************************************************
 
 
 app.use((req, res, next) => {
-   throw new HttpError("Could not find this route!", 404)
+    throw new HttpError("Could not find this route!", 404)
     // throw error;
     // error.status = 404;
     // next(error);

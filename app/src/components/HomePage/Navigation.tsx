@@ -4,6 +4,8 @@ import { HashLink } from 'react-router-hash-link';
 import { AuthContext } from '../../shared/context/auth-context';
 import { User } from '../api/configuration/models/users';
 import { Role, RoleEnum } from '../api/configuration/models/role';
+/* eslint-disable max-len */
+const defualtImage = 'https://icons.iconarchive.com/icons/icons8/ios7/256/Users-User-Male-2-icon.png';
 
 type clickItemProp = {
   onClickItem: (value:boolean) => void;
@@ -18,10 +20,13 @@ const AdminDropdown = (props:clickItemProp) => {
       <Link to="/profile" onClick={_onClickItem}>Profile</Link>
     </li>
     <li>
+      <HashLink to="/messaging">Messanger</HashLink>
+    </li>
+    <li>
       <Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link>
     </li>
     <li>
-      <Link to="/invitePsycoligist"
+      <Link to="/invitePsychologist"
         onClick={_onClickItem}>Invite Psycoligist</Link>
     </li>
     <li>
@@ -49,6 +54,9 @@ const PsychologistDropdown = (props:clickItemProp) => {
       <Link to="/profile" onClick={_onClickItem}>Profile</Link>
     </li>
     <li>
+      <HashLink to="/messaging">Messanger</HashLink>
+    </li>
+    <li>
       <Link to="/aboutMePsycoligist"
         onClick={_onClickItem}>About Me</Link>
     </li>
@@ -56,6 +64,7 @@ const PsychologistDropdown = (props:clickItemProp) => {
       <Link to="/uploadTipsArticals"
         onClick={_onClickItem}>{'Upload Tips & Articals'}</Link>
     </li>
+
     <li>
       <a onClick={() => props.Logout()}>Logout</a>
     </li>
@@ -72,6 +81,9 @@ const GeneralDropdown = (props:clickItemProp) => {
     <div className="dropdown-menu">
       <li>
         <Link to="/profile" onClick={_onClickItem}>Profile</Link>
+      </li>
+      <li>
+        <HashLink to="/messaging">Messanger</HashLink>
       </li>
       <li>
         <a onClick={() => props.Logout()}>Logout</a>
@@ -106,7 +118,6 @@ export const Navigation = (props: any) => {
               Animo
             </a>
           </div>
-
           <div
             className='collapse navbar-collapse'
             id='bs-example-navbar-collapse-1'
@@ -126,7 +137,6 @@ export const Navigation = (props: any) => {
                     <Link to="/analyze">Emotional Analysis
                     </Link>
                   </li>
-
                 </>
               }
               <li>
@@ -137,27 +147,25 @@ export const Navigation = (props: any) => {
                 <HashLink to="/sos">SOS</HashLink>
               </li>
               <li>
-                <HashLink to="/home-page#about">About</HashLink>
+                <HashLink to="/home-page#contact">Contact</HashLink>
               </li>
               <li>
-                <HashLink to="/home-page#contact">Contact</HashLink>
+                <HashLink to="/chat">Chat</HashLink>
               </li>
               {!auth.isLoggedIn
                 ? <li>
                   <Link to="/login">Login</Link>
                 </li>
                 : <li className={dropdownState ? 'open' : 'dropdown'}>
-                  <a className="dropdown-toggle"
-                    style={{
-                      fontWeight: 'bold',
-                      color: 'black',
-                      background: 'light grey'
-                    }}
-                    onClick={() => changeDropdownState(prev => !prev)}
-                    id="dropdownMenuButton1">
-                    {user.first_name + ' ' + user.last_name}
-                    <i className="fa fa-caret-down"></i>
-                  </a>
+                  <img style={{
+                    height: '50px',
+                    width: '50px',
+                    borderRadius: user.imageUrl ? '50%' : undefined
+                  }}
+                  onClick={() =>
+                    changeDropdownState(prev => !prev)} alt={user.first_name}
+                  src={user.imageUrl || defualtImage} />
+                  <i className="fa fa-caret-down"></i>
                   {role.role_type === RoleEnum.Admin &&
                    <AdminDropdown
                      onClickItem={changeDropdownState}

@@ -52,7 +52,7 @@ const ForgotPassword = (props: any) => {
       const response = await sendRequest(params);
       const emailParams = {
         reply_to: animoMail,
-        link: response.resetLink,
+        link: process.env.REACT_APP_FRONTEND_URL + response.resetLink,
         send_to: email
       };
       await emailjs.send(serviceId, templateId, emailParams, userID);

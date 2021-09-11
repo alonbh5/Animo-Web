@@ -1,5 +1,3 @@
-/* eslint-disable */
-import validator from 'validator'
 class MessageParser {
   actionProvider: any;
   state: any;
@@ -9,28 +7,29 @@ class MessageParser {
   }
 
   parse = (message: string) => {
-    // const lowercase = message.toLowerCase();
-
-    if (this.state.username === undefined) {
+    if (this.state.user === undefined) {
       this.actionProvider.setUserParameters(message);
+    } else if (this.state.talkType === undefined) {
+      this.actionProvider.setWidgetShowOptions();
     }
+
+    console.log(this.state);
 
     if (this.state.talkType === 'GetToKnow') {
-      this.actionProvider.handlerFirstTalk(message, this.state.userId, this.state.talkType);
+      this.actionProvider.handlerTalk(
+        message, this.state.user.id, this.state.talkType);
     }
 
-    if (this.state.talkType === 'Advice') {
-      this.actionProvider.handlerAdvice(message);
+    // change to advice
+    if (this.state.talkType === 'Conversation') {
+      this.actionProvider.handlerAdvice(
+        message, this.state.user.id, this.state.talkType);
     }
 
     if (this.state.talkType === 'AnalyzeMyEmotion') {
-      this.actionProvider.handlerAnalyzeMyEmotion(message);
+      this.actionProvider.handlerAnalyzeMyEmotion(
+        message, this.state.user.id, this.state.talkType);
     }
-
-    // if (lowercase.includes("todos")) {
-
-    //   this.actionProvider.todosHandler(message);
-    // }
   }
 }
 
