@@ -241,11 +241,16 @@ const KeepResult  = async ( matchUser, textFromUser, res) => {
     
 
     let botText = await emotionData.findOne({emotion : choice, personality: matchUser.personality});
+
+    if (!botText)
+        botText = "Still No DATA";
+    else
+        botText = botText.data;
     
 
     res.status(200).json({
         response_type: "AnalyzeMyEmotion-ResultDone", //mean for UI to Keep sending answers from user from now on
-        content: botText.data,
+        content: botText,
         response_to: textFromUser
     });
 
