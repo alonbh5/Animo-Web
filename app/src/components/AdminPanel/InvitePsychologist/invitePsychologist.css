@@ -1,7 +1,7 @@
 
 .invite {
-	height: 100vh;
-	padding: 150px;
+	height: 120vh;
+	padding: 100px;
 	background: linear-gradient(to right, #6372ff 0%, #5ca9fb 100%);
 	color: rgba(255,255,255,.75);
 }

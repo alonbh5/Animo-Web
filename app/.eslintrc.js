@@ -26,6 +26,6 @@ module.exports = {
     semi: ['error', 'always'],
     indent: ['error', 2],
     'no-multi-spaces': ['error'],
-    'max-len': ['error', { code: 80 }]
+    'max-len': ['error', { code: 100 }]
   }
 };

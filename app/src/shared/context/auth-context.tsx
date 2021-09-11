@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-export const AuthContext = createContext({
+const AuthContext = createContext({
   isLoggedIn: false,
   userId: undefined,
   token: undefined,
@@ -12,3 +12,4 @@ export const AuthContext = createContext({
   userRole: {},
   fetchUser: async () => {}
 });
+export default AuthContext;

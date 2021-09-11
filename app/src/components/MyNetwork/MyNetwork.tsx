@@ -141,11 +141,12 @@ class MyNetwork extends Component<{user:User}, {currentUser: userChat, allPsycol
                     <p>{user.info}</p>
                   </div>
                   <div className="user-action">
-                    <span>
+                    <div>
+                      <div>
                     <button onClick={(userId) => this.handleClick(user.id)}>
                         Message
-                    </button>
-                  <span className={user.online ? "status text-success": "status text-danger"}>&bull;</span>{user.online ? "Online":  "Offline"}</span>
+                    </button></div>
+                  <div className={user.online ? "status text-success": "status text-danger"}>&bull;</div>{user.online ? "Online":  "Offline"}</div>
                   </div>
                 </div>
               </li>

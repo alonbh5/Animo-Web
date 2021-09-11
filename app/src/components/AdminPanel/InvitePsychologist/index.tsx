@@ -1,10 +1,10 @@
-/*eslint-disable*/
+/* eslint-disable max-len */
 import { useState } from 'react';
 import emailjs, { init } from 'emailjs-com';
-import { templateId, serviceId, userID, animoMail }
-  from '../../api/configuration/config';
+import { templateId, serviceId, userID, animoMail } from '../../api/configuration/config';
 import { useAlert } from 'react-alert';
 import './invitePsychologist.css';
+import PageLayout from '../../../shared/UIElements/PageLayout';
 init(userID);
 
 const initialState = {
@@ -54,68 +54,63 @@ const InvitePsychologist = (props: any) => {
   };
 
   return (
-    <div className='invite'>
-      <div className='container'>
-        <div className='section-title'>
-          <h2>Invite Psychologist</h2>
-          <p>
+    <PageLayout classname='invite' title='Invite Psychologist'>
+      <p>
                   Please fill out the form below to send us an email and we will
                   get back to you as soon as possible.
-          </p>
+      </p>
+      <form name='sentMessage' onSubmit={handleSubmit}>
+        <div className='row'>
+          <div className='col-md-6'>
+            <div className='form-group'>
+              <input
+                type='text'
+                id='name'
+                name='name'
+                value={name}
+                className='form-control'
+                placeholder='Name'
+                required
+                onChange={handleChange}
+              />
+              <p className='help-block text-danger'></p>
+            </div>
+          </div>
+          <div className='col-md-6'>
+            <div className='form-group'>
+              <input
+                type='email'
+                id='email'
+                name='email'
+                value={email}
+                className='form-control'
+                placeholder='Email'
+                required
+                onChange={handleChange}
+              />
+              <p className='help-block text-danger'></p>
+            </div>
+          </div>
         </div>
-        <form name='sentMessage' onSubmit={handleSubmit}>
-          <div className='row'>
-            <div className='col-md-6'>
-              <div className='form-group'>
-                <input
-                  type='text'
-                  id='name'
-                  name='name'
-                  value={name}
-                  className='form-control'
-                  placeholder='Name'
-                  required
-                  onChange={handleChange}
-                />
-                <p className='help-block text-danger'></p>
-              </div>
-            </div>
-            <div className='col-md-6'>
-              <div className='form-group'>
-                <input
-                  type='email'
-                  id='email'
-                  name='email'
-                  value={email}
-                  className='form-control'
-                  placeholder='Email'
-                  required
-                  onChange={handleChange}
-                />
-                <p className='help-block text-danger'></p>
-              </div>
-            </div>
-          </div>
-          <div className='form-group'>
-            <textarea
-              style={{ height: '300px' }}
-              name='message'
-              id='message'
-              className='form-control'
-              value={message}
-              placeholder='Message'
-              required
-              onChange={handleChange}
-            ></textarea>
-            <p className='help-block text-danger'></p>
-          </div>
-          <div id='success'></div>
-          <button type='submit' className='btn btn-custom btn-lg'>
+        <div className='form-group'>
+          <textarea
+            style={{ height: '300px' }}
+            name='message'
+            id='message'
+            className='form-control'
+            value={message}
+            placeholder='Message'
+            required
+            onChange={handleChange}
+          ></textarea>
+          <p className='help-block text-danger'></p>
+        </div>
+        <div id='success'></div>
+        <button type='submit' className='btn btn-custom btn-lg'>
                   Send Invitation
-          </button>
-        </form>
-      </div>
-    </div>
+        </button>
+      </form>
+    </PageLayout>
   );
 };
 export default InvitePsychologist;
