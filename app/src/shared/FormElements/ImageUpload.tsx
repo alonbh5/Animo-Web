@@ -1,10 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './ImageUpload.css';
 
-const ImageUpload = (props: {id:string;
-  center:boolean; onInput: (value:string)=> void;}) => {
+type ImageUploadProps = {
+  id:string;
+  center:boolean;
+  onInput: (value:string)=> void;
+  previewUrl?: string;
+}
+
+const ImageUpload = (props: ImageUploadProps) => {
   const [file, setFile] = useState();
-  const [previewUrl, setPreviewUrl] = useState();
+  const [previewUrl, setPreviewUrl] = useState(props.previewUrl);
 
   const filePickerRef = useRef();
 

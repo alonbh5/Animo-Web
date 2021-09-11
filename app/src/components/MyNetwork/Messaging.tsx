@@ -17,7 +17,7 @@ class Messaging extends Component<{user:User}, {currentUser: userChat}> {
       email: props.user.email,
       photoUrl: avatarImage,
       role: 'Member',
-      info: 'Product Designer at Facebook',
+      info: props.user.aboutMe,
       welcomeMessage: 'Hey there! How are you? :-)'
     };
 
