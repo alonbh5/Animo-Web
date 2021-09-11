@@ -436,7 +436,8 @@ module.exports = {
             email,
             password,
             age,
-            gender
+            gender,
+            imageUrl
         } = req.body;
 
         try {
@@ -456,7 +457,8 @@ module.exports = {
                         last_name: last_name || matchUser.last_name,
                         email: email || matchUser.email,
                         age: age || matchUser.age,
-                        gender: gender || matchUser.gender
+                        gender: gender || matchUser.gender,
+                        imageUrl: imageUrl || matchUser.imageUrl
                     }
                 },
             );

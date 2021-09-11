@@ -22,10 +22,11 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'no-use-before-define': 'off',
+    camelcase: 'off',
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     indent: ['error', 2],
     'no-multi-spaces': ['error'],
-    'max-len': ['error', { code: 100 }]
+    'max-len': ['error', { code: 105 }]
   }
 };

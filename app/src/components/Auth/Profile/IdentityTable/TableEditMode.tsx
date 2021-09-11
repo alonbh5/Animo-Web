@@ -3,6 +3,8 @@ import validator from 'validator';
 import Input from '../../../../shared/FormElements/Input';
 import { User } from '../../../api/configuration/models/users';
 import AuthContext from '../../../../shared/context/auth-context';
+import { uploadImage } from '../../../api/endpoints';
+import ImageUpload from '../../../../shared/FormElements/ImageUpload';
 
 type TableEditModeProps = {
   onUpdate: (user: User) => void;
@@ -22,26 +24,42 @@ export const TableEditMode = (props: TableEditModeProps) => {
     age,
     email,
     password,
-    confirmPassword
+    confirmPassword,
+    imageUrl
   }, setState] = useState({
     firstName: user.first_name,
     lastName: user.last_name,
     age: user.age,
     email: user.email,
     password: user.password,
-    confirmPassword: user.password
+    confirmPassword: user.password,
+    imageUrl: user.imageUrl
   });
 
-  const _onClickUpdate = () => {
+  const [imageFile, setImage] = useState<any>();
+
+  const handleFile = (file:any) => {
+    setImage(file);
+    !isChange && setIsChange(true);
+  };
+
+  const _onClickUpdate = async () => {
+    const response = await uploadImage(imageFile);
+    if (!response.isValid) {
+      return;
+    }
+
     props.onUpdate({
       ...user,
       first_name: firstName,
       last_name: lastName,
       age: age,
       email: email,
-      password: password
+      password: password,
+      imageUrl: response.imageUrl
     });
   };
+
   const isFormValid = () => {
     return (
       isChange &&
@@ -165,14 +183,15 @@ export const TableEditMode = (props: TableEditModeProps) => {
         </td>
       </tr>
       <br></br>
-      <tr>
-        <button
-          type="submit"
-          disabled={!isFormValid()}
-          onClick={_onClickUpdate}
-          className="btn btn-primary btn-block">
+      <ImageUpload id="image" center={false} previewUrl={imageUrl} onInput={handleFile} />
+      <br></br>
+      <button
+        type="submit"
+        disabled={!isFormValid()}
+        onClick={_onClickUpdate}
+        className="btn btn-primary btn-block">
         Save
-        </button>
-      </tr>
-    </tbody>);
+      </button>
+    </tbody>
+  );
 };
