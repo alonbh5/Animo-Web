@@ -275,11 +275,11 @@ module.exports = {
                     }
 
                     break;
-                case "Conversation":
+                case "Advice":
                     let cleanText = textFromUser.replace(/[?!.,*()\\#$%^&]/g, '').trim().toLowerCase().replace(/\s\s+/g, ' ');
                     var divRoot = await Conversation.countDocuments({ keyWords: cleanText });
                     let answer = await Conversation.findOne({ keyWords: cleanText }).skip(RandomNumber++ % divRoot);
-                    let state = "Conversation";
+                    let state = "Advice-Done";
                      
                     if (answer) {                        
                         if (answer.isPersonal) {
@@ -304,9 +304,10 @@ module.exports = {
                             matchUser.currentEmotion = "answer.emotionId";
                             await matchUser.markModified('currentEmotion');
                             await matchUser.save();
-
-                            state = "Conversation-Analyze";
                         }
+
+                        if (!answer.done)
+                            state = "Advice"; //keep sending here we are not done
 
                         res.status(200).json({
                             response_type: state,
@@ -317,12 +318,15 @@ module.exports = {
                     }
                     else {
                         res.status(200).json({
-                            response_type: "Conversation-Error",
+                            response_type: "Advice",
                             content: "Im Sorry, My Bot Brain Cant Handel Your Question! Can you Rephrase It? (I am Still on Beta 😢)",
                             response_to: textFromUser
                         });
                     }
 
+                    break;
+                case "AnalyzeMyEmotion":
+                    
                     break;
                 default:
                     res.status(405).json({
