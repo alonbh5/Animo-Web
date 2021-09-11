@@ -8,7 +8,7 @@ import ActionProvider from './chatbot/ActionProvider';
 
 const EmotionalAnalysis = (props: any) => {
   return (
-    <PageLayout title={'Emotional Analysis'}>
+    <PageLayout title='Emotional Analysis'>
       <Chatbot
         config={config}
         messageParser={MessageParser}
