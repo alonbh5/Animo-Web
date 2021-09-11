@@ -6,9 +6,15 @@ import { User } from '../api/configuration/models/users';
 import { Role, RoleEnum } from '../api/configuration/models/role';
 import { avatarImage } from '../utils';
 import { AdminDropdown, PsychologistDropdown, GeneralDropdown } from './Dropdowns';
-const NavigationBar = (props: {isLoggedIn:boolean}) => {
+
+type NavigationBarProps = {
+  isLoggedIn: boolean;
+  alreadyDidQuiz?: boolean;
+}
+const NavigationBar = (props: NavigationBarProps) => {
   const navigateForLoggedIn = <>
-    <li><Link to="/personalquiz" style={{ color: 'blue' }}>Personal Quiz</Link></li>
+    {!props.alreadyDidQuiz &&
+     <li><Link to="/personalquiz" style={{ color: 'blue' }}>Personal Quiz</Link></li>}
     <li><Link to="/analyze">Emotional Analysis</Link></li>
   </>;
 
@@ -55,7 +61,10 @@ export const Navigation = (props: any) => {
             id='bs-example-navbar-collapse-1'
           >
             <ul className='nav navbar-nav navbar-right'>
-              <NavigationBar isLoggedIn={auth.isLoggedIn}/>
+              <NavigationBar
+                isLoggedIn={auth.isLoggedIn}
+                alreadyDidQuiz={user.personality && user.personality !== ''}
+              />
               {!auth.isLoggedIn
                 ? <li><Link to="/login">Login</Link></li>
                 : <li className={dropdownState ? 'open' : 'dropdown'}>
