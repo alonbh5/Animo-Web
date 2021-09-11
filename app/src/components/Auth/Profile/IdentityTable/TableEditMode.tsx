@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import validator from 'validator';
 import Input from '../../../../shared/FormElements/Input';
 import { User } from '../../../api/configuration/models/users';
-import { AuthContext } from '../../../../shared/context/auth-context';
+import AuthContext from '../../../../shared/context/auth-context';
 
 type TableEditModeProps = {
   onUpdate: (user: User) => void;

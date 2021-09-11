@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../../shared/context/auth-context';
+import AuthContext from '../../shared/context/auth-context';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AxiosRequestConfig } from 'axios';
 import validator from 'validator';

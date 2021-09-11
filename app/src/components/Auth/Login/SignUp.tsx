@@ -1,7 +1,7 @@
 /*eslint-disable*/
 
 import React, { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../../../shared/context/auth-context';
+import AuthContext from '../../../shared/context/auth-context';
 import { useHttpClient } from '../../../shared/hooks/http-hook';
 import { useRoles } from '../../../shared/hooks/roles-hook';
 import { AxiosRequestConfig } from 'axios';

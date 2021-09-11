@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import IdentityTable from './IdentityTable';
-import { AuthContext } from '../../../shared/context/auth-context';
+import AuthContext from '../../../shared/context/auth-context';
 
 const Profile = (props: any) => {
   const [isEditMode, setIsEditMode] = useState(false);

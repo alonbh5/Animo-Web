@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { AuthContext } from '../../../../shared/context/auth-context';
+import AuthContext from '../../../../shared/context/auth-context';
 import { User } from '../../../api/configuration/models/users';
 import { TableDisplayMode } from './TableDisplayMode';
 import { TableEditMode } from './TableEditMode';

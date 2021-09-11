@@ -1,26 +1,20 @@
 import React from 'react';
 // @ts-ignore
-
 import Chatbot from 'react-chatbot-kit';
-
+import PageLayout from '../../shared/FormElements//PageLayout';
 import config from '../chatbot/config';
 import MessageParser from '../chatbot/MessageParser';
 import ActionProvider from '../chatbot/ActionProvider';
 
 const EmotionalAnalysis = (props: any) => {
   return (
-    <div id="team" className="text-center">
-      <div className="container">
-        <div className="col-md-8 col-md-offset-2 section-title">
-          <h2>Emotional Analysis</h2>
-          <Chatbot
-            config={config}
-            messageParser={MessageParser}
-            actionProvider={ActionProvider}
-          />
-        </div>
-      </div>
-    </div>
+    <PageLayout title={'Emotional Analysis'}>
+      <Chatbot
+        config={config}
+        messageParser={MessageParser}
+        actionProvider={ActionProvider}
+      />
+    </PageLayout>
   );
 };
 export default EmotionalAnalysis;
