@@ -3,10 +3,10 @@
 import { AxiosRequestConfig } from "axios";
 import { useState } from "react";
 import validator from "validator";
-import Input from "../../shared/FormElements/Input";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
-import { Tip } from "../api/configuration/models/tip";
+import Input from "../../../shared/FormElements/Input";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import LoadingSpinner from "../../../shared/UIElements/LoadingSpinner";
+import { Tip } from "../../api/configuration/models/tip";
 
 
 const initialState = {
