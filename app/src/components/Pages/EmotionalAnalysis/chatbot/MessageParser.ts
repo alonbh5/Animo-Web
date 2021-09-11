@@ -29,6 +29,11 @@ class MessageParser {
       this.actionProvider.handlerAnalyzeMyEmotion(
         message, this.state.user.id, this.state.talkType);
     }
+
+    if (this.state.talkType === 'AnalyzeMyEmotion-Result') {
+      this.actionProvider.handlerAnalyzeMyEmotionResult(
+        message, this.state.user.id, this.state.talkType);
+    }
   }
 }
 
