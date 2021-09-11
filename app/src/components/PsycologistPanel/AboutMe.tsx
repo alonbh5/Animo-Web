@@ -86,7 +86,7 @@ const AboutMe = () => {
   };
 
   return (
-    <PageLayout title='About Me'>
+    <PageLayout title='About Me' cols={true}>
       <p>
             Here you can write information for general users to know you better.
         <br/>

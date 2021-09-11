@@ -11,15 +11,16 @@ export const AdminDropdown = (props:DropdownProps) => {
     props.onClickItem(false);
   };
 
-  return (<div className="dropdown-menu">
-    <li><Link to="/profile" onClick={_onClickItem}>Profile</Link></li>
-    <li><HashLink to="/messaging">Messanger</HashLink></li>
-    <li><Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link></li>
-    <li><Link to="/invitePsychologist" onClick={_onClickItem}>Invite Psycoligist</Link></li>
-    <li><Link to="/uploadTipsArticals" onClick={_onClickItem}>{'Upload Tips & Articals'}</Link></li>
-    <li><Link to="/confirmTips"onClick={_onClickItem}>{'Confirm Tips & Articals'}</Link></li>
-    <li><a onClick={() => props.Logout()}>Logout</a></li>
-  </div>
+  return (
+    <div className="dropdown-menu">
+      <li><Link to="/profile" onClick={_onClickItem}>Profile</Link></li>
+      <li><HashLink to="/messaging">Messanger</HashLink></li>
+      <li><Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link></li>
+      <li><Link to="/invitePsychologist" onClick={_onClickItem}>Invite Psycoligist</Link></li>
+      <li><Link to="/uploadTipsArticals" onClick={_onClickItem}>{'Upload Tips & Articals'}</Link></li>
+      <li><Link to="/confirmTips"onClick={_onClickItem}>{'Confirm Tips & Articals'}</Link></li>
+      <li><a onClick={() => props.Logout()}>Logout</a></li>
+    </div>
   );
 };
 
