@@ -110,18 +110,16 @@ class ActionProvider {
         }));
       }
     } else {
+      // change to general error?
       botAnswer = errorMessage.concat(' - in Advice');
     }
 
-    let botMessage = this.createChatBotMessage(botAnswer, {
+    const botMessage = this.createChatBotMessage(botAnswer, {
       withAvatar: true
     });
 
     this.setChatbotMessage(botMessage);
-
-    botMessage = this.createChatBotMessage('Do you want another advice?');
-    // delay
-    this.setChatbotMessage(botMessage);
+    this.actionProvider.setWidgetShowOptions();
   };
 
   handlerAnalyzeMyEmotion = async (
@@ -149,14 +147,11 @@ class ActionProvider {
     this.setChatbotMessage(botMessage);
   };
 
-  // fetach from DB
   getAnswerFromBot = async (params: AxiosRequestConfig) => {
     try {
       const result = await axios.request(params);
-      console.log(result.data);
       return result.data as botResponse;
     } catch (error) {
-      console.log(error.message);
       return undefined;
     }
   }
@@ -188,7 +183,7 @@ class ActionProvider {
   setTalkTypeAdvice = () => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
-      talkType: 'Conversation'
+      talkType: 'Advice'
     }));
 
     const botMessage = this.createChatBotMessage(
