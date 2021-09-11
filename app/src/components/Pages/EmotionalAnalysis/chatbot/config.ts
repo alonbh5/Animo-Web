@@ -1,5 +1,6 @@
 import { createChatBotMessage } from 'react-chatbot-kit';
 import { BotAvatar } from './BotAvatar';
+import { UserAvatar } from './UserAvatar';
 import { ShowOptions } from './showOptions';
 const botName = 'Animo';
 
@@ -14,7 +15,8 @@ const config = {
     talkType: undefined
   },
   customComponents: {
-    botAvatar: (props: any) => BotAvatar()
+    botAvatar: (props: any) => BotAvatar(),
+    userAvatar: (props: any) => UserAvatar()
   },
   customStyles: {
     botMessageBox: {
