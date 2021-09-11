@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthContext from '../../shared/context/auth-context';
-import Chat from '../Chat/Chat';
+import Chat from '../Pages/Chat/Chat';
 import { Header } from '../HomePage/Header';
 import { About } from '../HomePage/About';
 import { Team } from '../HomePage/Team';

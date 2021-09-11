@@ -6,7 +6,7 @@ import validator from 'validator';
 import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
 import Input from '../../shared/FormElements/Input';
 import { User } from '../api/configuration/models/users';
-import PageLayout from '../../shared/FormElements/PageLayout';
+import PageLayout from '../../shared/UIElements/PageLayout';
 
 const AboutMe = () => {
   const auth = useContext(AuthContext);

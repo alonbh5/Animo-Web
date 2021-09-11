@@ -1,14 +1,15 @@
 
 import React from 'react';
+
 type PageLayoutProps = {
     title: string;
     children: any;
-    cols?: boolean
+    classname?:string;
 }
 
 const PageLayout = (props:PageLayoutProps) => {
   return (
-    <div id="team" className="text-center">
+    <div id={props.classname ? undefined : 'page'} className={props.classname || 'text-center'}>
       <div className="container">
         <div className="section-title">
           <h2>{props.title}</h2>

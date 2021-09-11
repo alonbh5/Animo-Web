@@ -3,7 +3,7 @@ import IdentityTable from './IdentityTable';
 import MyNetwork from '../../MyNetwork/MyNetwork';
 import { User } from '../../api/configuration/models/users';
 import AuthContext from '../../../shared/context/auth-context';
-import PageLayout from '../../../shared/FormElements/PageLayout';
+import PageLayout from '../../../shared/UIElements/PageLayout';
 
 const SOS = (props: any) => {
   const auth = useContext(AuthContext);
