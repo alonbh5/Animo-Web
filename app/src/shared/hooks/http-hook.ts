@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useState, useCallback } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 
@@ -15,8 +14,8 @@ export const useHttpClient = () => {
       const result = await axios.request(params);
       setSuccess(result.data.message);
       return result.data;
-    } catch (error) {
-      setError(error?.response?.data?.message || "We have some internal issue, please try later");
+    } catch (error: any) {
+      setError(error?.response?.data?.message || 'We have some internal issue, please try later');
       throw error;
     } finally {
       setIsLoading(false);

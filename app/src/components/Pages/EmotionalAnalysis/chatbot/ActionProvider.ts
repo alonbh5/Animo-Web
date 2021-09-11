@@ -15,7 +15,6 @@ class ActionProvider {
   }
 
   setUserParameters = async (message: string) => {
-    // @ts-ignore
     const storedData = JSON.parse(localStorage.getItem('userData'));
 
     let botAnswer;
@@ -155,7 +154,7 @@ class ActionProvider {
       const result = await axios.request(params);
       console.log(result.data);
       return result.data as botResponse;
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
       return undefined;
     }
