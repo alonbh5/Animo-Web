@@ -40,7 +40,7 @@ const AuthrizationRouters = () => {
                 <Contact data={landingPageData.Contact} />
               </Route>
               <Route path='/chat' component={Chat}/>
-              <Route path='/tips' component={TipsAndArticles}/>
+              <Route path='/tips-and-articles' component={TipsAndArticles}/>
               <Route path='/sos' component={Sos}/>
               <Route path='/login' component={SignIn}/>
               <Route path='/signup' component={SignUp}/>
@@ -60,7 +60,7 @@ const AuthrizationRouters = () => {
               <Route path='/personalquiz' component={PersonalQuiz}/>
               <Route path='/chat' component={Chat}/>
               <Route path='/analyze' component={EmotionalAnalysis}/>
-              <Route path='/tips' component={TipsAndArticles}/>
+              <Route path='/tips-and-articles' component={TipsAndArticles}/>
               <Route path='/sos' component={Sos}/>
               <Route path='/profile' component={Profile}/>
               <Route path='/manageUsers' component={ManageUsers}/>
