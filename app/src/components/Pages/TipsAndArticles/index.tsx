@@ -11,10 +11,10 @@ import { AuthContext } from "../../../shared/context/auth-context";
 import { User } from "../../api/configuration/models/users";
 
 enum PageState {
-  Tips = "Tips",
-  Article = "Article",
-  AddTips = "AddTips",
-  AddArticles = "AddArticles",
+  Tips = 'Tips',
+  Article = 'Article',
+  AddTips = 'AddTips',
+  AddArticles = 'AddArticles',
 }
 
 //article interfaces
@@ -118,25 +118,6 @@ const TipsAndArticles = (props: any) => {
           >
             Tips
           </button>
-<<<<<<< HEAD:app/src/components/Pages/TipsAndArticles.tsx
-          {  validateRole()  && <><button
-            className="btn btn-primary"
-            style={{ width: "120px", marginLeft: "20px" }}
-            onClick={() => setType(PageState.AddArticles)}
-          >
-            Add article
-          </button>
-          <button
-            className="btn btn-primary"
-            style={{ width: "120px", marginLeft: "20px" }}
-            onClick={() => setType(PageState.AddTips)}
-          >
-            Add tip
-          </button></>}
-
-
-
-=======
           {validateRole() && (
             <>
               <button
@@ -155,7 +136,6 @@ const TipsAndArticles = (props: any) => {
               </button>
             </>
           )}
->>>>>>> eb14b691a4ac4daf277f1b2d567a480a8a74f66c:app/src/components/Pages/TipsAndArticles/index.tsx
 
           {showType === PageState.Article && (
             <div className="tiles">
@@ -163,15 +143,6 @@ const TipsAndArticles = (props: any) => {
                 // 'tips' from the usestate line(52) for each tip create a tip compenent and send it the title and the url
                 articlesArr.map((article: ArticleItem) => {
                   return (
-<<<<<<< HEAD:app/src/components/Pages/TipsAndArticles.tsx
-                    article.confirm &&
-                    <ArticleComponent
-                      text={article.title}
-                      url={article.link}
-                      author={article.author}
-                      img={article.img}
-                    />
-=======
                     article.confirm && (
                       <ArticleComponent
                         text={article.title}
@@ -180,7 +151,6 @@ const TipsAndArticles = (props: any) => {
                         img={article.img}
                       />
                     )
->>>>>>> eb14b691a4ac4daf277f1b2d567a480a8a74f66c:app/src/components/Pages/TipsAndArticles/index.tsx
                   );
                 })
               }
@@ -189,17 +159,6 @@ const TipsAndArticles = (props: any) => {
 
           {showType === PageState.Tips && (
             <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
-<<<<<<< HEAD:app/src/components/Pages/TipsAndArticles.tsx
-              {
-              tipsArr.map((tip: TipItem) => {
-                return (
-                  tip.confirm &&
-                
-                <TipComponent text={tip.title} content={tip.content} />
-              );
-              })
-            }
-=======
               {tipsArr.map((tip: TipItem) => {
                 return (
                   tip.confirm && (
@@ -207,7 +166,6 @@ const TipsAndArticles = (props: any) => {
                   )
                 );
               })}
->>>>>>> eb14b691a4ac4daf277f1b2d567a480a8a74f66c:app/src/components/Pages/TipsAndArticles/index.tsx
             </div>
           )}
 
