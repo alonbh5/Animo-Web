@@ -15,14 +15,22 @@ const SOS = (props: any) => {
   const auth = useContext(AuthContext);
   const user = auth.user as User;
   const [showType, setType] = useState(PageState.HelpCenter);
-  const content =
+  const explain =
+  <p>
+  Here you can see our psychologists users
+  that are availabe right now to help you.
+  </p>;
+  const contentGeneral =
     <p>
-    Here you can see our psychologists users
-    that are availabe right now to help you.
-      <br/>
     You can read the information about them
     and decide if you want to contact them
     by email or phone - what ever makes you more comfortable.
+    </p>;
+  const contentUsers =
+    <p>
+    You can read the information about them
+    and decide if you want to contact them
+    by direct message or phone - what ever makes you more comfortable.
     </p>;
 
   return (
@@ -41,20 +49,22 @@ const SOS = (props: any) => {
       >
             Psychologists
       </button>
-      {auth.isLoggedIn && user._id
-        ? <div id="team" className="text-center">
-          <h2>SOS</h2>
-          {content}
-          <HelpCenter />
+      {showType === PageState.HelpCenter && <HelpCenter />}
+      {auth.isLoggedIn && user._id && showType === PageState.Psychologists
+        ? (<>
+          <br/>
+          <br/>
+          {explain}
+          {contentUsers}
           <MyNetwork user={user}/>
-        </div>
+        </>)
         : <>
-          {showType === PageState.HelpCenter && <HelpCenter />}
           {showType === PageState.Psychologists && (
             <>
               <br/>
               <br/>
-              {content}
+              {explain}
+              {contentGeneral}
               <br/>
               <IdentityTable />
             </>)}
