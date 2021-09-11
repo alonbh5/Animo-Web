@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import validator from 'validator';
 import Input from '../../../../shared/FormElements/Input';
 import { User } from '../../../api/configuration/models/users';
-import { AuthContext } from '../../../../shared/context/auth-context';
+import AuthContext from '../../../../shared/context/auth-context';
 
 type TableEditModeProps = {
   onUpdate: (user: User) => void;
@@ -91,87 +91,88 @@ export const TableEditMode = (props: TableEditModeProps) => {
     }
   }, [password, confirmPassword]);
 
-  return (<tbody>
-    <tr>
-      <td>First Name</td>
-      <td>
-        <Input
-          className="tableInput"
-          type="text"
-          name="firstName"
-          value={firstName ?? ''}
-          onChange={handleChange}
-        />
-      </td>
-    </tr>
-    <tr>
-      <td>Last Name</td>
-      <td>
-        <Input
-          className="tableInput"
-          type="text"
-          name="lastName"
-          value={lastName ?? ''}
-          onChange={handleChange}
-        />
-      </td>
+  return (
+    <tbody>
+      <tr>
+        <td>First Name</td>
+        <td>
+          <Input
+            className="tableInput"
+            type="text"
+            name="firstName"
+            value={firstName ?? ''}
+            onChange={handleChange}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Last Name</td>
+        <td>
+          <Input
+            className="tableInput"
+            type="text"
+            name="lastName"
+            value={lastName ?? ''}
+            onChange={handleChange}
+          />
+        </td>
 
-    </tr>
-    <tr>
-      <td>Email Address</td>
-      <td>
-        <Input
-          className="tableInput"
-          type="email"
-          name="email"
-          value={email ?? ''}
-          onChange={handleChange}
-        />
-      </td>
-    </tr>
-    <tr>
-      <td>Password</td>
-      <td>
-        <Input
-          className="tableInput"
-          type="password"
-          name="password"
-          value={password ?? ''}
-          onChange={handleChange}
-        />
-      </td>
-    </tr>
-    <tr>
-      <td>Confirm Password</td>
-      <td>
-        <Input
-          className="tableInput"
-          type="password"
-          name="confirmPassword"
-          value={confirmPassword ?? ''}
-          onChange={handleChange}
-        />
-      </td>
-    </tr>
-    <tr>
-      <td>Age</td>
-      <td>
-        <input type="age"
-          className="tableInput"
-          placeholder="Enter age"
-          name="age" value={age}
-          onChange={handleChange} />
-      </td>
-    </tr>
-    <br></br>
-    <tr>
-      <button
-        type="submit"
-        disabled={!isFormValid()}
-        onClick={_onClickUpdate}
-        className="btn btn-primary btn-block">
+      </tr>
+      <tr>
+        <td>Email Address</td>
+        <td>
+          <Input
+            className="tableInput"
+            type="email"
+            name="email"
+            value={email ?? ''}
+            onChange={handleChange}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td>
+          <Input
+            className="tableInput"
+            type="password"
+            name="password"
+            value={password ?? ''}
+            onChange={handleChange}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Confirm Password</td>
+        <td>
+          <Input
+            className="tableInput"
+            type="password"
+            name="confirmPassword"
+            value={confirmPassword ?? ''}
+            onChange={handleChange}
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Age</td>
+        <td>
+          <input type="age"
+            className="tableInput"
+            placeholder="Enter age"
+            name="age" value={age}
+            onChange={handleChange} />
+        </td>
+      </tr>
+      <br></br>
+      <tr>
+        <button
+          type="submit"
+          disabled={!isFormValid()}
+          onClick={_onClickUpdate}
+          className="btn btn-primary btn-block">
         Save
-      </button>
-    </tr>
-  </tbody>);
+        </button>
+      </tr>
+    </tbody>);
 };

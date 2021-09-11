@@ -1,20 +1,20 @@
 /* eslint-disable */
 import React, { useContext, useState, useEffect } from "react";
 import { AxiosRequestConfig } from "axios";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import { Role, RoleEnum } from "../api/configuration/models/role";
-import { AddArticle } from "../TipsAndArticalsComponents/AddArticle";
-import { AddTip } from "../TipsAndArticalsComponents/AddTip";
-import { ArticleComponent } from "../TipsAndArticalsComponents/Articles";
-import { TipComponent } from "../TipsAndArticalsComponents/Tips";
-import { AuthContext } from "../../shared/context/auth-context";
-import { User } from "../api/configuration/models/users";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import { Role, RoleEnum } from "../../api/configuration/models/role";
+import { AddArticle } from "./AddArticle";
+import { AddTip } from "./AddTip";
+import { ArticleComponent } from "./Articles";
+import { TipComponent } from "./Tips";
+import { AuthContext } from "../../../shared/context/auth-context";
+import { User } from "../../api/configuration/models/users";
 
 enum PageState {
   Tips = "Tips",
   Article = "Article",
   AddTips = "AddTips",
-  AddArticles = "AddArticles"
+  AddArticles = "AddArticles",
 }
 
 //article interfaces
@@ -50,7 +50,7 @@ interface TipsResponse {
   data: TipItem[];
 }
 
-export const TipsAndArticles = (props: any) => {
+const TipsAndArticles = (props: any) => {
   // we send the sendRequest to the server
   const { sendRequest } = useHttpClient();
   // state: in tips we have the values from set tips, the useState function initialize the tips to an empty arr of ArticalItem interface.
@@ -118,6 +118,7 @@ export const TipsAndArticles = (props: any) => {
           >
             Tips
           </button>
+<<<<<<< HEAD:app/src/components/Pages/TipsAndArticles.tsx
           {  validateRole()  && <><button
             className="btn btn-primary"
             style={{ width: "120px", marginLeft: "20px" }}
@@ -135,6 +136,26 @@ export const TipsAndArticles = (props: any) => {
 
 
 
+=======
+          {validateRole() && (
+            <>
+              <button
+                className="btn btn-primary"
+                style={{ width: "120px", marginLeft: "20px" }}
+                onClick={() => setType(PageState.AddArticles)}
+              >
+                Add article
+              </button>
+              <button
+                className="btn btn-primary"
+                style={{ width: "120px", marginLeft: "20px" }}
+                onClick={() => setType(PageState.AddTips)}
+              >
+                Add tip
+              </button>
+            </>
+          )}
+>>>>>>> eb14b691a4ac4daf277f1b2d567a480a8a74f66c:app/src/components/Pages/TipsAndArticles/index.tsx
 
           {showType === PageState.Article && (
             <div className="tiles">
@@ -142,6 +163,7 @@ export const TipsAndArticles = (props: any) => {
                 // 'tips' from the usestate line(52) for each tip create a tip compenent and send it the title and the url
                 articlesArr.map((article: ArticleItem) => {
                   return (
+<<<<<<< HEAD:app/src/components/Pages/TipsAndArticles.tsx
                     article.confirm &&
                     <ArticleComponent
                       text={article.title}
@@ -149,6 +171,16 @@ export const TipsAndArticles = (props: any) => {
                       author={article.author}
                       img={article.img}
                     />
+=======
+                    article.confirm && (
+                      <ArticleComponent
+                        text={article.title}
+                        url={article.link}
+                        author={article.author}
+                        img={article.img}
+                      />
+                    )
+>>>>>>> eb14b691a4ac4daf277f1b2d567a480a8a74f66c:app/src/components/Pages/TipsAndArticles/index.tsx
                   );
                 })
               }
@@ -157,6 +189,7 @@ export const TipsAndArticles = (props: any) => {
 
           {showType === PageState.Tips && (
             <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
+<<<<<<< HEAD:app/src/components/Pages/TipsAndArticles.tsx
               {
               tipsArr.map((tip: TipItem) => {
                 return (
@@ -166,6 +199,15 @@ export const TipsAndArticles = (props: any) => {
               );
               })
             }
+=======
+              {tipsArr.map((tip: TipItem) => {
+                return (
+                  tip.confirm && (
+                    <TipComponent text={tip.title} content={tip.content} />
+                  )
+                );
+              })}
+>>>>>>> eb14b691a4ac4daf277f1b2d567a480a8a74f66c:app/src/components/Pages/TipsAndArticles/index.tsx
             </div>
           )}
 
@@ -177,3 +219,4 @@ export const TipsAndArticles = (props: any) => {
     </div>
   );
 };
+export default TipsAndArticles;

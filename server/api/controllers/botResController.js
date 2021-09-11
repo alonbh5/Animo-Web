@@ -5,6 +5,9 @@ const User = require('../schemes/userSchema');
 const HttpError = require('../models/http-error');
 const AnswersFromUsers = require('../schemes/answersSchema');
 const BotPresonalQuestions = require('../schemes/presonalQuestionSchema');
+const Conversation = require('../schemes/conversationSchema');
+
+var RandomNumber = 0;
 
 const InitGetToKnow = async (matchUser, textFromUser, res) => {
     //save new log of system user in table DB (object from mongoose is AnswersFromUsers)
@@ -12,7 +15,6 @@ const InitGetToKnow = async (matchUser, textFromUser, res) => {
 
     let allQuestion = await BotPresonalQuestions.find();
 
-    console.log(allQuestion);
     const ans = new AnswersFromUsers({
         _id: new mongoose.Types.ObjectId(),
         userId: String(matchUser._id),
@@ -40,26 +42,32 @@ const KeepGetToKnow = async (AnswersObjFromUser, matchUser, textFromUser, res) =
     let arrayLength = AnswersObjFromUser.answers.length; //this does not work
 
     if (currentUserIndex >= arrayLength) {
+        if (currentUserIndex = arrayLength) {
+            AnswersObjFromUser.answers[currentUserIndex - 1].useranswer = textFromUser; //save answer           
+            await AnswersObjFromUser.markModified("answers");
+            await AnswersObjFromUser.save();
+        }
+
         matchUser.getToKnowState = "Done"
         await matchUser.markModified('getToKnowState');
         await matchUser.save();
         res.status(200).json({
             response_type: "GetToKnow-Done", //mean for UI to STOP sending answers from user from now on
-            content: "Ok! That All I Wanted To know :)",
+            content: "Ok! That's All I Wanted To know :)",
             response_to: textFromUser
         });
 
     }
     else {
-        if (currentUserIndex != 0) {            
-            AnswersObjFromUser.answers[currentUserIndex].useranswer = textFromUser; //save answer           
+        if (currentUserIndex != 0) {
+            AnswersObjFromUser.answers[currentUserIndex - 1].useranswer = textFromUser; //save answer           
             await AnswersObjFromUser.markModified("answers");
 
         }
         let BotText = questionsArray[currentUserIndex].question;
-        
+
         AnswersObjFromUser.questionindex = parseInt(currentUserIndex) + 1;
-        
+
         await AnswersObjFromUser.markModified("questionindex");
         await AnswersObjFromUser.save();
 
@@ -253,13 +261,12 @@ module.exports = {
                                 let ansObj = await AnswersFromUsers.findOne({ userId: matchUser._id });
                                 KeepGetToKnow(ansObj, matchUser, textFromUser, res);
                             } catch (err) {
-                                res.status(404).json({ message: "Could Not Find Answers From This User - try agian" })
+                                res.status(404).json({ message: "Could Not Find Answers From This User - try again" })
                             }
 
-
                             break;
-                        case "Done": // start a new session with him
-                            res.status(204).json({
+                        case "Done":
+                            res.status(200).json({
                                 massage: `You already Know The User ${matchUser.first_name}`
                             })
                             break;
@@ -267,8 +274,43 @@ module.exports = {
                     }
 
                     break;
-                case "dsa":
-                    // code block
+                case "Conversation":
+                    let cleanText = textFromUser.replace(/[?!.,*()\\#$%^&]/g, '').trim().toLowerCase().replace(/\s\s+/g, ' ');
+                    var divRoot = await Conversation.countDocuments({ keyWords: cleanText });
+                    let answer = await Conversation.findOne({ keyWords: cleanText }).skip(RandomNumber++ % divRoot); 
+                    if (answer) {                        
+                        if (answer.isPersonal) {
+                            let allAnswers = await AnswersFromUsers.findOne({ userId: matchUser._id });
+                            let HowManyToFill = answer.indexInQuestion.length;
+
+                            for (let index = 0; index < HowManyToFill; index++) {
+                                let nextToReplace = "{" + String(index) + "}";
+                                let replacement = allAnswers.answers[answer.indexInQuestion[index]].useranswer;
+                                replacement = replacement.toLowerCase()
+                                                        .split(' ')
+                                                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                                                        .join(' ');                                
+                                answer.question = answer.question.replace(nextToReplace,replacement);
+                            }
+
+                            //TODO now you need some how to continue
+                        }
+
+                        res.status(200).json({
+                            response_type: "Conversation",
+                            content: answer.question,
+                            response_to: textFromUser
+                        });
+
+                    }
+                    else {
+                        res.status(200).json({
+                            response_type: "Conversation",
+                            content: "I am Sorry, My Bot Brain Can't Handel Your Question! Can you Rephrase It? (I am Still on Beta 😢)",
+                            response_to: textFromUser
+                        });
+                    }
+
                     break;
                 default:
                     res.status(405).json({

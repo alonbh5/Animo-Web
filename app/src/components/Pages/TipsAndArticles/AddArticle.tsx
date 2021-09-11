@@ -4,12 +4,12 @@ import { AxiosRequestConfig } from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import validator from "validator";
-import Input from "../../shared/FormElements/Input";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
-import { Article } from "../api/configuration/models/article";
-import { ArticleComponent } from "../TipsAndArticalsComponents/Articles";
-import { TipComponent } from "../TipsAndArticalsComponents/Tips";
+import Input from "../../../shared/FormElements/Input";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import LoadingSpinner from "../../../shared/UIElements/LoadingSpinner";
+import { Article } from "../../api/configuration/models/article";
+import { ArticleComponent } from "./Articles";
+import { TipComponent } from "./Tips";
 
 const initialState = {
   url: "",

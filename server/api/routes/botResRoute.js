@@ -12,7 +12,7 @@ const {
 
 
 router.get('/', getAllBotRes);
-router.get('/talk', talkToBot);
+router.post('/talk', talkToBot);
 router.post('/', createBotRes);
 router.get('/:botResId', getBotRes);
 router.patch('/:botResId', updateBotRes);

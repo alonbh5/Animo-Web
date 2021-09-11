@@ -2,14 +2,15 @@ const User = require('../schemes/userSchema');
 const Token = require('../schemes/token');
 const PersQuiz = require('../schemes/persQuiz');
 
-const clientURL = 'http://localhost:3001'
 const mongoose = require('mongoose');
 const { connect } = require('mongodb');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require("crypto");
 const HttpError = require('../models/http-error');
+const { validate } = require('../schemes/userSchema');
 const adminRole = 1;
+const psycRole = 2;
 const generalRole = 3;
 
 
@@ -34,7 +35,6 @@ const CalculatePersType = (personalQuiz) => {
 
 
         if (isNaN(num)) {
-            console.log("idiot");
             throw new Error();
         }
 
@@ -125,6 +125,7 @@ module.exports = {
             password,
             age,
             gender,
+            imageUrl,
         } = req.body;
 
         let hashPassword;
@@ -149,7 +150,8 @@ module.exports = {
                 password: hashPassword,
                 age,
                 gender,
-                confirm
+                confirm,
+                imageUrl
             });
 
             await createUser.save();
@@ -242,8 +244,8 @@ module.exports = {
             });
             await newResetToken.save();
 
-            const resetLink = `${clientURL}/resetPassword?token=${resetToken}&userId=${matchUser._id}`;
-            res.status(200).send({ message: 'We`ve sent password reset instructions to your mailbox', resetLink: resetLink });
+            const suffixResetLink = `/resetPassword?token=${resetToken}&userId=${matchUser._id}`;
+            res.status(200).send({ message: 'We`ve sent password reset instructions to your mailbox', resetLink: suffixResetLink });
             return;
         } catch (error) {
             return next(new HttpError('Something went wrong! please try later', 500));
@@ -330,7 +332,7 @@ module.exports = {
             return next(new HttpError('Invalid Password, could not log you in.', 401));
         }
 
-        if(!existingUser.confirm) {
+        if (!existingUser.confirm) {
             return res.status(202).json({
                 message: `We are still confirming your profile, please try later`,
                 data: {
@@ -369,14 +371,66 @@ module.exports = {
         });
     },
 
-    updateUser: async (req, res, next) => {
+    updateUserByAdmin: async (req, res, next) => {
         const userId = req.params.userId;
 
-        if (userId !== req.userData.userId && req.userData.roleId !== adminRole) {
+        if (req.userData.roleId !== adminRole || userId === req.userData.userId) {
             return next(new HttpError('You are not allowed to update this user', 401));
         }
 
-        const { role_id,
+        const {
+            role_id,
+            first_name,
+            last_name,
+            email,
+            age,
+            gender
+        } = req.body;
+
+        try {
+            const matchUser = await User.findById(userId);
+
+            if (matchUser.email !== email) {
+                const isExisting = await User.findOne({ email: email });
+                if (isExisting) {
+                    return next(new HttpError(`User with email: ${email} already exists`, 400));
+                }
+            }
+
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        first_name: first_name || matchUser.first_name,
+                        last_name: last_name || matchUser.last_name,
+                        email: email || matchUser.email,
+                        age: age || matchUser.age,
+                        gender: gender || matchUser.gender,
+                        role_id: role_id || matchUser.role_id,
+                    }
+                },
+            );
+
+            res.status(200).send({
+                message: `Update User successfuly!`,
+                data: {
+                    userId: userId,
+                    email: email,
+                }
+            });
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    },
+
+    updateUser: async (req, res, next) => {
+        const userId = req.params.userId;
+
+        if (userId !== req.userData.userId) {
+            return next(new HttpError('You are not allowed to update this user', 401));
+        }
+
+        const {
             first_name,
             last_name,
             email,
@@ -402,12 +456,10 @@ module.exports = {
                         last_name: last_name || matchUser.last_name,
                         email: email || matchUser.email,
                         age: age || matchUser.age,
-                        gender: gender || matchUser.gender,
-                        role_id: role_id || matchUser.role_id,
+                        gender: gender || matchUser.gender
                     }
                 },
             );
-
             if (matchUser.password !== password && password) {
                 const hash = await bcrypt.hash(password, 12);
                 await User.updateOne(
@@ -497,10 +549,6 @@ module.exports = {
 
     addQuiz: (req, res) => {
         const userId = req.params.userId;
-
-        //console.log(userId);
-
-        //console.log(req.body.persQuiz);
 
         res.status(200).json({
             message: `update user - ${userId}`
@@ -660,5 +708,52 @@ module.exports = {
         } catch (err) {
             return next(new HttpError('An Unknown Error, please try later.', 500));
         }
-    }
+    },
+
+    getPsycUsers: async (req, res, next) => {
+        try {
+            const psycUsers = await User.find({
+                role_id: psycRole, phone: {$ne: undefined}, aboutMe: {$ne: undefined}
+            });
+            return res.status(200).json({ message: `Found ${psycUsers.length} Users`, data: { psycUsers } })
+        } catch (err) {
+            return next(new HttpError('An Unknown Error, please try later.', 500));
+        }
+    },
+
+    updateUserAboutMe: async (req, res, next) => {
+        const userId = req.params.userId;
+
+        if (req.userData.roleId !== psycRole || userId !== req.userData.userId) {
+            return next(new HttpError('You are not allowed to update this user', 401));
+        }
+
+        const {
+            phone,
+            aboutMe
+        } = req.body;
+
+        try {
+            const matchUser = await User.findById(userId);
+
+            await User.updateOne(
+                { _id: userId },
+                {
+                    $set: {
+                        aboutMe: aboutMe || matchUser.aboutMe,
+                        phone: phone || matchUser.phone,
+                    }
+                },
+            );
+
+            res.status(200).send({
+                message: `Update User successfuly!`,
+                data: {
+                    userId: userId,
+                }
+            });
+        } catch {
+            return next(new HttpError('Something went wrong! please try later', 500));
+        }
+    }    
 }
