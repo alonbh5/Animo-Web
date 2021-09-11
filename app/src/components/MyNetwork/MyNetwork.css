@@ -1,7 +1,6 @@
 .users {
     padding: 50px 0;
     display: flex;
-    width: 55%;
     margin: 0 auto;
     justify-content: space-around;
   }
