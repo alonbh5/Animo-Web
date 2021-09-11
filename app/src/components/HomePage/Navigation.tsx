@@ -43,10 +43,12 @@ export const Navigation = (props: any) => {
       <nav id='menu' className='navbar navbar-default navbar-fixed-top'>
         <div className='container'>
           <div className='navbar-header'>
-            <img src='img/icons/animo-icon.jpg' height="50px" alt='' />
-            <a className='navbar-brand page-scroll' href='#page-top'>
+            <Link to="/home-page">
+              <img src='img/icons/animo-icon.jpg' height="50px" alt='' />
+              <a className='navbar-brand page-scroll'>
               Animo
-            </a>
+              </a>
+            </Link>
           </div>
           <div
             className='collapse navbar-collapse'
