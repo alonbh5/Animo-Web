@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../../shared/context/auth-context';
+import AuthContext from '../../shared/context/auth-context';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AxiosRequestConfig } from 'axios';
-import validator from 'validator';
-import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
-import Input from '../../shared/FormElements/Input';
 import { User } from '../api/configuration/models/users';
+import validator from 'validator';
+import Status from '../../shared/UIElements/Status';
+import Input from '../../shared/FormElements/Input';
+import PageLayout from '../../shared/UIElements/PageLayout';
 
 const AboutMe = () => {
   const auth = useContext(AuthContext);
@@ -71,6 +72,7 @@ const AboutMe = () => {
         Authorization: 'Bearer ' + auth.token
       }
     };
+
     try {
       const response = await sendRequest(params);
       if (response.data.status === 'login') {
@@ -78,67 +80,60 @@ const AboutMe = () => {
       } else {
         setDisabled(true);
       }
-    } catch (err) {
+    } catch (err:any) {
       setErrorMsg(err.message);
     }
   };
 
   return (
-    <div id='team' className='text-center'>
-      <div className='container'>
-        <div className='col-md-8 col-md-offset-2 section-title'>
-          <h2>About Me</h2>
-          <p>
+    <PageLayout title='About Me' cols={true}>
+      <p>
             Here you can write information for general users to know you better.
-            <br/>
+        <br/>
             They can see this information
             as long as you are connected to the app.
-          </p>
-          <h5 style={{ color: 'red' }}>{errorMsg}</h5>
-          <div>
-            <form onSubmit={handleSubmit}>
-              {isLoading && <LoadingSpinner asOverlay />}
-              {error && <h5 style={{ color: 'red' }}>{error}</h5>}
-              {success && <h5 style={{ color: 'blue' }}>{success}</h5>}
-              <div className="form-group">
-                <Input
-                  className="form-control"
-                  disabled={disabled}
-                  required={true}
-                  type="phone"
-                  name="phone"
-                  label="Phone Number"
-                  placeholder="Enter Phone Number"
-                  value={phone}
-                  onChange={handlePhone} />
-              </div>
-              <div className="error-msg">{errorPhone}</div>
-
-              <div className="form-group">
-                <label htmlFor="aboutMe">About Me</label>
-                <textarea
-                  style={{ height: '100px' }}
-                  className="form-control"
-                  required={true}
-                  name="aboutMe"
-                  placeholder="Write 50 words about yourself"
-                  value={aboutMe}
-                  onChange={handleAboutMe}
-                />
-              </div>
-
-              <div className="error-msg">{errorAboutMe}</div>
-              <button
-                type="submit"
-                disabled={!isFormValid() || disabled}
-                className="btn btn-primary btn-block">
-                  Send
-              </button>
-            </form>
+      </p>
+      <h5 style={{ color: 'red' }}>{errorMsg}</h5>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <Status isLoading={isLoading} error={error} success={success} />
+          <div className="form-group">
+            <Input
+              className="form-control"
+              disabled={disabled}
+              required={true}
+              type="phone"
+              name="phone"
+              label="Phone Number"
+              placeholder="Enter Phone Number"
+              value={phone}
+              onChange={handlePhone} />
           </div>
-        </div>
+          <div className="error-msg">{errorPhone}</div>
+
+          <div className="form-group">
+            <label htmlFor="aboutMe">About Me</label>
+            <textarea
+              style={{ height: '100px' }}
+              className="form-control"
+              required={true}
+              name="aboutMe"
+              placeholder="Write 50 words about yourself"
+              value={aboutMe}
+              onChange={handleAboutMe}
+            />
+          </div>
+
+          <div className="error-msg">{errorAboutMe}</div>
+          <button
+            type="submit"
+            disabled={!isFormValid() || disabled}
+            className="btn btn-primary btn-block">
+                  Send
+          </button>
+        </form>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 export default AboutMe;

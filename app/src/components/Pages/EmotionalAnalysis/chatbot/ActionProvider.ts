@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { botResponse } from '../api/configuration/models/botRes';
+import { botResponse } from '../../../api/configuration/models/botRes';
 
 const errorMessage = 'Sorry we have some issue right now, please try later';
 
@@ -15,7 +15,6 @@ class ActionProvider {
   }
 
   setUserParameters = async (message: string) => {
-    // @ts-ignore
     const storedData = JSON.parse(localStorage.getItem('userData'));
 
     let botAnswer;
@@ -155,7 +154,7 @@ class ActionProvider {
       const result = await axios.request(params);
       console.log(result.data);
       return result.data as botResponse;
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
       return undefined;
     }
