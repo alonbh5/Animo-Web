@@ -150,9 +150,10 @@ const KeepAnalyze = async (curAnalzyeAnswersObj, matchUser, textFromUser, res) =
     
             matchUser.analyzeState = "Done"
             await matchUser.markModified('analyzeState');
-            await matchUser.save();
+            await matchUser.save();            
+
             res.status(200).json({
-                response_type: "AnalyzeMyEmotion-Done", //mean for UI to STOP sending answers from user from now on
+                response_type: "AnalyzeMyEmotion-Done",
                 content: "Ok! I Think I Know What You are Feeling!",
                 response_to: textFromUser
             });
@@ -403,16 +404,7 @@ module.exports = {
                                                         .join(' ');                                
                                 answer.question = answer.question.replace(nextToReplace,replacement);
                             }                            
-                        }
-
-                        let curEmotion = await Emotion.findById(answer.emotionId);
-
-                        if (curEmotion) {
-                            
-                            matchUser.currentEmotion = "answer.emotionId";
-                            await matchUser.markModified('currentEmotion');
-                            await matchUser.save();
-                        }
+                        }                       
 
                         if (!answer.done)
                             state = "Advice"; //keep sending here we are not done
@@ -462,7 +454,7 @@ module.exports = {
                 case "GiveMeAnswer":
 
                     res.status(200).json({
-                        response_type: "AnalyzeMyEmotion-InProgress", //mean for UI to keep sending answer from user from now on
+                        response_type: "GiveMeAnswer", //mean for UI to keep sending answer from user from now on
                         content: "You Are Idiot!",
                         response_to: textFromUser
                     })
