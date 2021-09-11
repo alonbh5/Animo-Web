@@ -15,7 +15,7 @@ export const useHttpClient = () => {
       const result = await axios.request(params);
       setSuccess(result.data.message);
       return result.data;
-    } catch (error) {
+    } catch (error: any) {
       setError(error?.response?.data?.message || "We have some internal issue, please try later");
       throw error;
     } finally {

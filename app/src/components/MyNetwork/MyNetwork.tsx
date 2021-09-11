@@ -80,9 +80,7 @@ class MyNetwork extends Component<{user:User},
 
          /* Create a talk session if this does not exist.
         Remember to replace tthe APP ID with the one on your dashboard */
-         // @ts-ignore
          if (!window.talkSession) {
-           // @ts-ignore
            window.talkSession = new Talk.Session({
              appId: 't3gBxwEd',
              me: me
@@ -92,7 +90,6 @@ class MyNetwork extends Component<{user:User},
          /* Get a conversation ID or create one */
          const conversationId = Talk.oneOnOneId(me, other);
          const conversation =
-         // @ts-ignore
          window.talkSession.getOrCreateConversation(conversationId);
 
          /* Set participants of the conversations */
@@ -100,9 +97,7 @@ class MyNetwork extends Component<{user:User},
          conversation.setParticipant(other);
 
          /* Create and mount chatbox in container */
-         // @ts-ignore
          this.chatbox = window.talkSession.createChatbox(conversation);
-         // @ts-ignore
          this.chatbox.mount(this.container);
        })
        .catch(e => console.error(e));
@@ -157,7 +152,6 @@ class MyNetwork extends Component<{user:User},
            </ul>
 
            <div className="chatbox-container" ref={c => {
-             // @ts-ignore
              this.container = c;
            }}>
              <div id="talkjs-container" style={{ height: '300px' }}><i></i></div>

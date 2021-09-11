@@ -3,6 +3,7 @@ import './Chat.css';
 
 const TheirMessage = (props: any) => {
     const  { lastMessage, message } = props;
+    
   const isFirstMessageByUser =
   !lastMessage ||
    lastMessage.sender.username !== message.sender.username;

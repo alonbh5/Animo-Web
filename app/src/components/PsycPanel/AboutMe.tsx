@@ -2,10 +2,10 @@ import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../shared/context/auth-context';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AxiosRequestConfig } from 'axios';
-import validator from 'validator';
-import LoadingSpinner from '../../shared/UIElements/LoadingSpinner';
-import Input from '../../shared/FormElements/Input';
 import { User } from '../api/configuration/models/users';
+import validator from 'validator';
+import Status from '../../shared/UIElements/Status';
+import Input from '../../shared/FormElements/Input';
 import PageLayout from '../../shared/UIElements/PageLayout';
 
 const AboutMe = () => {
@@ -72,6 +72,7 @@ const AboutMe = () => {
         Authorization: 'Bearer ' + auth.token
       }
     };
+
     try {
       const response = await sendRequest(params);
       if (response.data.status === 'login') {
@@ -79,13 +80,12 @@ const AboutMe = () => {
       } else {
         setDisabled(true);
       }
-    } catch (err) {
+    } catch (err:any) {
       setErrorMsg(err.message);
     }
   };
 
   return (
-
     <PageLayout title='About Me'>
       <p>
             Here you can write information for general users to know you better.
@@ -96,9 +96,7 @@ const AboutMe = () => {
       <h5 style={{ color: 'red' }}>{errorMsg}</h5>
       <div>
         <form onSubmit={handleSubmit}>
-          {isLoading && <LoadingSpinner asOverlay />}
-          {error && <h5 style={{ color: 'red' }}>{error}</h5>}
-          {success && <h5 style={{ color: 'blue' }}>{success}</h5>}
+          <Status isLoading={isLoading} error={error} success={success} />
           <div className="form-group">
             <Input
               className="form-control"
