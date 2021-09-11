@@ -7,8 +7,8 @@ import { AddArticle } from "./AddArticle";
 import { AddTip } from "./AddTip";
 import { ArticleComponent } from "./Articles";
 import { TipComponent } from "./Tips";
-import { AuthContext } from "../../../shared/context/auth-context";
-import { User } from "../../api/configuration/models/users";
+import AuthContext from "../../../shared/context/auth-context";
+import { User} from "../../api/configuration/models/users";
 
 enum PageState {
   Tips = "Tips",

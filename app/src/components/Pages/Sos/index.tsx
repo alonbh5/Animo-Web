@@ -1,13 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import IdentityTable from './IdentityTable';
 import MyNetwork from '../../MyNetwork/MyNetwork';
 import { User } from '../../api/configuration/models/users';
 import AuthContext from '../../../shared/context/auth-context';
 import PageLayout from '../../../shared/UIElements/PageLayout';
+import HelpCenter from './HelpCenters';
+
+const PageState = {
+  HelpCenter: 'HelpCenter',
+  Psychologists: 'Psychologists'
+};
 
 const SOS = (props: any) => {
   const auth = useContext(AuthContext);
   const user = auth.user as User;
+  const [showType, setType] = useState(PageState.HelpCenter);
   const content =
     <p>
     Here you can see our psychologists users
@@ -19,19 +26,40 @@ const SOS = (props: any) => {
     </p>;
 
   return (
-    <>
+    <PageLayout cols={true} title='SOS'>
+      <button
+        className="btn btn-primary"
+        style={{ width: '120px' }}
+        onClick={() => setType(PageState.HelpCenter)}
+      >
+            Help Centers
+      </button>
+      <button
+        className="btn btn-primary"
+        style={{ width: '120px', marginLeft: '20px' }}
+        onClick={() => setType(PageState.Psychologists)}
+      >
+            Psychologists
+      </button>
       {auth.isLoggedIn && user._id
         ? <div id="team" className="text-center">
           <h2>SOS</h2>
           {content}
+          <HelpCenter />
           <MyNetwork user={user}/>
         </div>
-        : <PageLayout title='SOS'>
-          {content}
-          <IdentityTable />
-        </PageLayout>
-      }
-    </>
+        : <>
+          {showType === PageState.HelpCenter && <HelpCenter />}
+          {showType === PageState.Psychologists && (
+            <>
+              <br/>
+              <br/>
+              {content}
+              <br/>
+              <IdentityTable />
+            </>)}
+        </> }
+    </PageLayout>
   );
 };
 
