@@ -11,7 +11,7 @@ type userChat = Talk.UserOptions & {
     phoneNumber?: string;
 }
 
-class MyNetwork extends Component<{user:User},
+class MyNetwork extends Component<{user:User, isOpen: boolean},
  {currentUser: userChat, allPsycologist?:userChat[]}> {
   constructor (props: any) {
     super(props);
@@ -27,7 +27,8 @@ class MyNetwork extends Component<{user:User},
     this.fetchUsers();
 
     this.state = {
-      currentUser
+      currentUser,
+      isOpen: false
     };
   }
 
@@ -68,6 +69,7 @@ class MyNetwork extends Component<{user:User},
 
    handleClick (userId:any) {
      /* Retrieve the two users that will participate in the conversation */
+     this.setState({ isOpen: true });
      const { currentUser, allPsycologist } = this.state;
      const user = allPsycologist?.find((user: userChat, index:number) => user.id === userId);
      console.log(userId);
@@ -104,7 +106,7 @@ class MyNetwork extends Component<{user:User},
    }
 
    render () {
-     const { currentUser, allPsycologist } = this.state;
+     const { currentUser, allPsycologist, isOpen } = this.state;
 
      return (
        <div className="users">
@@ -151,11 +153,11 @@ class MyNetwork extends Component<{user:User},
              )}
            </ul>
 
-           <div className="chatbox-container" ref={c => {
+           {isOpen && <div className="chatbox-container" ref={c => {
              this.container = c;
            }}>
              <div id="talkjs-container" style={{ height: '300px' }}><i></i></div>
-           </div>
+           </div>}
          </div>
        </div>
      );
