@@ -407,7 +407,7 @@ module.exports = {
                         }                       
 
                         if (!answer.done)
-                            state = "Advice"; //keep sending here we are not done
+                            state = "Advice"; 
 
                         res.status(200).json({
                             response_type: state,
