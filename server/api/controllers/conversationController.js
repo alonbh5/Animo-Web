@@ -25,7 +25,8 @@ module.exports = {
             question,            
             keyWords,
             isPersonal,
-            indexInQuestion
+            indexInQuestion,
+            emotionId
         });
 
         for (let index = 0; index < keyWords.length; index++) {
