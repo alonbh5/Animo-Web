@@ -9,7 +9,6 @@ import { Contact } from '../HomePage/Contact';
 import { User } from '../api/configuration/models/users';
 import JsonData from '../../data/data.json';
 import { Role, RoleEnum } from '../api/configuration/models/role';
-import { User } from '../api/configuration/models/users';
 import Chat from '../Pages/Chat/Chat';
 
 /* eslint-disable max-len */
@@ -38,7 +37,7 @@ const AuthrizationRouters = () => {
   const validateRole = () => {
     return role.role_type === RoleEnum.Admin;
   };
-  
+
   if (!auth.isLoggedIn) {
     routers =
             <Switch>

@@ -18,7 +18,8 @@ export const AdminDropdown = (props:DropdownProps) => {
       <li><Link to="/manageUsers" onClick={_onClickItem}>Manage Users</Link></li>
       <li><Link to="/invitePsychologist" onClick={_onClickItem}>Invite Psycoligist</Link></li>
       <li><Link to="/uploadTipsArticals" onClick={_onClickItem}>{'Upload Tips & Articals'}</Link></li>
-      <li><Link to="/ConfirmTipsAndArticles"onClick={_onClickItem}>{'Confirm Tips & Articals'}</Link></li>
+      <li><Link to="/ConfirmTipsAndArticles"onClick={_onClickItem}>{'Confirm Tips & Articals'}
+      </Link></li>
       <li><a onClick={() => props.Logout()}>Logout</a></li>
     </div>
   );

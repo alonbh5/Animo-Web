@@ -2,27 +2,10 @@
 import { AxiosRequestConfig } from "axios";
 import { useHttpClient } from "../../../shared/hooks/http-hook";
 import React, { useState, useEffect } from "react";
-import { ArticleComponent } from "../../Pages/TipsAndArticles/Articles";
-import { TipComponent } from "../../Pages/TipsAndArticles/Tips";
+import { ArticleItem } from "../../Pages/TipsAndArticles/Article";
+import { TipItem } from "../../Pages/TipsAndArticles/Tip";
 import PageLayout from "../../../shared/UIElements/PageLayout";
 import {ConfirmArticleRow} from './ConfirmArticleRow';
-interface ArticleItem {
-  confirm: boolean;
-  _id: string;
-  data_type: string;
-  link: string;
-  author: string;
-  title: string;
-  img: string;
-}
-
-interface TipItem {
-  confirm: boolean;
-  _id: string;
-  data_type: string;
-  content: string;
-  title: string;
-}
 
 const ConfirmTipsAndArticles = () => {
   const { sendRequest } = useHttpClient();
@@ -87,23 +70,7 @@ const ConfirmTipsAndArticles = () => {
 
         </tbody>
        </table>
-       {/*<div className="tiles">
-      //   {
-      //     // 'tips' from the usestate line(52) for each tip create a tip compenent and send it the title and the url
-      //     articlesArr.map((article: ArticleItem) => {
-      //       return (
-      //         !article.confirm && (
-      //           <ArticleComponent
-      //             text={article.title}
-      //             url={article.link}
-      //             author={article.author}
-      //             img={article.img}
-      //           />
-      //         )
-      //       );
-      //     })
-      //   }
-      // </div>
+       {
       // <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
       //   {tipsArr.map((tip: TipItem) => {
       //     return (
