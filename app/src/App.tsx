@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import SmoothScroll from 'smooth-scroll';
 import { Navigation } from './components/HomePage/Navigation';
-import { AuthContext } from './shared/context/auth-context';
+import AuthContext from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 import AuthrizationRouters from './components/Auth';
 import { ModalProvider } from 'react-simple-hook-modal';

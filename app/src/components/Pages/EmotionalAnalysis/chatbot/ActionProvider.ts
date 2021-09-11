@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { botResponse } from '../api/configuration/models/botRes';
+import { botResponse } from '../../../api/configuration/models/botRes';
 
 const errorMessage = 'Sorry we have some issue right now, please try later';
 

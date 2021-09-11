@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import axios from 'axios';
-import { User } from '../api/configuration/models/users';
-import { AuthContext } from '../../shared/context/auth-context';
+import { User } from '../../api/configuration/models/users';
+import AuthContext from '../../../shared/context/auth-context';
 
 const projectID = '69cc354e-1763-4e7c-ac5b-8d3ec209e09e';
 const privateKey = 'e41f8273-96dc-4034-8242-feee63ed67cb';

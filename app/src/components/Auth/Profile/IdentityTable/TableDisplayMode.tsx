@@ -2,7 +2,7 @@
 import { useContext } from 'react';
 import { User } from '../../../api/configuration/models/users';
 import { Role } from '../../../api/configuration/models/role';
-import { AuthContext } from '../../../../shared/context/auth-context';
+import AuthContext from '../../../../shared/context/auth-context';
 import { Link } from 'react-router-dom';
 
 export const TableDisplayMode = () => {
