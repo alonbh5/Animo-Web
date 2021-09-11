@@ -79,18 +79,38 @@
     ],
     "Team": [{
             "img": "img/team/01.jpg",
-            "name": "Yair Dana"
+            "name": "Yair Dana",
+            "content": [
+                "I'm a 3rd year Computer Science Student at The Acadamic Collage of Tel Aviv, Yaffo.",
+                "Currently working as a Software Engineer at Wix.com.",
+                "In my free time I like to eat in good restaurants."
+            ]
         },
         {
             "img": "img/team/02.jpg",
-            "name": "Alon Ben Harosh"
+            "name": "Alon Ben Harosh",
+            "content": [
+                "I'm a 3rd year Computer Science Student at The Acadamic Collage of Tel Aviv, Yaffo.",
+                "Currently working as a Software Developer at Payoneer.",
+                "In my free time I like to go to the beach and watch sunsets."
+            ]
         }, {
             "img": "img/team/03.jpg",
-            "name": "Shira Ostrinsky"
+            "name": "Shira Ostrinsky",
+            "content": [
+                "I'm a 3rd year Computer Science Student at The Acadamic Collage of Tel Aviv, Yaffo.",
+                "Currently lives in Yaffo",
+                "In my free time I love watching Netflix and going to live shows."
+            ]
         },
         {
             "img": "img/team/04.jpg",
-            "name": "Shir Elfanbaum"
+            "name": "Shir Elfanbaum",
+            "content": [
+                "I'm a 3rd year Computer Science Student at The Acadamic Collage of Tel Aviv, Yaffo.",
+                "Currently working as a NOC Engineer at Via.",
+                "In my free time I like to do sports and travel."
+            ]
         }
     ],
     "Contact": {
