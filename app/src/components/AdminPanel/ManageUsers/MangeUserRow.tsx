@@ -7,14 +7,13 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 type ManageUserRowProp = {
     user: User;
-    rowNumber: number;
     deleteUser: (userId: string) => void
     confirmUser: (userId: string) => void
     updateUser: (user:User) => void;
 }
 
 export const ManageUserRow = (props :ManageUserRowProp) => {
-  const { user, rowNumber, deleteUser, confirmUser } = props;
+  const { user, deleteUser, confirmUser } = props;
   const [openModal, setModalOpen] = useState(false);
 
   const clickDeleteUser = () => {
@@ -61,7 +60,6 @@ export const ManageUserRow = (props :ManageUserRowProp) => {
         closeModal={() => setModalOpen(false)}
       />
       <tr>
-        <td>{rowNumber}</td>
         <td>{user.first_name + ' ' + user.last_name}</td>
         <td>{user.gender}</td>
         <td>{date}</td>

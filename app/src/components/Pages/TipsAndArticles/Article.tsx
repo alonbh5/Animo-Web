@@ -8,21 +8,23 @@ export type ArticleItem = {
   author: string;
   title: string;
   img: string;
+  content: string;
 }
 
 type ArticleProps = {
   text: string
-  url: string
+  link: string
   author: string
   img: string
+  content: string
 }
 
-export const Article = ({ text, url, author, img }: ArticleProps) => {
+export const Article = ({ text, link, author, img, content }: ArticleProps) => {
   return (
     <div className= "tile">
       {img.includes('.jpg') && <img src={img} />}
       <br></br>
-      <a id="link" href={url} target="_blank" rel="noreferrer"> {text} </a>
+      <a id="link" href={link} target="_blank" rel="noreferrer"> {text} </a>
       <br></br>
       {author}
     </div>

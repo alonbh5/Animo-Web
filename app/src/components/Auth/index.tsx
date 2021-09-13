@@ -25,7 +25,7 @@ const EmotionalAnalysis = React.lazy(() => import('../Pages/EmotionalAnalysis'))
 const TipsAndArticles = React.lazy(() => import('../Pages/TipsAndArticles'));
 const PersonalQuiz = React.lazy(() => import('../Pages/PersonalityQuiz'));
 const Sos = React.lazy(() => import('../Pages/Sos'));
-const ConfirmTipsAndArticles = React.lazy(() => import('../AdminPanel/ConfirmTipsAndArticles/ConfirmTipsAndArticles'));
+const ConfirmTipsAndArticles = React.lazy(() => import('../AdminPanel/ConfirmTipsAndArticles'));
 
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);

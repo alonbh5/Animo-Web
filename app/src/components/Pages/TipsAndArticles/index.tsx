@@ -96,8 +96,9 @@ const TipsAndArticles = (props: any) => {
                 article.confirm && (
                   <Article
                     text={article.title}
-                    url={article.link}
+                    link={article.link}
                     author={article.author}
+                    content = {article.content}
                     img={article.img}
                   />
                 )

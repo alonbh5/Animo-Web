@@ -5,7 +5,8 @@ import React, { useState, useEffect } from "react";
 import { ArticleItem } from "../../Pages/TipsAndArticles/Article";
 import { TipItem } from "../../Pages/TipsAndArticles/Tip";
 import PageLayout from "../../../shared/UIElements/PageLayout";
-import {ConfirmArticleRow} from './ConfirmArticleRow';
+import {ArticleRow} from './ArticleRow';
+import {TipRow} from './TipRow';
 
 const ConfirmTipsAndArticles = () => {
   const { sendRequest } = useHttpClient();
@@ -48,12 +49,11 @@ const ConfirmTipsAndArticles = () => {
   return (
       <PageLayout title="Confirm ">
         <h3>Articles</h3>
-          <table className="table table-striped table-hover">
+          <table className="table table-striped table-hover confirm">
               
         <thead>
           <tr>
-            <th>#</th>
-            <th>Title</th>
+            <th style = {{width: 'fit-content'}}>Title</th>
             <th>Author</th>
             <th>link</th>
             <th>img</th>
@@ -62,37 +62,47 @@ const ConfirmTipsAndArticles = () => {
           </tr>
         </thead>
         <tbody>
-          {articlesArr.map((article: ArticleItem, index: number) => {
+          
+          { articlesArr.map((article: ArticleItem, index: number) => {
             return (
               !article.confirm &&
-            <ConfirmArticleRow
+            <ArticleRow
               key={index}
-              rowNumber={index}
-              title = { article.title}
-              author = {article.author}
-              link = {article.link}
-              img = {article.img}
               confirmData = {confirmData}
               article = {article}
-              //deleteUser={deleteUser}
-              
-              //updateUser={onUpdateUser}
             />)})
           }
 
         </tbody>
        </table>
        {
-      // <div className="container text-center tiles col-md-8 col-md-offset-2 section-title">
-      //   {tipsArr.map((tip: TipItem) => {
-      //     return (
-      //       !tip.confirm && (
-      //         <TipComponent text={tip.title} content={tip.content} />
-      //       )
-      //     );
-      //   })}
-      // </div> */}
+     
     }
+    <h3>Tip</h3>
+          <table style = {{tableLayout: 'fixed' }} className="table table-striped table-hover">
+              
+        <thead>
+          <tr>
+            <th style = {{width: 'fit-content'}}>Title</th>
+            <th>Author</th>
+            <th>content</th>
+            <th>confirm</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {tipsArr.map((tip: TipItem, index: number) => {
+            return (
+              !tip.confirm  && 
+            <TipRow
+              key={index}
+              confirmData = {confirmData}
+              tip = {tip}
+            />)})
+          }
+
+        </tbody>
+       </table> 
     </PageLayout>
   );
 };

@@ -73,6 +73,7 @@ module.exports = {
     },
 
     createText: (req, res) => {
+
         const {
             data_type,
             link,
@@ -81,7 +82,6 @@ module.exports = {
             emotions,
             content,
             img } = req.body;
-
         const confirm = false;
 
         const phyData = new PhyData({
