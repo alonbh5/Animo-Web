@@ -20,14 +20,18 @@ class MessageParser {
         message, this.state.user.id, this.state.talkType);
     }
 
-    // change to advice
-    if (this.state.talkType === 'Conversation') {
+    if (this.state.talkType === 'Advice') {
       this.actionProvider.handlerAdvice(
         message, this.state.user.id, this.state.talkType);
     }
 
     if (this.state.talkType === 'AnalyzeMyEmotion') {
       this.actionProvider.handlerAnalyzeMyEmotion(
+        message, this.state.user.id, this.state.talkType);
+    }
+
+    if (this.state.talkType === 'AnalyzeMyEmotion-Result') {
+      this.actionProvider.handlerAnalyzeMyEmotionResult(
         message, this.state.user.id, this.state.talkType);
     }
   }

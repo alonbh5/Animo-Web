@@ -8,6 +8,16 @@
   font-size: 0.9rem;
 }
 
+.nice-user-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 55%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
 .react-chatbot-kit-chat-container {
   width: 500px;
   margin: auto;

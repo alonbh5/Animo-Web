@@ -34,42 +34,38 @@ const SOS = (props: any) => {
     </p>;
 
   return (
-    <PageLayout cols={true} title='SOS'>
-      <button
-        className="btn btn-primary"
-        style={{ width: '120px' }}
-        onClick={() => setType(PageState.HelpCenter)}
-      >
+    <>
+      <PageLayout cols={true} title='SOS'>
+        <button
+          className="btn btn-primary"
+          style={{ width: '120px' }}
+          onClick={() => setType(PageState.HelpCenter)}
+        >
             Help Centers
-      </button>
-      <button
-        className="btn btn-primary"
-        style={{ width: '120px', marginLeft: '20px' }}
-        onClick={() => setType(PageState.Psychologists)}
-      >
+        </button>
+        <button
+          className="btn btn-primary"
+          style={{ width: '120px', marginLeft: '20px' }}
+          onClick={() => setType(PageState.Psychologists)}
+        >
             Psychologists
-      </button>
-      {showType === PageState.HelpCenter && <HelpCenter />}
-      {auth.isLoggedIn && user._id && showType === PageState.Psychologists
-        ? (<>
-          <br/>
-          <br/>
-          {explain}
-          {contentUsers}
-          <MyNetwork user={user}/>
-        </>)
-        : <>
-          {showType === PageState.Psychologists && (
-            <>
-              <br/>
-              <br/>
+        </button>
+        <br/>
+        <br/>
+        {showType === PageState.HelpCenter && <HelpCenter />}
+        { showType === PageState.Psychologists
+          ? auth.isLoggedIn
+            ? <>
               {explain}
-              {contentGeneral}
-              <br/>
-              <IdentityTable />
-            </>)}
-        </> }
-    </PageLayout>
+              {contentUsers}</>
+            : <>
+              {explain}
+              {contentGeneral}</>
+          : undefined}
+        {showType === PageState.Psychologists && !auth.isLoggedIn && <IdentityTable />
+        }
+      </PageLayout>
+      {showType === PageState.Psychologists && auth.isLoggedIn && <MyNetwork user={user}/>}</>
   );
 };
 

@@ -13,7 +13,6 @@ const MessageForm = (props:any) => {
     if (text.length > 0) {
       sendMessage(creds, chatId, { text });
     }
-
     setValue('');
   };
 
@@ -23,7 +22,6 @@ const MessageForm = (props:any) => {
   };
 
   const handleUpload = (event:any) => {
-    console.log('TRY UPLOADIGN');
     sendMessage(creds, chatId, { files: event.target.files, text: '' });
   };
   return (<form className="message-form" onSubmit={handleSubmit}>

@@ -109,18 +109,18 @@ class ActionProvider {
         }));
       }
     } else {
+      // change to general error?
       botAnswer = errorMessage.concat(' - in Advice');
     }
 
-    let botMessage = this.createChatBotMessage(botAnswer, {
+    const botMessage = this.createChatBotMessage(botAnswer, {
       withAvatar: true
     });
 
     this.setChatbotMessage(botMessage);
-
-    botMessage = this.createChatBotMessage('Do you want another advice?');
-    // delay
-    this.setChatbotMessage(botMessage);
+    if (botRes.response_type === 'Advice-Done') {
+      this.setWidgetShowOptions();
+    }
   };
 
   handlerAnalyzeMyEmotion = async (
@@ -134,7 +134,7 @@ class ActionProvider {
       if (botRes.response_type === 'AnalyzeMyEmotion-Done') {
         this.setState((prevState: { messages: any; }) => ({
           ...prevState,
-          talkType: undefined
+          talkType: 'AnalyzeMyEmotion-Result'
         }));
       }
     } else {
@@ -148,11 +148,37 @@ class ActionProvider {
     this.setChatbotMessage(botMessage);
   };
 
-  // fetach from DB
+  handlerAnalyzeMyEmotionResult = async (
+    textFromUser: string, userId: string, talkType: string) => {
+    const params = this.getParams(textFromUser, userId, talkType);
+    let botAnswer = '';
+    const botRes: botResponse | undefined = await this.getAnswerFromBot(params);
+
+    if (botRes) {
+      botAnswer = botRes.content;
+      if (botRes.response_type === 'AnalyzeMyEmotion-ResultDone') {
+        this.setState((prevState: { messages: any; }) => ({
+          ...prevState,
+          talkType: undefined
+        }));
+      }
+    } else {
+      botAnswer = errorMessage.concat('- in AnalyzeMyEmotion-Result');
+    }
+
+    const botMessage = this.createChatBotMessage(botAnswer, {
+      withAvatar: true
+    });
+
+    this.setChatbotMessage(botMessage);
+    if (botRes.response_type === 'AnalyzeMyEmotion-ResultDone') {
+      this.setWidgetShowOptions();
+    }
+  };
+
   getAnswerFromBot = async (params: AxiosRequestConfig) => {
     try {
       const result = await axios.request(params);
-      console.log(result.data);
       return result.data as botResponse;
     } catch (error:any) {
       console.log(error.message);
@@ -187,7 +213,7 @@ class ActionProvider {
   setTalkTypeAdvice = () => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
-      talkType: 'Conversation'
+      talkType: 'Advice'
     }));
 
     const botMessage = this.createChatBotMessage(
