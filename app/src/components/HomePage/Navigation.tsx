@@ -76,7 +76,6 @@ export const Navigation = (props: any) => {
                   onClick={() =>
                     changeDropdownState(prev => !prev)} alt={user.first_name}
                   src={user.imageUrl || avatarImage} />
-                  <i className="fa fa-caret-down"></i>
                   {role.role_type === RoleEnum.Admin &&
                    <AdminDropdown
                      onClickItem={changeDropdownState}
