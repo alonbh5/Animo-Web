@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-// import { HashLink } from 'react-router-hash-link';
 
 type DropdownProps = {
     onClickItem: (value:boolean) => void;
