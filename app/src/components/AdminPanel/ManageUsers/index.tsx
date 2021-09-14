@@ -102,6 +102,7 @@ const ManageUsers = (props: any) => {
           {users?.map((user: User, index: number) =>
             <ManageUserRow
               key={index}
+              rowNumber={index}
               user={user}
               deleteUser={deleteUser}
               confirmUser={confirmUser}
