@@ -93,7 +93,7 @@ const Modal = () => {
   return (
     <div className="wrapper">
       <div className="form-login">
-        <h1 className="title">Chat Application</h1>
+        <h1 className="title">Animo Forum</h1>
         <form onSubmit={handelSubmit}>
           <input
             type="text"
