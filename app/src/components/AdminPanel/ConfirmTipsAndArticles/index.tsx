@@ -43,7 +43,6 @@ const ConfirmTipsAndArticles = () => {
     };
     await sendRequest(params);
     fetchData();
-    console.log("after fetch");
   };
   
   return (

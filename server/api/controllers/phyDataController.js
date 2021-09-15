@@ -1,7 +1,6 @@
 const PhyData = require('../schemes/phyDataSchema');
 const mongoose = require('mongoose');
 const HttpError = require('../models/http-error');
-const adminRole = 1;
 
 module.exports = {
 

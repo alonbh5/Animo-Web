@@ -4,18 +4,13 @@ import { ArticleItem } from "../../Pages/TipsAndArticles/Article";
 
 type articleRowProp = {
   article: ArticleItem;
-  confirm: boolean;
   confirmData: (articleId: string) => void;
 };
 export const ArticleRow = (props: articleRowProp) => {
-  const { article, confirm } = props;
-
-  const [content, setContent] = useState("");
-  
+  const { article} = props;
   const handleChange = (event) => {
     props.confirmData(article._id);
   };
-  console.log(article);
   return (
     <>
       <tr >
@@ -33,7 +28,7 @@ export const ArticleRow = (props: articleRowProp) => {
           <a onClick={handleChange}>confirm</a>
         </td>
       </tr>
-      
     </>
   );
 };
+

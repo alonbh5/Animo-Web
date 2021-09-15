@@ -8,7 +8,6 @@ export type ArticleItem = {
   author: string;
   title: string;
   img: string;
-  content: string;
 }
 
 type ArticleProps = {
@@ -16,10 +15,9 @@ type ArticleProps = {
   link: string
   author: string
   img: string
-  content: string
 }
 
-export const Article = ({ text, link, author, img, content }: ArticleProps) => {
+export const Article = ({ text, link, author, img }: ArticleProps) => {
   return (
     <div className= "tile">
       {img.includes('.jpg') && <img src={img} />}

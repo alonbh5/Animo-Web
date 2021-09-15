@@ -7,7 +7,6 @@ const phyDataSchema = mongoose.Schema({
     author: {type: String, require: false},
     title: {type: String, require: true},
     emotions: {type: String, require: false},
-    content: {type: String, require: false, default: 'see atteched link'},
     confirm: {type: Boolean, require: false, default: false},
     img: {type: String, require: false},
 });
