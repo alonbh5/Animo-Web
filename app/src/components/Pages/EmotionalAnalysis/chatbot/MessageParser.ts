@@ -13,8 +13,6 @@ class MessageParser {
       this.actionProvider.setWidgetShowOptions();
     }
 
-    console.log(this.state);
-
     if (this.state.talkType === 'GetToKnow') {
       this.actionProvider.handlerTalk(
         message, this.state.user.id, this.state.talkType);

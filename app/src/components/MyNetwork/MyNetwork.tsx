@@ -50,7 +50,7 @@ class MyNetwork extends Component<{user:User, isOpen: boolean},
      const allPsycologist: userChat[] | undefined =
      psyco?.sort((x:User) => !x.online ? 1 : -1).map((user:User, index:number) => {
        return {
-         id: user._id || index,
+         id: user._id,
          name: user.first_name + ' ' + user.last_name,
          email: user.email,
          photoUrl: user.imageUrl || avatarImage,
@@ -72,7 +72,7 @@ class MyNetwork extends Component<{user:User, isOpen: boolean},
      this.setState({ isOpen: true });
      const { currentUser, allPsycologist } = this.state;
      const user = allPsycologist?.find((user: userChat, index:number) => user.id === userId);
-     console.log(userId);
+
      /* Session initialization code */
      Talk.ready
        .then(() => {

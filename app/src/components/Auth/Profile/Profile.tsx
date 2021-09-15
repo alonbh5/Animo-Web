@@ -18,7 +18,9 @@ const Profile = (props: any) => {
             <i
               className={!isEditMode ? 'far fa-edit' : 'fas fa-trash-alt'}
               style={{ fontSize: '20px' }
-              } /></div>
+              } />
+            <p style={{ fontSize: '14px' }}>{!isEditMode ? 'Edit' : 'Cancel'}</p>
+          </div>
           <IdentityTable
             isEditMode={isEditMode} />
         </div>

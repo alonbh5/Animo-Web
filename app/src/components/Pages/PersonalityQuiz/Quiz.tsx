@@ -28,7 +28,6 @@ export const Quiz = (props:QuizProps) => {
     event.preventDefault();
     quizQuestions[questionNumber - 1].answer = currChoise;
     props.onSubmit(quizQuestions);
-    quizQuestions.forEach((quiz, index) => console.log(index + quiz.answer));
   };
 
   const handleChange = (e: any) => {
