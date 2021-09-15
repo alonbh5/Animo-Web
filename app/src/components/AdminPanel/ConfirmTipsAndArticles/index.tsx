@@ -85,7 +85,7 @@ const ConfirmTipsAndArticles = () => {
           <tr>
             <th style = {{width: 'fit-content'}}>Title</th>
             <th>Author</th>
-            <th>content</th>
+            <th style = {{width: '500px'}}>content</th>
             <th>confirm</th>
 
           </tr>
