@@ -652,13 +652,7 @@ margin-top: 30;
     color: #566787;
     background: #f2f2f2;
 }
-.table .confirm {
-	table-layout: fixed ;
-	width: 100% ;
-}
-.td .confirm{
-	width: 25% ;
-} 
+
 .table-title .btn i {
     float: left;
     font-size: 21px;
