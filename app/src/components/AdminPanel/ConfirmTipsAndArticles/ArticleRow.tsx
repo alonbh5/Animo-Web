@@ -1,9 +1,6 @@
 /* eslint-disable */
 import React, { useState } from "react";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
 import { ArticleItem } from "../../Pages/TipsAndArticles/Article";
-import ArticleModal from "./confirmArticleModal";
 
 type articleRowProp = {
   article: ArticleItem;
