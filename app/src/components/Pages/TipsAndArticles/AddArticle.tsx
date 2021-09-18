@@ -7,7 +7,7 @@ import Status from '../../../shared/UIElements/Status';
 import { Article } from '../../api/configuration/models/article';
 
 const initialState = {
-  url: '',
+  link: '',
   title: '',
   img: '',
   author: '',
@@ -15,7 +15,7 @@ const initialState = {
 };
 
 export const AddArticle = () => {
-  const [{ url, title, img, author, content }, setState] = useState(initialState);
+  const [{ link, title, img, author, content }, setState] = useState(initialState);
   const { isLoading, error, success, sendRequest, clearMessages } = useHttpClient();
 
   const handleChange = (e: any) => {
@@ -27,7 +27,7 @@ export const AddArticle = () => {
     return (
       !validator.isEmpty(title) &&
       !validator.isEmpty(author) &&
-      (!validator.isEmpty(url) || !validator.isEmpty(content))
+      (!validator.isEmpty(link) || !validator.isEmpty(content))
     );
   };
 
@@ -35,7 +35,7 @@ export const AddArticle = () => {
     event.preventDefault();
     clearMessages();
     const articleToAddToDB: Article = {
-      url,
+      link,
       title,
       img,
       author,
@@ -67,10 +67,10 @@ export const AddArticle = () => {
             className="form-control"
             required={false}
             type="text"
-            name="url"
+            name="link"
             label="Article link"
-            placeholder="Enter the article url"
-            value={url}
+            placeholder="Enter the article link"
+            value={link}
             onChange={handleChange}
           />
         </div>
@@ -107,17 +107,6 @@ export const AddArticle = () => {
             label="Article image"
             placeholder="An image that describe the article, jpg file "
             value={img}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <textarea
-            style={{ height: '100px' }}
-            className="form-control"
-            required={false}
-            name="content"
-            placeholder="Place your article here "
-            value={content}
             onChange={handleChange}
           />
         </div>

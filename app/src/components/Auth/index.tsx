@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useContext, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthContext from '../../shared/context/auth-context';
@@ -7,6 +8,7 @@ import { Team } from '../HomePage/Team';
 import { Contact } from '../HomePage/Contact';
 import { User } from '../api/configuration/models/users';
 import JsonData from '../../data/data.json';
+import { Role, RoleEnum } from '../api/configuration/models/role';
 import Chat from '../Pages/Chat/Chat';
 
 /* eslint-disable max-len */
@@ -23,12 +25,18 @@ const EmotionalAnalysis = React.lazy(() => import('../Pages/EmotionalAnalysis'))
 const TipsAndArticles = React.lazy(() => import('../Pages/TipsAndArticles'));
 const PersonalQuiz = React.lazy(() => import('../Pages/PersonalityQuiz'));
 const Sos = React.lazy(() => import('../Pages/Sos'));
+const ConfirmTipsAndArticles = React.lazy(() => import('../AdminPanel/ConfirmTipsAndArticles'));
 
 const AuthrizationRouters = () => {
   const auth = useContext(AuthContext);
   let routers;
   const [landingPageData] = useState(JsonData);
   const user = auth.user as User;
+  const role = auth.userRole as Role;
+
+  const validateRole = () => {
+    return role.role_type === RoleEnum.Admin;
+  };
 
   if (!auth.isLoggedIn) {
     routers =
@@ -40,7 +48,7 @@ const AuthrizationRouters = () => {
                 <Contact data={landingPageData.Contact} />
               </Route>
               <Route path='/chat' component={Chat}/>
-              <Route path='/tips' component={TipsAndArticles}/>
+              <Route path='/tips-and-articles' component={TipsAndArticles}/>
               <Route path='/sos' component={Sos}/>
               <Route path='/login' component={SignIn}/>
               <Route path='/signup' component={SignUp}/>
@@ -60,7 +68,7 @@ const AuthrizationRouters = () => {
               <Route path='/personalquiz' component={PersonalQuiz}/>
               <Route path='/chat' component={Chat}/>
               <Route path='/analyze' component={EmotionalAnalysis}/>
-              <Route path='/tips' component={TipsAndArticles}/>
+              <Route path='/tips-and-articles' component={TipsAndArticles}/>
               <Route path='/sos' component={Sos}/>
               <Route path='/profile' component={Profile}/>
               <Route path='/manageUsers' component={ManageUsers}/>
@@ -70,6 +78,10 @@ const AuthrizationRouters = () => {
               <Route path='/messaging'>
                 <Messaging user={user}/>
               </Route>}
+              {validateRole() && 
+              <Route path='/ConfirmTipsAndArticles' component= {ConfirmTipsAndArticles}> 
+              </Route>
+              }
               <Redirect to='/home-page' />
             </Switch>;
   }

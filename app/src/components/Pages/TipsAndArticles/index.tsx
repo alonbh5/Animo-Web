@@ -1,12 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { AxiosRequestConfig } from 'axios';
-import { useHttpClient } from '../../../shared/hooks/http-hook';
-import { Role, RoleEnum } from '../../api/configuration/models/role';
-import { AddArticle } from './AddArticle';
-import { AddTip } from './AddTip';
-import { Article, ArticleItem } from './Article';
-import { Tip, TipItem } from './Tip';
-import AuthContext from '../../../shared/context/auth-context';
+/* eslint-disable */
+import React, { useContext, useState, useEffect } from "react";
+import { AxiosRequestConfig } from "axios";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import { Role, RoleEnum } from "../../api/configuration/models/role";
+import { AddArticle } from "./AddArticle";
+import { AddTip } from "./AddTip";
+import { Article,ArticleItem } from "./Article";
+import { Tip,TipItem } from "./Tip";
+import AuthContext from "../../../shared/context/auth-context";
+import { User } from "../../api/configuration/models/users";
 import PageLayout from '../../../shared/UIElements/PageLayout';
 
 const PageState = {
@@ -21,7 +23,7 @@ const TipsAndArticles = (props: any) => {
   // we send the sendRequest to the server
   const { sendRequest } = useHttpClient();
   const [articlesArr, setArticles] = useState<ArticleItem[]>([]);
-  const [tipsArr, setTips] = useState<TipItem[]>([]);
+  const [tipsArr, setTips] = useState<TipItem[]>([]); 
   const [showType, setType] = useState(PageState.Tips);
   const auth = useContext(AuthContext);
   const role = auth.userRole as Role;
@@ -96,7 +98,7 @@ const TipsAndArticles = (props: any) => {
                 article.confirm && (
                   <Article
                     text={article.title}
-                    url={article.link}
+                    link={article.link}
                     author={article.author}
                     img={article.img}
                   />
