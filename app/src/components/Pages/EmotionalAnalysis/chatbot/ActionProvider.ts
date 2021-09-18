@@ -181,7 +181,6 @@ class ActionProvider {
       const result = await axios.request(params);
       return result.data as botResponse;
     } catch (error:any) {
-      console.log(error.message);
       return undefined;
     }
   }

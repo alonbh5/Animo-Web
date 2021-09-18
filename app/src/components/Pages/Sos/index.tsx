@@ -65,7 +65,10 @@ const SOS = (props: any) => {
         {showType === PageState.Psychologists && !auth.isLoggedIn && <IdentityTable />
         }
       </PageLayout>
-      {showType === PageState.Psychologists && auth.isLoggedIn && <MyNetwork user={user}/>}</>
+      {showType === PageState.Psychologists &&
+      auth.isLoggedIn &&
+      user._id &&
+      <MyNetwork user={user}/>}</>
   );
 };
 

@@ -24,7 +24,7 @@ const NavigationBar = (props: NavigationBarProps) => {
       <li><Link to="/tips-and-articles">Tips & article</Link></li>
       <li><HashLink to="/sos">SOS</HashLink></li>
       <li><HashLink to="/home-page#contact">Contact</HashLink></li>
-      <li><HashLink to="/chat">Chat</HashLink></li>
+      <li><HashLink to="/chat">Forum</HashLink></li>
     </>
   );
 };
@@ -76,7 +76,6 @@ export const Navigation = (props: any) => {
                   onClick={() =>
                     changeDropdownState(prev => !prev)} alt={user.first_name}
                   src={user.imageUrl || avatarImage} />
-                  <i className="fa fa-caret-down"></i>
                   {role.role_type === RoleEnum.Admin &&
                    <AdminDropdown
                      onClickItem={changeDropdownState}
