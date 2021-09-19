@@ -24,6 +24,7 @@ const MessageForm = (props:any) => {
   const handleUpload = (event:any) => {
     sendMessage(creds, chatId, { files: event.target.files, text: '' });
   };
+
   return (<form className="message-form" onSubmit={handleSubmit}>
     <input
       className="message-input"
@@ -49,4 +50,5 @@ const MessageForm = (props:any) => {
     </button>
   </form>);
 };
+
 export default MessageForm;

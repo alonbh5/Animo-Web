@@ -1,23 +1,5 @@
 import React from 'react';
 
-// const infoYair = <p>
-// My name is Yair Dana, I&apos;m a 3rd year Computer Science Student
-//  at The Acadamic Collage of Tel Aviv, Yaffo.
-//   <br/>
-//  Currently working as a software engineer at Wix.com.
-//   <br/>
-//  In my free time I like to eat in good restaurants.
-// </p>;
-
-// const infoAlon = <p>
-// My name is Alon Ben Harosh, I&apos;m a 3rd year Computer Science Student
-//  at The Acadamic Collage of Tel Aviv, Yaffo.
-//   <br/>
-//  Currently working as a software developer at Payoneer.
-//   <br/>
-//  In my free time I like to go to the sea and watch sunsets.
-// </p>;
-
 export function Team (props: any) {
   return (
     <div id='team' className='text-center'>

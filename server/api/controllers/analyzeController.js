@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 module.exports = {
     getAllAnalyze:  (req , res)=>{
         Analyze.find().then((allConversation)=>{
-
             res.status(200).json({
             allConversation
             })
@@ -12,9 +11,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });    
-
-        
+        });         
     },
 
     createAnalyze : (req , res)=>{
@@ -34,8 +31,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });
-                
+        });                
     },
 
     getAnalyze : (req , res)=>{
@@ -63,8 +59,6 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });   
-
-        
+        });         
     }
 }

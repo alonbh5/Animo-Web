@@ -1,4 +1,3 @@
-
 export type quote = {
     title?: string;
     author?: string;

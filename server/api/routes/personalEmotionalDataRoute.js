@@ -6,7 +6,6 @@ const {
     deleteAnalyze    
 } = require('../controllers/personalEmotionalDataController');
 
-
 router.get('/' ,getAllAnalyze);
 router.post('/' , createAnalyze);
 router.get('/:analyzeId' ,getAnalyze);

@@ -4,7 +4,6 @@ const {
     getRoleById
 } = require('../controllers/rolesController');
 
-
 router.get('/', getAllRoles);
 router.get('/:roleId', getRoleById);
 

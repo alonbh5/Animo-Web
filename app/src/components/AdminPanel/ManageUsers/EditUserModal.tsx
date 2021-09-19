@@ -17,6 +17,7 @@ type EditUserModalProps = {
   closeModal: () => void;
 
 }
+
 export const EditUserModal = (props: EditUserModalProps) => {
   const { user } = props;
   const { rolesOptions } = useRoles();

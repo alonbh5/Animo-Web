@@ -50,6 +50,7 @@ const ChatFeed = (props:any) => {
       );
     });
   };
+
   if (!chat) {
     return (
       <div>
@@ -75,4 +76,5 @@ const ChatFeed = (props:any) => {
       </div>
     </div>);
 };
+
 export default ChatFeed;

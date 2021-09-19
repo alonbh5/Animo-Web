@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useContext, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthContext from '../../shared/context/auth-context';
@@ -11,7 +10,6 @@ import JsonData from '../../data/data.json';
 import { Role, RoleEnum } from '../api/configuration/models/role';
 import Chat from '../Pages/Chat/Chat';
 
-/* eslint-disable max-len */
 const Messaging = React.lazy(() => import('../MyNetwork/Messaging'));
 const ManageUsers = React.lazy(() => import('../AdminPanel/ManageUsers'));
 const ResetPassword = React.lazy(() => import('./ResetPassword/ResetPassword'));
@@ -78,8 +76,8 @@ const AuthrizationRouters = () => {
               <Route path='/messaging'>
                 <Messaging user={user}/>
               </Route>}
-              {validateRole() && 
-              <Route path='/ConfirmTipsAndArticles' component= {ConfirmTipsAndArticles}> 
+              {validateRole() &&
+              <Route path='/ConfirmTipsAndArticles' component= {ConfirmTipsAndArticles}>
               </Route>
               }
               <Redirect to='/home-page' />

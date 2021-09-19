@@ -13,7 +13,6 @@ const AboutMe = () => {
   const user = auth.user as User;
   const [phone, setPhone] = useState<string>(user.phone || '');
   const [aboutMe, setAboutMe] = useState<string>(user.aboutMe || '');
-
   const [errorPhone, setErrorPhone] = useState<string>('');
   const [errorAboutMe, setErrorAboutMe] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -88,10 +87,10 @@ const AboutMe = () => {
   return (
     <PageLayout title='About Me' cols={true}>
       <p>
-            Here you can write information for general users to know you better.
-        <br/>
-            They can see this information
-            as long as you are connected to the app.
+        Here you can write information for general users to know you better.
+      </p>
+      <p>
+        They can see this information as long as you are connected to the app.
       </p>
       <h5 style={{ color: 'red' }}>{errorMsg}</h5>
       <div>
@@ -136,4 +135,5 @@ const AboutMe = () => {
     </PageLayout>
   );
 };
+
 export default AboutMe;

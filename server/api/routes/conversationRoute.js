@@ -7,7 +7,6 @@ const {
     deleteConversation    
 } = require('../controllers/conversationController');
 
-
 router.get('/' ,getAllConversation);
 router.post('/' , createConversation);
 router.get('/:conversationId' ,getConversation);

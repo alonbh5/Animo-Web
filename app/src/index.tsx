@@ -26,4 +26,5 @@ const Root = () => (
     </React.StrictMode>
   </AlertProvider>
 );
+
 ReactDOM.render(<Root />, document.getElementById('root'));

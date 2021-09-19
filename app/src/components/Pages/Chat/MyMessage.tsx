@@ -2,6 +2,7 @@ import './Chat.css';
 
 const MyMessage = (props:any) => {
   const { message } = props;
+
   if (message.attachments && message.attachments.length > 0) {
     return (
       <img src={message.attachments[0].file}
@@ -11,6 +12,7 @@ const MyMessage = (props:any) => {
       />
     );
   }
+
   return (
     <div
       className="message"
@@ -24,4 +26,5 @@ const MyMessage = (props:any) => {
     </div>
   );
 };
+
 export default MyMessage;

@@ -12,4 +12,5 @@ const AuthContext = createContext({
   userRole: {},
   fetchUser: async () => {}
 });
+
 export default AuthContext;

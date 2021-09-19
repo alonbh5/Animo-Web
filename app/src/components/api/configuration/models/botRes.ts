@@ -1,4 +1,3 @@
-
 export type botResponse = {
     id: string;
     response_type: string;

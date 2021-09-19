@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../../../shared/context/auth-context';
 import { useHttpClient } from '../../../shared/hooks/http-hook';
@@ -118,4 +117,5 @@ const PersonalQuiz = (props: any) => {
     </div>
   );
 };
+
 export default PersonalQuiz;

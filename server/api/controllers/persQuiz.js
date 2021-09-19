@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 module.exports = {
     getAllPersQuiz:  (req , res)=>{
         PersQuiz.find().then((allPersQuiz)=>{
-
             res.status(200).json({
             allPersQuiz
             })
@@ -12,9 +11,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });    
-
-        
+        });            
     },
 
     createPersQuiz : (req , res)=>{
@@ -35,8 +32,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });
-                
+        });                
     },
 
     getPersQuiz : (req , res)=>{
@@ -64,9 +60,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });   
-
-       
+        });          
     },
 
     deletePersQuiz: (req , res)=>{
@@ -80,8 +74,6 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });   
-
-        
+        });           
     }
 }

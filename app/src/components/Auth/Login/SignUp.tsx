@@ -256,4 +256,5 @@ const SignUp = () => {
     </PageLayout>
   );
 };
+
 export default SignUp;

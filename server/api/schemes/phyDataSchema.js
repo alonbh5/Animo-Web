@@ -8,7 +8,7 @@ const phyDataSchema = mongoose.Schema({
     title: {type: String, require: true},
     emotions: {type: String, require: false},
     confirm: {type: Boolean, require: false, default: false},
-    img: {type: String, require: false},
+    img: {type: String, require: false}
 });
 
 module.exports = mongoose.model('PhyData',phyDataSchema,"Physiological Data");

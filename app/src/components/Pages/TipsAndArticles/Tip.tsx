@@ -6,6 +6,7 @@ export type TipItem = {
   data_type: string;
   content: string;
   title: string;
+  author: string;
 }
 
 type TipsProps = {
@@ -21,5 +22,4 @@ export const Tip = ({ text, content }: TipsProps) => {
       <br></br>
     </div>
   );
-}
-;
+};

@@ -7,6 +7,7 @@ import { ManageUserRow } from './MangeUserRow';
 import AuthContext from '../../../shared/context/auth-context';
 import { useAlert } from 'react-alert';
 import PageLayout from '../../../shared/UIElements/PageLayout';
+
 const ManageUsers = (props: any) => {
   const { isLoading, error, success, sendRequest, clearMessages } = useHttpClient();
   const [users, setUsers] = useState<User[] | undefined>(undefined);
@@ -81,6 +82,7 @@ const ManageUsers = (props: any) => {
     await timeout(1000);
     fetchUsers();
   };
+
   return (
     <PageLayout title='Manage Users'>
       {isLoading && <LoadingSpinner asOverlay />}

@@ -16,7 +16,6 @@ var RandomNumber = 0;
 var allAnalyzedQuestionArray = AnalyzeQuestionsSchema.find();
 var howManyToAsk = 7;
 
-
 const InitGetToKnow = async (matchUser, textFromUser, res) => {
     //save new log of system user in table DB (object from mongoose is AnswersFromUsers)
     //send a new Answer from bot - start conversion
@@ -85,15 +84,11 @@ const KeepGetToKnow = async (AnswersObjFromUser, matchUser, textFromUser, res) =
             response_to: textFromUser
         });
     }
-
-
 }
 
 const InitAnalyze = async (matchUser, textFromUser, res) => {
     //save new log of system user in table DB (object from mongoose is AnswersFromUsers)
     //send a new Answer from bot - start conversion
-
-
 
     let allEmotions = await AnalyzeQuestionsSchema.find();
     let newArr = allEmotions.map((emo) => {
@@ -102,7 +97,6 @@ const InitAnalyze = async (matchUser, textFromUser, res) => {
                 emotionId: String(emo.emotionId),
                 score: 0
             }
-
         );
     });
 
@@ -136,7 +130,6 @@ const InitAnalyze = async (matchUser, textFromUser, res) => {
 
 const KeepAnalyze = async (curAnalzyeAnswersObj, matchUser, textFromUser, res) => {
     {
-
         let currentUserIndex = curAnalzyeAnswersObj.currentUserIndex;
         let questionsArray = curAnalzyeAnswersObj.answers;
         let arrayLength = curAnalzyeAnswersObj.answers.length;
@@ -149,7 +142,6 @@ const KeepAnalyze = async (curAnalzyeAnswersObj, matchUser, textFromUser, res) =
                     await curAnalzyeAnswersObj.save();
                 }
             }
-
             
             matchUser.analyzeState = "Done";
             await matchUser.markModified('analyzeState');
@@ -177,9 +169,6 @@ const KeepAnalyze = async (curAnalzyeAnswersObj, matchUser, textFromUser, res) =
                 content: "Ok! I Think I Know What You are Feeling!",
                 response_to: textFromUser
             });
-
-
-
         }
         else {
             if (currentUserIndex != 0) {
@@ -205,8 +194,6 @@ const KeepAnalyze = async (curAnalzyeAnswersObj, matchUser, textFromUser, res) =
                 response_to: textFromUser
             });
         }
-
-
     }
 }
 
@@ -237,8 +224,7 @@ const KeepResult  = async ( matchUser, textFromUser, res) => {
     let currentEmotion= matchUser.currentEmotion;
     let TheEmotion = await Emotions.findById(currentEmotion);
     let choice = TheEmotion.name[parseInt(textFromUser)];
-    choice = choice.toLowerCase();
-    
+    choice = choice.toLowerCase();    
 
     let botText = await emotionData.findOne({emotion : choice, personality: matchUser.personality});
 
@@ -259,7 +245,7 @@ const KeepResult  = async ( matchUser, textFromUser, res) => {
     await matchUser.save();
 }
 
-//--------------------------------------------------------------------------
+//--------------------------------------------------------------------------//
 
 module.exports = {
     getAllBotRes: (req, res) => {
@@ -273,8 +259,6 @@ module.exports = {
                 error
             })
         });
-
-
     },
 
     createBotRes: (req, res) => {
@@ -296,7 +280,6 @@ module.exports = {
                 error
             })
         });
-
     },
 
     getBotRes: (req, res) => {
@@ -325,8 +308,6 @@ module.exports = {
                 error
             })
         });
-
-
     },
 
     deleteBotRes: (req, res) => {
@@ -423,7 +404,6 @@ module.exports = {
             res.status(404).json({ message: "Could Not Find User" })
         }
 
-
         if (matchUser) {
             switch (talkType) {
                 case "GetToKnow": //if you want to get to know you                    
@@ -496,7 +476,6 @@ module.exports = {
                     break;
                 case "AnalyzeMyEmotion":
 
-
                     switch (matchUser.analyzeState) {
                         case "uninitialized": // start a new session with him
 
@@ -559,7 +538,5 @@ module.exports = {
                 massage: "User is not in DB"
             });
         }
-
-
     }
 }

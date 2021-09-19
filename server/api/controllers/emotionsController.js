@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 module.exports = {
     getAllEmotions:  (req , res)=>{
         Emotion.find().then((allEmotions)=>{
-
             res.status(200).json({
             allEmotions
             })
@@ -12,9 +11,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });    
-
-        
+        });        
     },
 
     createEmotion : (req , res)=>{
@@ -34,8 +31,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });
-                
+        });                
     },
 
     getEmotion : (req , res)=>{
@@ -63,9 +59,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });   
-
-       
+        });       
     },
 
     deleteEmotion: (req , res)=>{
@@ -79,8 +73,6 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });   
-
-        
+        });        
     }
 }

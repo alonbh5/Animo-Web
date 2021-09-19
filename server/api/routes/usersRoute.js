@@ -18,7 +18,6 @@ const {
     updateUserAboutMe
 } = require('../controllers/usersController');
 
-
 router.get('/' ,getAllUsers);
 router.get('/login' , login);
 router.patch('/resetPassword', resetPassword)

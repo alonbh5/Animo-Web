@@ -123,7 +123,6 @@ const Modal = () => {
         }}>{error}</p>
       </div>
     </div>
-
   );
 };
 

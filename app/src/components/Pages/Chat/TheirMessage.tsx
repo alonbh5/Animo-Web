@@ -9,7 +9,6 @@ const TheirMessage = (props: any) => {
 
   return (
     <div className="message-row">
-
       {isFirstMessageByUser && (
         <div
           className="message-avatar"
@@ -33,4 +32,5 @@ const TheirMessage = (props: any) => {
     </div>
   );
 };
+
 export default TheirMessage;

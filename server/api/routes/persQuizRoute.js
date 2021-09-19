@@ -7,7 +7,6 @@ const {
     deletePersQuiz
 } = require('../controllers/persQuiz');
 
-
 router.get('/' ,getAllPersQuiz);
 router.post('/' , createPersQuiz);
 router.get('/:persQuizId' ,getPersQuiz);

@@ -27,5 +27,4 @@ export const Article = ({ text, link, author, img }: ArticleProps) => {
       {author}
     </div>
   );
-}
-;
+};

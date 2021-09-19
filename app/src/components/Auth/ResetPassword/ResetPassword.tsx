@@ -95,4 +95,5 @@ const ResetPassword = (props: any) => {
     </PageLayout>
   );
 };
+
 export default ResetPassword;

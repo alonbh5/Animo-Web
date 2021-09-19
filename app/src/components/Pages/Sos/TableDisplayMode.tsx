@@ -1,4 +1,3 @@
-
 import { User } from '../../api/configuration/models/users';
 
 export const TableDisplayMode = (user: User) => {

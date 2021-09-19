@@ -11,7 +11,6 @@ type InputProps = {
   disabled?: boolean;
   errorMessage?: string;
   onChange: (event: any) => void;
-
 }
 
 const Input = (props: InputProps) => {
@@ -44,4 +43,5 @@ const Input = (props: InputProps) => {
     </>
   );
 };
+
 export default Input;

@@ -2,8 +2,7 @@ const PhyData = require('../schemes/phyDataSchema');
 const mongoose = require('mongoose');
 const HttpError = require('../models/http-error');
 
-module.exports = {
-
+module.exports = {    
     confirmData: async (req, res, next) => {
         const dataId = req.params.dataId;
         try {
@@ -11,6 +10,7 @@ module.exports = {
             if (!matchData) {
                 return next(new HttpError(`User by id ${dataId} did not found`, 404));
             }
+
             await PhyData.updateOne(
                 { _id: dataId },
                 { $set: { confirm: true } },
@@ -26,6 +26,7 @@ module.exports = {
             return next(new HttpError('Something went wrong! please try later', 500));
         }
     },
+
     getAllTexts: async (req, res) => {
         PhyData.find().then((allTextsRes) => {
             res.status(200).json({
@@ -54,7 +55,6 @@ module.exports = {
         }
     },
 
-
     getArticles: async (req, res, next) => {
         try {
             const allArticles = await PhyData.find({ data_type: "Article" })
@@ -72,7 +72,6 @@ module.exports = {
     },
 
     createText: (req, res) => {
-
         const {
             data_type,
             link,
@@ -133,8 +132,6 @@ module.exports = {
                 error
             })
         });
-
-
     },
 
     deleteText: (req, res) => {
@@ -149,7 +146,5 @@ module.exports = {
                 error
             })
         });
-
-
     }
 }

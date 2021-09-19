@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { botResponse } from '../../../api/configuration/models/botRes';
 
-const errorMessage = 'Sorry we have some issue right now, please try later';
+const errorMessage = 'Sorry I can not answer right now, please talk to me later.';
 
 class ActionProvider {
   createChatBotMessage: any;
@@ -14,6 +14,7 @@ class ActionProvider {
     this.createClientMessage = createClientMessage;
   }
 
+  /* Get current user personal data for personal conversation */
   setUserParameters = async (message: string) => {
     const storedData = JSON.parse(localStorage.getItem('userData'));
 
@@ -46,11 +47,12 @@ class ActionProvider {
           personality: data.personality
         }
       }));
+
+      /* In case not the first talk */
       if (data.getToKnowState === 'Done') {
         botAnswer = this.createChatBotMessage(`${data.first_name}, 
           how can I help you today?`, {
           widget: 'ShowOptions',
-          // talkType: 'Conversation',
           withAvatar: true
         });
       } else {
@@ -70,6 +72,7 @@ class ActionProvider {
     this.setChatbotMessage(botAnswer);
   }
 
+  /* Try to get bot answer for first talk */
   handlerTalk = async (
     textFromUser: string, userId: string, talkType: string) => {
     const params = this.getParams(textFromUser, userId, talkType);
@@ -94,6 +97,7 @@ class ActionProvider {
     this.setChatbotMessage(botMessage);
   };
 
+  /* Try to get bot answer for advice talk */
   handlerAdvice = async (
     textFromUser: string, userId: string, talkType: string) => {
     const params = this.getParams(textFromUser, userId, talkType);
@@ -109,8 +113,7 @@ class ActionProvider {
         }));
       }
     } else {
-      // change to general error?
-      botAnswer = errorMessage.concat(' - in Advice');
+      botAnswer = errorMessage;
     }
 
     const botMessage = this.createChatBotMessage(botAnswer, {
@@ -123,6 +126,7 @@ class ActionProvider {
     }
   };
 
+  /* Try to get bot answer for analyze my emotion talk */
   handlerAnalyzeMyEmotion = async (
     textFromUser: string, userId: string, talkType: string) => {
     const params = this.getParams(textFromUser, userId, talkType);
@@ -138,7 +142,7 @@ class ActionProvider {
         }));
       }
     } else {
-      botAnswer = errorMessage.concat('- in AnalyzeMyEmotion');
+      botAnswer = errorMessage;
     }
 
     const botMessage = this.createChatBotMessage(botAnswer, {
@@ -148,6 +152,7 @@ class ActionProvider {
     this.setChatbotMessage(botMessage);
   };
 
+  /* Try to get bot answer for result of analyze my emotion talk */
   handlerAnalyzeMyEmotionResult = async (
     textFromUser: string, userId: string, talkType: string) => {
     const params = this.getParams(textFromUser, userId, talkType);
@@ -163,7 +168,7 @@ class ActionProvider {
         }));
       }
     } else {
-      botAnswer = errorMessage.concat('- in AnalyzeMyEmotion-Result');
+      botAnswer = errorMessage;
     }
 
     const botMessage = this.createChatBotMessage(botAnswer, {
@@ -176,6 +181,7 @@ class ActionProvider {
     }
   };
 
+  /* Get bot data from server */
   getAnswerFromBot = async (params: AxiosRequestConfig) => {
     try {
       const result = await axios.request(params);
@@ -185,6 +191,7 @@ class ActionProvider {
     }
   }
 
+  /* Set the params for the http request */
   getParams = (textFromUser: string, userId: string, talkType: string) => {
     const params: AxiosRequestConfig = {
       baseURL: process.env.REACT_APP_BACKEND_URL,
@@ -200,6 +207,7 @@ class ActionProvider {
     return params;
   }
 
+  /* Show bot options - advice and analyze my emotion */
   setWidgetShowOptions = () => {
     const botMessage = this.createChatBotMessage(
       'Is there anything else I can help you with?', {
@@ -209,6 +217,7 @@ class ActionProvider {
     this.setChatbotMessage(botMessage);
   }
 
+  /* Change talkType status of the bot */
   setTalkTypeAdvice = () => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
@@ -220,6 +229,7 @@ class ActionProvider {
     this.setChatbotMessage(botMessage);
   }
 
+  /* Change talkType status of the bot */
   setTalkTypeAnalyzeMyEmotion = () => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
@@ -232,6 +242,7 @@ class ActionProvider {
     this.setChatbotMessage(botMessage);
   }
 
+  /* Add the new message after the old ones - save to bot state */
   setChatbotMessage = (message: any) => {
     this.setState((prevState: { messages: any; }) => ({
       ...prevState,
