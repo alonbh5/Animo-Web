@@ -5,9 +5,11 @@ import './Chat.css';
 
 const Chat = () => {
   const storedData = JSON.parse(localStorage.getItem('chatData'));
+
   if (!storedData || new Date(storedData.expiration) < new Date()) {
     return <LoginForm/>;
   }
+
   return (
     <div className="chat-container">
       <ChatEngine
@@ -20,4 +22,5 @@ const Chat = () => {
     </div>
   );
 };
+
 export default Chat;

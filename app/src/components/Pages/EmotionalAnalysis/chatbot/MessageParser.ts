@@ -6,6 +6,7 @@ class MessageParser {
     this.state = state;
   }
 
+  /* Defines the behavior of the bot each user's message */
   parse = (message: string) => {
     if (this.state.user === undefined) {
       this.actionProvider.setUserParameters(message);

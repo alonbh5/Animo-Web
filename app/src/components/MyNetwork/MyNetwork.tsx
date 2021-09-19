@@ -163,4 +163,5 @@ class MyNetwork extends Component<{user:User, isOpen: boolean},
      );
    }
 }
+
 export default MyNetwork;

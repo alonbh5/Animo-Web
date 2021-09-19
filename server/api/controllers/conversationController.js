@@ -12,9 +12,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });    
-
-        
+        });         
     },
 
     createConversation : (req , res)=>{
@@ -41,8 +39,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });
-                
+        });                
     },
 
     getConversation : (req , res)=>{
@@ -70,9 +67,7 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });   
-
-       
+        });       
     },
 
     deleteConversation: (req , res)=>{
@@ -86,8 +81,6 @@ module.exports = {
             res.status(500).json({
             error
             })
-        });   
-
-        
+        });        
     }
 }

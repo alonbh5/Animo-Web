@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const {
     getAllTexts,
     createText,
@@ -11,7 +10,6 @@ const {
     confirmData
 } = require('../controllers/phyDataController');
 
-
 router.get('/' ,getAllTexts);
 router.get('/getTips' ,getTips);
 router.get('/getArticles' ,getArticles);
@@ -20,6 +18,5 @@ router.get('/:textId' ,getText);
 router.patch('/:textId' , updateText);
 router.delete('/:textId' , deleteText);
 router.patch('/confirmData/:dataId' , confirmData);
-
 
 module.exports  = router;

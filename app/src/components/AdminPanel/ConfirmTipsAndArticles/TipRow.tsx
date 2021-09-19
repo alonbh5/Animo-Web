@@ -1,21 +1,21 @@
-/* eslint-disable */
-import React, { useState } from "react";
-import { TipItem } from "../../Pages/TipsAndArticles/Tip";
+import React from 'react';
+import { TipItem } from '../../Pages/TipsAndArticles/Tip';
 
 type tipRowProp = {
   tip: TipItem;
   confirmData: (tipId: string) => void;
 };
-export const TipRow = (props: tipDataRowProp) => {
+
+export const TipRow = (props: tipRowProp) => {
   const { tip } = props;
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     props.confirmData(tip._id);
   };
 
   return (
     <>
       <tr >
-        <td style ={{maxWidth: '100px'}}>{tip.title}</td>
+        <td style ={{ maxWidth: '100px' }}>{tip.title}</td>
         <td >{tip.author}</td>
         <td >{tip.content}</td>
         <td >
@@ -25,4 +25,3 @@ export const TipRow = (props: tipDataRowProp) => {
     </>
   );
 };
-

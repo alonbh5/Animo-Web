@@ -7,8 +7,7 @@ const ConversationSchema = mongoose.Schema({
     isPersonal: { type: Boolean, require: false, default: false }, 
     indexInQuestion: { type: [Number], require: false, default: []},
     emotionId:{ type: String, require: true },
-    done: { type: Boolean, require: false, default: true }
-    
+    done: { type: Boolean, require: false, default: true }    
 });
 
 module.exports = mongoose.model("Bot-Conversation", ConversationSchema);

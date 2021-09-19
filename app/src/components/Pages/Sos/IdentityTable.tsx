@@ -1,4 +1,3 @@
-
 import { TableDisplayMode } from './TableDisplayMode';
 import axios, { AxiosRequestConfig } from 'axios';
 import { User } from '../../api/configuration/models/users';
@@ -7,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 const IdentityTable = () => {
   const [users, setUsers] = useState<User[] | undefined>(undefined);
 
+  /* Get from DB all the users that are - psycologist, add 'About Me', add phone and are online */
   const fetchUsers = async () => {
     const params: AxiosRequestConfig = {
       baseURL: process.env.REACT_APP_BACKEND_URL,

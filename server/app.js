@@ -3,10 +3,7 @@ const app = express();
 const morgan = require('morgan'); //for logger
 const mongoose = require('mongoose'); //for mongoDB
 
-
-
-//===============================/// MongoDB /////===============================
-
+//===============================/// MongoDB /////===============================//
 
 const MongoDBUri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@animo-mta.ss2ls.mongodb.net/Data?retryWrites=true&w=majority`;
 
@@ -22,9 +19,11 @@ mongoose.connect(MongoDBUri, {
 mongoose.connection.on('connected', () => {
     console.log("MongoDB is Connected!");
 });
-//==============================================================================
 
-//===============================/// Routes /////===============================
+//==============================================================================//
+
+//===============================/// Routes /////===============================//
+
 const phyDataRoute = require('./api/routes/phyDataRoute');
 const usersRoute = require('./api/routes/usersRoute');
 const BotResRoute = require('./api/routes/botResRoute');
@@ -36,11 +35,12 @@ const PersDataRoute = require('./api/routes/persDataRoute');
 const ConversationRoute = require('./api/routes/conversationRoute');
 const AnalyzeRoute = require('./api/routes/analyzeRoute');
 const EmotionDataRoute = require('./api/routes/personalEmotionalDataRoute');
-//==============================================================================
+
+//==============================================================================//
 
 app.use(morgan("dev"));
 
-//********************************************/// DATA HANDLER /////********************************************
+//********************************************/// DATA HANDLER /////********************************************//
 
 //to get json data to be on req.body.message use:
 app.use(express.json());
@@ -52,7 +52,8 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
-//********************************************/// END /////*************************************************
+
+//********************************************/// END /////*************************************************//
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -61,9 +62,8 @@ app.use((req, res, next) => {
     next();
 });
 
+//*********************************************/// Router /////*********************************************//
 
-
-//*********************************************/// Router /////*********************************************
 app.use('/phydata', phyDataRoute);
 app.use('/users', usersRoute);
 app.use('/botres', BotResRoute);
@@ -74,14 +74,11 @@ app.use('/persdata', PersDataRoute);
 app.use('/Conversation', ConversationRoute);
 app.use('/analyze',AnalyzeRoute);
 app.use('/emotionData',EmotionDataRoute);
-//********************************************/// END /////*************************************************
 
+//********************************************/// END /////*************************************************//
 
 app.use((req, res, next) => {
     throw new HttpError("Could not find this route!", 404)
-    // throw error;
-    // error.status = 404;
-    // next(error);
 })
 
 app.use((error, req, res, next) => {

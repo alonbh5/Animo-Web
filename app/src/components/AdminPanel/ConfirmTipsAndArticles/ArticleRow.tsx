@@ -6,9 +6,10 @@ type articleRowProp = {
   article: ArticleItem;
   confirmData: (articleId: string) => void;
 };
+
 export const ArticleRow = (props: articleRowProp) => {
   const { article} = props;
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     props.confirmData(article._id);
   };
   return (
@@ -31,4 +32,3 @@ export const ArticleRow = (props: articleRowProp) => {
     </>
   );
 };
-

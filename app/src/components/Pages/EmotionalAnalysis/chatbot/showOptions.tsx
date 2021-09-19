@@ -1,5 +1,6 @@
 import './showOptions.css';
 
+/* Options for talk type with bot */
 export const ShowOptions = (props: any) => {
   const options = [
     {

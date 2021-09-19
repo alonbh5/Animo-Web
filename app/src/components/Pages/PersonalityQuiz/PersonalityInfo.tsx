@@ -1,4 +1,3 @@
-
 import { Personality } from '../../api/configuration/models/personality';
 
 export const PesonalityInfo = (props: { personality: Personality }) => {

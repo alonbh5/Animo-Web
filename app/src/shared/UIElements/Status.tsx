@@ -18,4 +18,5 @@ const Status = (props: StatusProps) => {
     </>
   );
 };
+
 export default Status;

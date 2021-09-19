@@ -11,6 +11,7 @@ type NavigationBarProps = {
   isLoggedIn: boolean;
   alreadyDidQuiz?: boolean;
 }
+
 const NavigationBar = (props: NavigationBarProps) => {
   const navigateForLoggedIn = <>
     {!props.alreadyDidQuiz &&

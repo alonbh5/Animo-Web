@@ -13,7 +13,6 @@ const adminRole = 1;
 const psycRole = 2;
 const generalRole = 3;
 
-
 const CalculatePersType = (personalQuiz) => {
     let I = 0;
     let E = 0;
@@ -27,13 +26,8 @@ const CalculatePersType = (personalQuiz) => {
     let T = 0;
     let F = 0;
 
-
     personalQuiz.forEach((item) => {
-
         let num = parseInt(item.answer);
-
-
-
         if (isNaN(num)) {
             throw new Error();
         }
@@ -77,10 +71,7 @@ const CalculatePersType = (personalQuiz) => {
             default:
                 break;
         }
-
-
     });
-
 
     let persRes = "";
 
@@ -140,6 +131,7 @@ module.exports = {
             } catch (err) {
                 return next(new HttpError('Could not create a user, please try again.', 500));
             }
+
             const confirm = role_id === generalRole;
             const createUser = new User({
                 _id: new mongoose.Types.ObjectId(),
@@ -154,7 +146,7 @@ module.exports = {
                 imageUrl
             });
 
-            await createUser.save();
+            await createUser.save();            
             if (!confirm) {
                 return res.status(202).send({
                     message: `Created a new user successfuly! We will confirm your user soon!`,
@@ -175,14 +167,10 @@ module.exports = {
                 return next(new HttpError('Could not create a user, please try later.', 500));
             }
 
-            try {
-                await User.updateOne(
-                    { _id: createUser._id },
-                    { $set: { online: true } },
-                );
-            } catch (err) {
-                // could not change status
-            }
+            await User.updateOne(
+                { _id: createUser._id },
+                { $set: { online: true } },
+            );
 
             res.status(201).send({
                 message: `Created a new user successfuly!`,
@@ -218,7 +206,6 @@ module.exports = {
         } catch (error) {
             return next(new HttpError('Something went wrong! please try later', 500));
         }
-
     },
 
     forgotPassword: async (req, res, next) => {
@@ -250,8 +237,8 @@ module.exports = {
         } catch (error) {
             return next(new HttpError('Something went wrong! please try later', 500));
         }
-
     },
+
     resetPassword: async (req, res, next) => {
         const userId = req.query.userId;
         const token = req.query.token;
@@ -283,15 +270,11 @@ module.exports = {
         } catch (err) {
             return next(new HttpError('Loggin failed, please try later.', 500));
         }
-
-        try {
-            await User.updateOne(
-                { _id: existingUser._id },
-                { $set: { online: true } },
-            );
-        } catch (err) {
-            // could not change status
-        }
+        
+        await User.updateOne(
+            { _id: existingUser._id },
+            { $set: { online: true } },
+        );
 
         await passwordResetToken.deleteOne();
 
@@ -304,7 +287,6 @@ module.exports = {
             }
         });
     },
-
 
     login: async (req, res, next) => {
         const email = req.query.email;
@@ -351,15 +333,12 @@ module.exports = {
         } catch (err) {
             return next(new HttpError('Loggin failed, please try later', 500));
         }
-        try {
-            await User.updateOne(
-                { _id: existingUser._id },
-                { $set: { online: true } },
-            );
-        } catch (err) {
-            // could not change status
-        }
 
+        await User.updateOne(
+            { _id: existingUser._id },
+            { $set: { online: true } },
+        );
+        
         return res.status(200).json({
             message: `Logged in`,
             data: {
@@ -462,6 +441,7 @@ module.exports = {
                     }
                 },
             );
+
             if (matchUser.password !== password && password) {
                 const hash = await bcrypt.hash(password, 12);
                 await User.updateOne(
@@ -593,12 +573,8 @@ module.exports = {
     },
 
     addQuizAns: async (req) => {
-
         const userId = req.params.userId;
-
         const AnsweredQuestions = req.body;
-
-
         let matchingUser;
 
         try {
@@ -611,7 +587,6 @@ module.exports = {
                 };
             }
 
-
             for (let index = 0; index < matchingUser.persQuiz.length; index++) {
                 matchingUser.persQuiz[index].answer = AnsweredQuestions[index].answer;
             }
@@ -622,34 +597,27 @@ module.exports = {
                 res: true,
                 message: ""
             };
-
         } catch (err) {
             return {
                 res: false,
                 message: "Something Went Wrong, Please Try Agian Later.."
             };
         }
-
-
     },
 
     persCalc: async (req) => {
-
         const userId = await req.params.userId;
         let matchingUser;
         let persRes;
 
         try {
-
             matchingUser = await User.findOne({ '_id': userId });
-
             if (!matchingUser) {
                 return {
                     res: false,
                     message: "User Did Not Found!"
                 };
             }
-
         } catch (err) {
             return {
                 res: false,

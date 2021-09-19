@@ -7,6 +7,7 @@ import Input from '../../../shared/FormElements/Input';
 import emailjs from 'emailjs-com';
 import { useAlert } from 'react-alert';
 import PageLayout from '../../../shared/UIElements/PageLayout';
+
 const serviceId = 'service_03oxvhn';
 const userID = 'user_AdbVf7bL75xL6zL117UXr';
 const animoMail = '2021Animo@gmail.com';
@@ -14,7 +15,6 @@ const templateId = 'template_ojgxluk';
 
 const ForgotPassword = (props: any) => {
   const alert = useAlert();
-
   const {
     isLoading,
     error,
@@ -22,6 +22,7 @@ const ForgotPassword = (props: any) => {
     sendRequest,
     clearMessages
   } = useHttpClient();
+
   const [email, setEmail] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
   const [inputDisabled, setinputDisabled] = useState(false);
@@ -99,4 +100,5 @@ const ForgotPassword = (props: any) => {
     </PageLayout>
   );
 };
+
 export default ForgotPassword;

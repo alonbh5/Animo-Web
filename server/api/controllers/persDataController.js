@@ -14,8 +14,6 @@ module.exports = {
                 error
             })
         });
-
-
     },
 
     createPersData: (req, res) => {
@@ -39,7 +37,6 @@ module.exports = {
                 error
             })
         });
-
     },
 
     getPersData: (req, res) => {
@@ -68,8 +65,6 @@ module.exports = {
                 error
             })
         });
-
-
     },
 
     deletePersData: (req, res) => {
@@ -84,8 +79,6 @@ module.exports = {
                 error
             })
         });
-
-
     },
 
     getPersByName: async (req, res, next) => {

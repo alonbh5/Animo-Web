@@ -67,4 +67,5 @@ const IdentityTable = (props: IdentityTableProps) => {
           onUpdate={onUpdateUser} />}
     </table></>);
 };
+
 export default IdentityTable;

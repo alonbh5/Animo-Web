@@ -24,7 +24,6 @@ module.exports = {
                 return next(new HttpError(`role id ${req.params.roleId} was not found!`, 500));
             }
         } catch (err) {
-
         }
     }
 }

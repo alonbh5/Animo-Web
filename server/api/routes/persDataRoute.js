@@ -8,7 +8,6 @@ const {
     getPersByName
 } = require('../controllers/persDataController');
 
-
 router.get('/' ,getAllPersData);
 router.post('/' , createPersData);
 router.get('/:persDataId' ,getPersData);

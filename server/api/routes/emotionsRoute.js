@@ -7,7 +7,6 @@ const {
     deleteEmotion
 } = require('../controllers/emotionsController');
 
-
 router.get('/' ,getAllEmotions);
 router.post('/' , createEmotion);
 router.get('/:emotionId' ,getEmotion);

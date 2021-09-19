@@ -1,8 +1,7 @@
-
 export type personalQuiz = {
     id: string;
-    question:string;  
+    question:string;
     relateTo: string
-    opposite: string; 
+    opposite: string;
     answer:string;
 }

@@ -1,17 +1,18 @@
-/* eslint-disable max-len */
 import { useState } from 'react';
 import emailjs, { init } from 'emailjs-com';
 import { templateId, serviceId, userID, animoMail } from '../../api/configuration/config';
 import { useAlert } from 'react-alert';
 import './invitePsychologist.css';
 import PageLayout from '../../../shared/UIElements/PageLayout';
+
 init(userID);
 
 const initialState = {
   name: '',
   email: '',
   message: 'Dear {{name}}, \n' +
-  'Animo is a unique platform an enables users from all around the world to easily detected and analyze their emotional state, and offer practical ways to improve.\n' +
+  'Animo is a unique platform an enables users from all around the world to ' +
+  'easily detected and analyze their emotional state, and offer practical ways to improve.\n' +
   'We got some warm recommendations about you and we would like you the join our platform.\n' +
   'As a psychologist, we offer you some new cool features:\n' +
   '- upload tips and articles and share your knowledge\n' +
@@ -26,9 +27,7 @@ const initialState = {
 
 const InvitePsychologist = (props: any) => {
   const alert = useAlert();
-
   const [{ name, email, message }, setState] = useState(initialState);
-
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setState((prevState) => ({ ...prevState, [name]: value }));
@@ -36,7 +35,6 @@ const InvitePsychologist = (props: any) => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-
     const params = {
       subject: `${name}, Come to be our psychologist!`,
       from_name: 'Animo',
@@ -56,8 +54,8 @@ const InvitePsychologist = (props: any) => {
   return (
     <PageLayout classname='invite' title='Invite Psychologist'>
       <p>
-                  Please fill out the form below to send us an email and we will
-                  get back to you as soon as possible.
+        Please fill out the form below to send us an email and we will
+        get back to you as soon as possible.
       </p>
       <form name='sentMessage' onSubmit={handleSubmit}>
         <div className='row'>
@@ -113,4 +111,5 @@ const InvitePsychologist = (props: any) => {
     </PageLayout>
   );
 };
+
 export default InvitePsychologist;

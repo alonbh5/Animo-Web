@@ -11,7 +11,6 @@ type ImageUploadProps = {
 const ImageUpload = (props: ImageUploadProps) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState(props.previewUrl);
-
   const filePickerRef = useRef();
 
   useEffect(() => {
@@ -27,7 +26,6 @@ const ImageUpload = (props: ImageUploadProps) => {
 
   const pickedHandler = (event:any) => {
     let pickedFile;
-    // let fileIsValid = isValid;
     if (event.target.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
